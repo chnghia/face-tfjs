@@ -26,7 +26,7 @@ import {stubbedImageVals} from './test_util';
 describeWithFlags('BlazeFace', NODE_ENVS, () => {
   let model: BlazeFaceModel;
   beforeAll(async () => {
-    model = await blazeface.load();
+    model = await blazeface.loadBlazeFace();
   });
 
   it('estimateFaces does not leak memory', async () => {
