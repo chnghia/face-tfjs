@@ -3,7 +3,7 @@ import * as tfconv from '@tensorflow/tfjs-converter';
 import { FaceEmotionModel } from './emotion';
 
 const FACEEMOTION_MODEL_URL =
-  'https://tfhub.dev/tensorflow/tfjs-model/blazeface/1/default/1';
+  'https://storage.googleapis.com/mal-public/emotion/web_model';
 
 interface FaceEmotionConfig {
   modelUrl?: string | tf.io.IOHandler;
