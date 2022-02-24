@@ -63,13 +63,13 @@ function config({ plugins = [], output = {} }) {
 }
 
 export default [
-  config({ output: { format: 'umd', name: 'blazeface', file: 'dist/blazeface.js' } }),
+  config({ output: { format: 'umd', name: 'face-tfjs', file: 'dist/face-tfjs.js' } }),
   config({
     plugins: [minify()],
-    output: { format: 'umd', name: 'blazeface', file: 'dist/blazeface.min.js' }
+    output: { format: 'umd', name: 'face-tfjs', file: 'dist/face-tfjs.min.js' }
   }),
   config({
     plugins: [minify()],
-    output: { format: 'es', file: 'dist/blazeface.esm.js' }
+    output: { format: 'es', file: 'dist/face-tfjs.esm.js' }
   })
 ];

@@ -15,7 +15,7 @@
  * =============================================================================
  */
 
-import * as blazeface from '@tensorflow-models/blazeface';
+import * as facetfjs from '@tensorflow-models/face-tfjs';
 import * as tf from '@tensorflow/tfjs-core';
 import * as tfjsWasm from '@tensorflow/tfjs-backend-wasm';
 import '@tensorflow/tfjs-backend-webgl';
@@ -28,7 +28,8 @@ const stats = new Stats();
 stats.showPanel(0);
 document.body.prepend(stats.domElement);
 
-let model;
+let modelFace;
+let modelEmotion;
 let ctx;
 let videoWidth;
 let videoHeight;
@@ -67,7 +68,7 @@ const renderPrediction = async () => {
   const returnTensors = false;
   const flipHorizontal = true;
   const annotateBoxes = true;
-  const predictions = await model.estimateFaces(
+  const predictions = await modelFace.estimateFaces(
     video, returnTensors, flipHorizontal, annotateBoxes);
 
   if (predictions.length > 0) {
@@ -85,6 +86,10 @@ const renderPrediction = async () => {
       const start = predictions[i].topLeft;
       const end = predictions[i].bottomRight;
       const size = [end[0] - start[0], end[1] - start[1]];
+
+      // const croppedInput = cutBoxFromImageAndResize(
+      //   box, rotatedImage, [this.meshWidth, this.meshHeight]);
+
       ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
       ctx.fillRect(start[0], start[1], size[0], size[1]);
 
@@ -122,7 +127,8 @@ const setupPage = async () => {
   ctx = canvas.getContext('2d');
   ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
 
-  model = await blazeface.load();
+  modelFace = await facetfjs.loadBlazeFace();
+  modelEmotion = await facetfjs.loadFaceEmotions();
 
   renderPrediction();
 };

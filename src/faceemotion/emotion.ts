@@ -9,8 +9,8 @@ export const IMAGENET_CLASSES: { [classId: number]: string } = {
 
 export class FaceEmotionModel {
   private model: tfconv.GraphModel;
-  private width: number;
-  private height: number;
+  // private width: number;
+  // private height: number;
   private normalizationConstant: number;
   private inputMin: number;
   private modelUrl?: string | tf.io.IOHandler;
@@ -19,8 +19,8 @@ export class FaceEmotionModel {
     model: tfconv.GraphModel
   ) {
     this.model = model;
-    this.width = 60;
-    this.height = 60;
+    // this.width = 60;
+    // this.height = 60;
     this.normalizationConstant = 0.449;
     this.inputMin = -0.226;
   }
@@ -38,8 +38,7 @@ export class FaceEmotionModel {
   }
 
   infer(
-    img: tf.Tensor3D | ImageData | HTMLVideoElement | HTMLImageElement |
-      HTMLCanvasElement,
+    img: tf.Tensor3D | ImageData | HTMLVideoElement | HTMLImageElement | HTMLCanvasElement,
     embedding = false): tf.Tensor {
     return tf.tidy(() => {
       if (!(img instanceof tf.Tensor)) {

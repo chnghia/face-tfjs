@@ -9,11 +9,11 @@
     "node": ">=8.9.0"
   },
   "dependencies": {
-    "@tensorflow-models/blazeface": "link:../",
-    "@tensorflow/tfjs-backend-wasm": "^3.11.0",
-    "@tensorflow/tfjs-backend-webgl": "^3.11.0",
-    "@tensorflow/tfjs-converter": "^3.11.0",
-    "@tensorflow/tfjs-core": "^3.11.0"
+    "@tensorflow-models/face-tfjs": "link:../",
+    "@tensorflow/tfjs-backend-wasm": "^3.13.0",
+    "@tensorflow/tfjs-backend-webgl": "^3.13.0",
+    "@tensorflow/tfjs-converter": "^3.13.0",
+    "@tensorflow/tfjs-core": "^3.13.0"
   },
   "scripts": {
     "watch": "esbuild index.js --bundle --target=es6 --servedir=. --serve --sourcemap --sources-content=true --preserve-symlinks",
