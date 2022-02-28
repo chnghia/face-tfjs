@@ -356,6 +356,12 @@ export class BlazeFaceModel {
       }
       return tf.expandDims(tf.cast((input as tf.Tensor), 'float32'), 0);
     });
+    return this.infer(image as tf.Tensor4D, width, returnTensors, flipHorizontal, annotateBoxes);
+  }
+
+  async infer(image: tf.Tensor4D, width: number,
+      returnTensors = false, flipHorizontal = false,
+      annotateBoxes = true): Promise<NormalizedFace[]> {
     const {boxes, scaleFactor} = await this.getBoundingBoxes(
         image as tf.Tensor4D, returnTensors, annotateBoxes);
     image.dispose();
