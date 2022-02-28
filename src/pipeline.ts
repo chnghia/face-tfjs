@@ -21,12 +21,16 @@ function getInputTensorDimensions(input: tf.Tensor3D|ImageData|HTMLVideoElement|
 }
 export class EmotionPipeline {
   private readonly maxFacesNumber: number;
+  private normalizationConstant: number;
+  private inputMin: number;
 
   constructor(
     private readonly faceDetector: BlazeFaceModel,
     private readonly emotionDetector: FaceEmotionModel
   ) {
     this.maxFacesNumber = 1;
+    this.normalizationConstant = 0.449;
+    this.inputMin = -0.226;
   }
 
   async estimateEmotion(input: tf.Tensor3D | ImageData | HTMLVideoElement | HTMLImageElement | HTMLCanvasElement): Promise<Prediction> {
@@ -43,7 +47,7 @@ export class EmotionPipeline {
     const flipHorizontal = true;
     const annotateBoxes = true;
 
-    const predictions = await this.faceDetector.infer(image as tf.Tensor4D, returnTensors, flipHorizontal, annotateBoxes);
+    const predictions = await this.faceDetector.infer(image as tf.Tensor4D, width, returnTensors, flipHorizontal, annotateBoxes);
 
     console.log(predictions);
 
@@ -62,7 +66,9 @@ export class EmotionPipeline {
 
         const start = predictions[i].topLeft;
         const end = predictions[i].bottomRight;
-        const size = [end[0] - start[0], end[1] - start[1]];
+        // console.log(start);
+        // console.log(end);
+        // const size: number[] = [60, 60];
 
         const h = image.shape[1];
         const w = image.shape[2];
@@ -71,12 +77,21 @@ export class EmotionPipeline {
           start[1] / h, start[0] / w, end[1] / h, end[0] / w
         ]];
 
-        let faceImage:Tensor3D = tf.image.cropAndResize(image, boxes, [0], size);
-        await this.emotionDetector.infer(faceImage);
+        let faceImage = tf.image.cropAndResize(image as tf.Tensor4D, boxes, [0], [60, 60]);
+
+        // Normalize the image from [0, 255] to [inputMin, inputMax].
+        const normalized: tf.Tensor3D = tf.add(
+          tf.mul(tf.cast(faceImage, 'float32'), this.normalizationConstant),
+          this.inputMin);
+
+        const emotions = await this.emotionDetector.infer(normalized);
         // tf.image.
-        // console.log(size);
+
+        console.log(emotions.arraySync()[0]);
       }
     }
+
+    image.dispose();
 
     return predictions;
   }
