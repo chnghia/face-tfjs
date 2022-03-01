@@ -61,22 +61,32 @@ export class FaceEmotionModel {
       // Reshape so we can pass it to predict.
       const batched = tf.reshape(resized, [-1, IMAGE_SIZE, IMAGE_SIZE, 3]);
 
-      let result: tf.Tensor2D;
+      return this.predict(batched as tf.Tensor4D);
+      // let result: tf.Tensor2D;
 
-      if (embedding) {
-        // const embeddingName = EMBEDDING_NODES[this.version];
-        // const internal =
-        //     this.model.execute(batched, embeddingName) as tf.Tensor4D;
-        // result = tf.squeeze(internal, [1, 2]);
-      } else {
-        const logits1001 = this.model.predict(batched) as tf.Tensor2D;
-        // Remove the very first logit (background noise).
-        // console.log(logits1001.dataSync());
-        result = logits1001;
-      }
+      // if (embedding) {
+      //   // const embeddingName = EMBEDDING_NODES[this.version];
+      //   // const internal =
+      //   //     this.model.execute(batched, embeddingName) as tf.Tensor4D;
+      //   // result = tf.squeeze(internal, [1, 2]);
+      // } else {
+      //   const logits1001 = this.model.predict(batched) as tf.Tensor2D;
+      //   // Remove the very first logit (background noise).
+      //   // console.log(logits1001.dataSync());
+      //   result = logits1001;
+      // }
 
-      return result;
+      // return result;
     });
+  }
+
+  predict(input: tf.Tensor4D): tf.Tensor {
+    let result: tf.Tensor2D;
+
+    const logits1001 = this.model.predict(input) as tf.Tensor2D;
+    result = logits1001;  
+
+    return result;
   }
 
   async classify(img: tf.Tensor3D | ImageData | HTMLImageElement | HTMLCanvasElement |

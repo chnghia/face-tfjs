@@ -4,12 +4,13 @@ import { describeWithFlags, NODE_ENVS } from '@tensorflow/tfjs-core/dist/jasmine
 import * as facetfjs from './index';
 import { FaceEmotionModel, BlazeFaceModel, EmotionPipeline } from './index';
 import { stubbedImageVals } from './blazeface/test_util';
+import { Prediction } from './pipeline';
 
 describeWithFlags('Pipeline', NODE_ENVS, () => {
   let modelEmotion: FaceEmotionModel;
   let modelFace: BlazeFaceModel;
   let pipe: EmotionPipeline;
-  let originalTimeout: number;
+  // let originalTimeout: number;
   
   // beforeEach(function () {
   //     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -21,7 +22,7 @@ describeWithFlags('Pipeline', NODE_ENVS, () => {
   // });
 
   beforeAll(async () => {
-    originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+    // originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000000;
     modelEmotion = await facetfjs.loadFaceEmotions();
     modelFace = await facetfjs.loadBlazeFace();
@@ -43,12 +44,12 @@ describeWithFlags('Pipeline', NODE_ENVS, () => {
     const input: tf.Tensor3D = tf.tensor3d(stubbedImageVals, [128, 128, 3]);
     const result = await pipe.estimateEmotion(input);
 
-    const face = result[0];
-    // console.log(face);
+    const faces = result as Prediction;
+    // console.log(faces[0].emotions);
 
-    expect(face.topLeft).toBeDefined();
-    expect(face.bottomRight).toBeDefined();
+    expect(faces).toBeDefined();
+    expect(faces).toBeDefined();
     // expect(face.landmarks).toBeDefined();
-    expect(face.probability).toBeDefined();
+    // expect(face.probability).toBeDefined();
   });
 });

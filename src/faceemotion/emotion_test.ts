@@ -24,7 +24,7 @@ describeWithFlags('FaceEmotion', NODE_ENVS, () => {
   //   jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
   // });
 
-  let originalTimeout: number;
+  // let originalTimeout: number;
 
   it('infer input and output shape', async () => {
     

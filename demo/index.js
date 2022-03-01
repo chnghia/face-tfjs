@@ -40,11 +40,11 @@ const state = {
   backend: 'wasm',
 };
 
-const gui = new dat.GUI();
-gui.add(state, 'backend', ['wasm', 'webgl', 'cpu'])
-    .onChange(async (backend) => {
-      await tf.setBackend(backend);
-    });
+// const gui = new dat.GUI();
+// gui.add(state, 'backend', ['wasm', 'webgl', 'cpu'])
+//     .onChange(async (backend) => {
+//       await tf.setBackend(backend);
+//     });
 
 async function setupCamera() {
   video = document.getElementById('video');
@@ -68,40 +68,51 @@ const renderPrediction = async () => {
   const returnTensors = false;
   const flipHorizontal = true;
   const annotateBoxes = true;
-  const predictions = await modelFace.estimateFaces(
-    video, returnTensors, flipHorizontal, annotateBoxes);
+  // const predictions = await modelFace.estimateFaces(
+  //   video, returnTensors, flipHorizontal, annotateBoxes);
+  const predictions = await pipeline.estimateEmotion(video);
 
   if (predictions.length > 0) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    console.log(predictions);
 
     for (let i = 0; i < predictions.length; i++) {
+      let face = predictions[0].face;
+      let emotions = predictions[0].emotions.map((i) => i.toFixed(2));
       if (returnTensors) {
-        predictions[i].topLeft = predictions[i].topLeft.arraySync();
-        predictions[i].bottomRight = predictions[i].bottomRight.arraySync();
+        face.topLeft = face.topLeft.arraySync();
+        face.bottomRight = face.bottomRight.arraySync();
         if (annotateBoxes) {
-          predictions[i].landmarks = predictions[i].landmarks.arraySync();
+          face.landmarks = face.landmarks.arraySync();
         }
       }
 
-      const start = predictions[i].topLeft;
-      const end = predictions[i].bottomRight;
+      const start = face.topLeft;
+      const end = face.bottomRight;
       const size = [end[0] - start[0], end[1] - start[1]];
 
       // const croppedInput = cutBoxFromImageAndResize(
       //   box, rotatedImage, [this.meshWidth, this.meshHeight]);
 
       ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
-      ctx.fillRect(start[0], start[1], size[0], size[1]);
+      ctx.strokeRect(start[0], start[1], size[0], size[1]);
 
       if (annotateBoxes) {
-        const landmarks = predictions[i].landmarks;
+        const landmarks = face.landmarks;
 
         ctx.fillStyle = 'blue';
-        for (let j = 0; j < landmarks.length; j++) {
-          const x = landmarks[j][0];
-          const y = landmarks[j][1];
-          ctx.fillRect(x, y, 5, 5);
-        }
+        // for (let j = 0; j < landmarks.length; j++) {
+        //   const x = landmarks[j][0];
+        //   const y = landmarks[j][1];
+        //   ctx.fillRect(x, y, 5, 5);
+        // }
+
+        ctx.font = '13px Georgia';
+        ctx.fillText(`Neutral: ${emotions[0].toFixed(2)}`, start[0], landmarks[3][1]+25);
+        ctx.fillText(`Happy: ${emotions[1].toFixed(2)}`, start[0], landmarks[3][1] + 35);
+        ctx.fillText(`Sad: ${emotions[2].toFixed(2)}`, start[0], landmarks[3][1] + 45);
+        ctx.fillText(`Angry: ${emotions[3].toFixed(2)}`, start[0], landmarks[3][1] + 55);
+        ctx.fillText(`Surprised: ${emotions[4].toFixed(2)}`, start[0], landmarks[3][1]+65);
       }
     }
   }
@@ -129,6 +140,7 @@ const setupPage = async () => {
 
   modelFace = await facetfjs.loadBlazeFace();
   modelEmotion = await facetfjs.loadFaceEmotions();
+  pipeline = new facetfjs.EmotionPipeline(modelFace, modelEmotion);
 
   renderPrediction();
 };
