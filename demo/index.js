@@ -24,9 +24,9 @@ import '@tensorflow/tfjs-backend-cpu';
 tfjsWasm.setWasmPaths(
   `https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm@${tfjsWasm.version_wasm}/dist/`);
 
-const stats = new Stats();
-stats.showPanel(0);
-document.body.prepend(stats.domElement);
+// const stats = new Stats();
+// stats.showPanel(0);
+// document.body.prepend(stats.domElement);
 
 let modelFace;
 let modelEmotion;
@@ -35,6 +35,14 @@ let videoWidth;
 let videoHeight;
 let video;
 let canvas;
+let valueNeutral;
+let valueHappy;
+let valueSad;
+let valueAngry;
+let valueSuprised;
+let valuePositve;
+let valueActive;
+let valueVibe;
 
 const state = {
   backend: 'wasm',
@@ -63,10 +71,10 @@ async function setupCamera() {
 }
 
 const renderPrediction = async () => {
-  stats.begin();
+  // stats.begin();
 
   const returnTensors = false;
-  const flipHorizontal = true;
+  // const flipHorizontal = true;
   const annotateBoxes = true;
   // const predictions = await modelFace.estimateFaces(
   //   video, returnTensors, flipHorizontal, annotateBoxes);
@@ -74,7 +82,7 @@ const renderPrediction = async () => {
 
   if (predictions.length > 0) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    console.log(predictions);
+    // console.log(predictions);
 
     for (let i = 0; i < predictions.length; i++) {
       let face = predictions[0].face;
@@ -94,30 +102,36 @@ const renderPrediction = async () => {
       // const croppedInput = cutBoxFromImageAndResize(
       //   box, rotatedImage, [this.meshWidth, this.meshHeight]);
 
-      ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
+      ctx.strokeStyle = 'rgba(0, 255, 0, 1.0)';
       ctx.strokeRect(start[0], start[1], size[0], size[1]);
 
-      if (annotateBoxes) {
-        const landmarks = face.landmarks;
+      valueNeutral.style.width = `${emotions[0].toFixed(2) * 100}%`;
+      valueHappy.style.width = `${emotions[1].toFixed(2) * 100}%`;
+      valueSad.style.width = `${emotions[2].toFixed(2) * 100}%`;
+      valueAngry.style.width = `${emotions[3].toFixed(2) * 100}%`;
+      valueSurprised.style.width = `${emotions[4].toFixed(2) * 100}%`;
 
-        ctx.fillStyle = 'blue';
+      // if (annotateBoxes) {
+        // const landmarks = face.landmarks;
+
+        // ctx.fillStyle = 'rgba(0, 255, 0, 1.0)';
         // for (let j = 0; j < landmarks.length; j++) {
         //   const x = landmarks[j][0];
         //   const y = landmarks[j][1];
         //   ctx.fillRect(x, y, 5, 5);
         // }
 
-        ctx.font = '13px Georgia';
-        ctx.fillText(`Neutral: ${emotions[0].toFixed(2)}`, start[0], landmarks[3][1]+25);
-        ctx.fillText(`Happy: ${emotions[1].toFixed(2)}`, start[0], landmarks[3][1] + 35);
-        ctx.fillText(`Sad: ${emotions[2].toFixed(2)}`, start[0], landmarks[3][1] + 45);
-        ctx.fillText(`Angry: ${emotions[3].toFixed(2)}`, start[0], landmarks[3][1] + 55);
-        ctx.fillText(`Surprised: ${emotions[4].toFixed(2)}`, start[0], landmarks[3][1]+65);
-      }
+        // ctx.font = '16px Georgia';
+        // ctx.fillText(`Neutral: ${emotions[0].toFixed(2)}`, start[0], landmarks[3][1]  - 45);
+        // ctx.fillText(`Happy: ${emotions[1].toFixed(2)}`, start[0], landmarks[3][1]    - 25);
+        // ctx.fillText(`Sad: ${emotions[2].toFixed(2)}`, start[0], landmarks[3][1]      - 5);
+        // ctx.fillText(`Angry: ${emotions[3].toFixed(2)}`, start[0], landmarks[3][1]    + 15);
+        // ctx.fillText(`Surprised: ${emotions[4].toFixed(2)}`, start[0], landmarks[3][1]+ 35);
+      // }
     }
   }
 
-  stats.end();
+  // stats.end();
 
   requestAnimationFrame(renderPrediction);
 };
@@ -141,6 +155,12 @@ const setupPage = async () => {
   modelFace = await facetfjs.loadBlazeFace();
   modelEmotion = await facetfjs.loadFaceEmotions();
   pipeline = new facetfjs.EmotionPipeline(modelFace, modelEmotion);
+
+  valueNeutral = document.getElementById('value_neutral');
+  valueHappy = document.getElementById('value_happy');
+  valueSad = document.getElementById('value_sad');
+  valueAngry = document.getElementById('value_angry');
+  valueSurprised = document.getElementById('value_suprised');
 
   renderPrediction();
 };

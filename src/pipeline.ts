@@ -52,7 +52,7 @@ export class EmotionPipeline {
 
     const predictions = await this.faceDetector.infer(image as tf.Tensor4D, width, returnTensors, flipHorizontal, annotateBoxes);
 
-    console.log(predictions);
+    // console.log(predictions);
 
     // const result: Prediction = {
     // };
