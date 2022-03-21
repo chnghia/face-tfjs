@@ -44,12 +44,36 @@ describeWithFlags('Pipeline', NODE_ENVS, () => {
     const input: tf.Tensor3D = tf.tensor3d(stubbedImageVals, [128, 128, 3]);
     const result = await pipe.estimateEmotion(input);
 
-    const faces = result as Prediction;
-    // console.log(faces[0].emotions);
+    const faces = result as Array<Prediction>;
 
+    // console.log(faces);
     expect(faces).toBeDefined();
-    expect(faces).toBeDefined();
-    // expect(face.landmarks).toBeDefined();
-    // expect(face.probability).toBeDefined();
+    // expect(faces[0].emotions).toBeDefined();
+  });
+
+  it('estimatePoint returns objects with expected properties', async () => {
+    // Stubbed image contains a single face.
+    // const input: tf.Tensor3D = tf.tensor3d(stubbedImageVals, [128, 128, 3]);
+    // const result = await pipe.estimateEmotion(input);
+    let emotions = [0.85045341, 0.14814392, 0.00043213543, 0.00056787342, 0.00040270519];
+
+    const point = pipe.estimatePoint(emotions);
+    const pos = pipe.estimatePositive(emotions);
+    const act = pipe.estimateActive(emotions);
+    console.log(pos)
+
+    expect(point).toBeDefined();
+    expect(pos).toBeDefined();
+    expect(act).toBeDefined();
+    // expect(faces.emotions).toBeDefined();
+  });
+
+  it('estimateVibe returns objects with expected properties', async () => {
+    let emotions = [0.85045341, 0.14814392, 0.00043213543, 0.00056787342, 0.00040270519];
+    
+    const vibe = pipe.estimateVibe(emotions);
+    console.log(vibe);
+
+    expect(vibe).toBeDefined();
   });
 });

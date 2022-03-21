@@ -86,7 +86,7 @@ const renderPrediction = async () => {
 
     for (let i = 0; i < predictions.length; i++) {
       let face = predictions[0].face;
-      let emotions = predictions[0].emotions.map((i) => i.toFixed(2));
+      let emotions = predictions[0].emotions;
       if (returnTensors) {
         face.topLeft = face.topLeft.arraySync();
         face.bottomRight = face.bottomRight.arraySync();
@@ -110,6 +110,14 @@ const renderPrediction = async () => {
       valueSad.style.width = `${emotions[2].toFixed(2) * 100}%`;
       valueAngry.style.width = `${emotions[3].toFixed(2) * 100}%`;
       valueSurprised.style.width = `${emotions[4].toFixed(2) * 100}%`;
+      
+      // console.log('Positive: ', pipeline.estimatePositive(emotions));
+      // console.log('Active: ', pipeline.estimateActive(emotions));
+      // console.log('Vibe: ', pipeline.estimateVibe(emotions));
+      valuePositive.style.width = `${pipeline.estimatePositive(emotions).toFixed(2)*100}%`;
+      valueActive.style.width = `${pipeline.estimateActive(emotions).toFixed(2)*100}%`;
+      valueVibe.style.width = `${pipeline.estimateVibe(emotions).toFixed(2)*100}%`;
+
 
       // if (annotateBoxes) {
         // const landmarks = face.landmarks;
@@ -161,6 +169,10 @@ const setupPage = async () => {
   valueSad = document.getElementById('value_sad');
   valueAngry = document.getElementById('value_angry');
   valueSurprised = document.getElementById('value_suprised');
+
+  valuePositive = document.getElementById('value_positive');
+  valueActive = document.getElementById('value_active');
+  valueVibe = document.getElementById('value_vibe');
 
   renderPrediction();
 };

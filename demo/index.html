@@ -4,36 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <!--<style>
-      canvas {
-        position: absolute;
-        top: 0;
-        left: 0;
-      }
-    </style>-->
-    <!--
-    <style>
-      body {
-        margin: 25px;
-      }
-
-      #main {
-        position: relative;
-        margin: 50px 0;
-      }
-
-
-      #description {
-        margin-top: 20px;
-        width: 600px;
-      }
-
-      #description-title {
-        font-weight: bold;
-        font-size: 18px;
-      }
-    </style>
-    -->
   </head>
 
   <body>
@@ -52,9 +22,8 @@
       <div class="absolute inset-0 bg-[url(/img/grid.svg)] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
       <div class="relative px-6 pt-10 pb-8 bg-white shadow-xl ring-1 ring-gray-900/5 sm:w-auto sm:mx-auto sm:rounded-lg sm:px-10">
         <div class="w-auto mx-auto">
-          <!--<img src="/img/logo.svg" class="h-6" alt="Tailwind Play" />-->
           <div class="divide-y divide-gray-300/50">
-            <div class="py-8 space-y-6">
+            <div class="space-y-6">
               <div class="relative text-base leading-7 text-gray-600">
                 <video
                   id="video"
@@ -63,105 +32,62 @@
                   style="-webkit-transform: scaleX(-1); transform: scaleX(-1); width: 640px; height: 480px"
                 ></video>
                 <canvas id="output" class="absolute bottom-0 left-0"></canvas>
-                <!--
-              <p>An advanced online playground for Tailwind CSS, including support for things like:</p>
-              <ul class="space-y-4">
-                <li class="flex items-center">
-                  <svg class="w-6 h-6 flex-none fill-sky-100 stroke-sky-500 stroke-2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="11" />
-                    <path d="m8 13 2.165 2.165a1 1 0 0 0 1.521-.126L16 9" fill="none" />
-                  </svg>
-                  <p class="ml-4">
-                    Customizing your
-                    <code class="text-sm font-bold text-gray-900">tailwind.config.js</code> file
-                  </p>
-                </li>
-                <li class="flex items-center">
-                  <svg class="w-6 h-6 flex-none fill-sky-100 stroke-sky-500 stroke-2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="11" />
-                    <path d="m8 13 2.165 2.165a1 1 0 0 0 1.521-.126L16 9" fill="none" />
-                  </svg>
-                  <p class="ml-4">
-                    Extracting classes with
-                    <code class="text-sm font-bold text-gray-900">@apply</code>
-                  </p>
-                </li>
-                <li class="flex items-center">
-                  <svg class="w-6 h-6 flex-none fill-sky-100 stroke-sky-500 stroke-2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="11" />
-                    <path d="m8 13 2.165 2.165a1 1 0 0 0 1.521-.126L16 9" fill="none" />
-                  </svg>
-                  <p class="ml-4">Code completion with instant preview</p>
-                </li>
-              </ul>
-              <p>Perfect for learning how the framework works, prototyping a new idea, or creating a demo to share online.</p>
-            -->
               </div>
             </div>
             <div class="pt-8 text-base leading-7 font-semibold">
-              <div class="mb-1 text-base font-medium">Neutral</div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5">
-                <div id="value_neutral" class="bg-gray-600 h-2.5 rounded-full" style="width: 0%"></div>
-              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <div class="mb-1 text-base font-medium">Neutral</div>
+                  <div class="w-full bg-gray-200 rounded-full h-2.5">
+                    <div id="value_neutral" class="bg-gray-600 h-2.5 rounded-full" style="width: 0%"></div>
+                  </div>
 
-              <div class="mb-1 text-base font-medium text-blue-700">Happy</div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5">
-                <div id="value_happy" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
-              </div>
+                  <div class="mb-1 text-base font-medium text-blue-700">Happy</div>
+                  <div class="w-full bg-gray-200 rounded-full h-2.5">
+                    <div id="value_happy" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+                  </div>
 
-              <div class="mb-1 text-base font-medium text-red-700">Sad</div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5">
-                <div id="value_sad" class="bg-red-600 h-2.5 rounded-full" style="width: 0%"></div>
-              </div>
+                  <div class="mb-1 text-base font-medium text-red-700">Sad</div>
+                  <div class="w-full bg-gray-200 rounded-full h-2.5">
+                    <div id="value_sad" class="bg-red-600 h-2.5 rounded-full" style="width: 0%"></div>
+                  </div>
 
-              <div class="mb-1 text-base font-medium text-green-700">Angry</div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5">
-                <div id="value_angry" class="bg-green-600 h-2.5 rounded-full" style="width: 0%"></div>
-              </div>
+                  <div class="mb-1 text-base font-medium text-green-700">Angry</div>
+                  <div class="w-full bg-gray-200 rounded-full h-2.5">
+                    <div id="value_angry" class="bg-green-600 h-2.5 rounded-full" style="width: 0%"></div>
+                  </div>
 
-              <div class="mb-1 text-base font-medium text-yellow-700">Suprised</div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5">
-                <div id="value_suprised" class="bg-yellow-400 h-2.5 rounded-full" style="width: 0%"></div>
-              </div>
+                  <div class="mb-1 text-base font-medium text-yellow-700">Suprised</div>
+                  <div class="w-full bg-gray-200 rounded-full h-2.5">
+                    <div id="value_suprised" class="bg-yellow-400 h-2.5 rounded-full" style="width: 0%"></div>
+                  </div>
+                </div>
+                <!-- ... -->
+                <div>
+                  <div class="mb-1 text-base font-medium text-indigo-700">Positive</div>
+                  <div class="w-full bg-gray-200 rounded-full h-2.5">
+                    <div id="value_positive" class="bg-indigo-600 h-2.5 rounded-full" style="width: 0%"></div>
+                  </div>
 
-              <div class="mb-1 text-base font-medium text-indigo-700">Positive</div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5">
-                <div id="value_positive" class="bg-indigo-600 h-2.5 rounded-full" style="width: 0%"></div>
+                  <div class="mb-1 text-base font-medium text-purple-700">Active</div>
+                  <div class="w-full bg-gray-200 rounded-full h-2.5">
+                    <div id="value_active" class="bg-purple-600 h-2.5 rounded-full" style="width: 0%"></div>
+                  </div>
+                  <div class="mb-1 text-base font-medium text-purple-700">VIBE</div>
+                  <div class="w-full bg-gray-200 rounded-full h-2.5">
+                    <div id="value_vibe" class="bg-purple-600 h-2.5 rounded-full" style="width: 0%"></div>
+                  </div>
+                </div>
               </div>
+              
 
-              <div class="mb-1 text-base font-medium text-purple-700">Active</div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5">
-                <div id="value_active" class="bg-purple-600 h-2.5 rounded-full" style="width: 0%"></div>
+              
               </div>
-              <div class="mb-1 text-base font-medium text-purple-700">VIBE</div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5">
-                <div id="value_vibe" class="bg-purple-600 h-2.5 rounded-full" style="width: 0%"></div>
-              </div>
-              <!--
-              <p class="text-gray-900">Want to dig deeper into Tailwind?</p>
-              <p>
-                <a href="https://tailwindcss.com/docs" class="text-sky-500 hover:text-sky-600">Read the docs &rarr;</a>
-              </p>
-            --></div>
           </div>
         </div>
       </div>
     </div>
-
-    <!--
-    <div id="main">
-      <video id="video" playsinline style="-webkit-transform: scaleX(-1); transform: scaleX(-1); width: auto; height: auto"></video>
-      <canvas id="output"></canvas>
-      <div id="description">
-        <div id="description-title">faceemotionjs demo</div>
-      </div>
-      <video
-        id="video"
-        playsinline
-        style="-webkit-transform: scaleX(-1); transform: scaleX(-1); visibility: hidden; width: auto; height: auto"
-      ></video>
-    </div>
-  --></body>
+  </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.6/dat.gui.min.js"></script>
   <!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/stats.js/r16/Stats.min.js"></script>  -->
   <script src="index.js"></script>

@@ -9,8 +9,6 @@ export const IMAGENET_CLASSES: { [classId: number]: string } = {
 
 export class FaceEmotionModel {
   private model: tfconv.GraphModel;
-  // private width: number;
-  // private height: number;
   private normalizationConstant: number;
   private inputMin: number;
   private modelUrl?: string | tf.io.IOHandler;
@@ -19,8 +17,6 @@ export class FaceEmotionModel {
     model: tfconv.GraphModel
   ) {
     this.model = model;
-    // this.width = 60;
-    // this.height = 60;
     this.normalizationConstant = 0.449;
     this.inputMin = -0.226;
   }
@@ -62,21 +58,6 @@ export class FaceEmotionModel {
       const batched = tf.reshape(resized, [-1, IMAGE_SIZE, IMAGE_SIZE, 3]);
 
       return this.predict(batched as tf.Tensor4D);
-      // let result: tf.Tensor2D;
-
-      // if (embedding) {
-      //   // const embeddingName = EMBEDDING_NODES[this.version];
-      //   // const internal =
-      //   //     this.model.execute(batched, embeddingName) as tf.Tensor4D;
-      //   // result = tf.squeeze(internal, [1, 2]);
-      // } else {
-      //   const logits1001 = this.model.predict(batched) as tf.Tensor2D;
-      //   // Remove the very first logit (background noise).
-      //   // console.log(logits1001.dataSync());
-      //   result = logits1001;
-      // }
-
-      // return result;
     });
   }
 
