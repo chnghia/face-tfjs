@@ -143,7 +143,7 @@ export class EmotionPipeline {
   }
 
   estimatePositive(emotions: number[]): number {
-    return normRange(this.estimatePoint(emotions)[0]);
+    return normRange(this.estimatePoint(emotions)[0] * -1);
   }
 
   estimateActive(emotions: number[]): number {
