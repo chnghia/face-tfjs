@@ -18,10 +18,11 @@
     start from scratch if you know enough to be dangerous. Have fun!
   -->
     <div class="min-h-screen bg-gray-50 py-6 flex flex-col justify-center relative overflow-hidden sm:py-12">
-      <img src="beams.jpg" alt="" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-none" width="1308" />
-      <div class="absolute inset-0 bg-[url(/img/grid.svg)] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
+      <!--<img src="beams.jpg" alt="" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-none" width="1308" />-->
+      <!--<div class="absolute inset-0 bg-[url(/img/grid.svg)] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>-->
       <div class="relative px-6 pt-10 pb-8 bg-white shadow-xl ring-1 ring-gray-900/5 sm:w-auto sm:mx-auto sm:rounded-lg sm:px-10">
         <div class="w-auto mx-auto">
+          <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">VFA MAL FaceEmotion Demo</h1>
           <div class="divide-y divide-gray-300/50">
             <div class="space-y-6">
               <div class="relative text-base leading-7 text-gray-600">
@@ -35,7 +36,21 @@
               </div>
             </div>
             <div class="pt-8 text-base leading-7 font-semibold">
-              <div class="grid grid-cols-2 gap-2">
+              <div class="grid grid-cols-3 gap-3">
+                <div>
+                  <h2 class="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">Face attributes</h2>
+                  <nav class="list-none mb-10">
+                    <li>
+                      <a class="text-gray-600 hover:text-gray-800">Gender: </a>
+                    </li>
+                    <li>
+                      <a class="text-gray-600 hover:text-gray-800">Age: </a>
+                    </li>
+                    <li class="py-3">
+                      <a id="stats"></a>
+                    </li>
+                  </nav>
+                </div>
                 <div>
                   <div class="mb-1 text-base font-medium">Neutral</div>
                   <div class="w-full bg-gray-200 rounded-full h-2.5">
@@ -79,16 +94,13 @@
                   </div>
                 </div>
               </div>
-              
-
-              
-              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.6/dat.gui.min.js"></script>
-  <!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/stats.js/r16/Stats.min.js"></script>  -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/stats.js/r16/Stats.min.js"></script>
   <script src="index.js"></script>
 </html>

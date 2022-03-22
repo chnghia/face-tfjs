@@ -24,8 +24,9 @@ import '@tensorflow/tfjs-backend-cpu';
 tfjsWasm.setWasmPaths(
   `https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm@${tfjsWasm.version_wasm}/dist/`);
 
-// const stats = new Stats();
-// stats.showPanel(0);
+const stats = new Stats();
+stats.showPanel(0);
+document.getElementById('stats').appendChild(stats.domElement);
 // document.body.prepend(stats.domElement);
 
 let modelFace;
@@ -71,7 +72,7 @@ async function setupCamera() {
 }
 
 const renderPrediction = async () => {
-  // stats.begin();
+  stats.begin();
 
   const returnTensors = false;
   // const flipHorizontal = true;
@@ -139,7 +140,7 @@ const renderPrediction = async () => {
     }
   }
 
-  // stats.end();
+  stats.end();
 
   requestAnimationFrame(renderPrediction);
 };
