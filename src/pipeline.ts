@@ -156,6 +156,8 @@ export class EmotionPipeline {
     const res = dotProduct(point, axis) / (norm(axis)*0.7071);
     if (res < -1) {
       return normRange(-1.0);
+    } else if (res > 1) {
+      return normRange(1.0);
     } else {
       return normRange(res);
     }

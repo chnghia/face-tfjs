@@ -41,10 +41,10 @@
                   <h2 class="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">Face attributes</h2>
                   <nav class="list-none mb-10">
                     <li>
-                      <a class="text-gray-600 hover:text-gray-800">Gender: </a>
+                      <a class="text-gray-600 hover:text-gray-800">Gender: &lt;soon&gt;</a>
                     </li>
                     <li>
-                      <a class="text-gray-600 hover:text-gray-800">Age: </a>
+                      <a class="text-gray-600 hover:text-gray-800">Age: &lt;soon&gt;</a>
                     </li>
                     <li class="py-3">
                       <a id="stats"></a>
@@ -52,45 +52,66 @@
                   </nav>
                 </div>
                 <div>
-                  <div class="mb-1 text-base font-medium">Neutral</div>
+                  <div class="flex justify-between mb-1">
+                    <div class="mb-1 text-base font-medium">Neutral</div>
+                    <span id="value_neutral_label" class="text-sm font-medium dark:text-white">%</span>
+                  </div>
                   <div class="w-full bg-gray-200 rounded-full h-2.5">
                     <div id="value_neutral" class="bg-gray-600 h-2.5 rounded-full" style="width: 0%"></div>
                   </div>
-
-                  <div class="mb-1 text-base font-medium text-blue-700">Happy</div>
+                  <div class="flex justify-between mb-1">
+                    <div class="mb-1 text-base font-medium text-blue-700">Happy</div>
+                    <span id="value_happy_label" class="text-sm font-medium text-blue-700 dark:text-white">%</span>
+                  </div>
                   <div class="w-full bg-gray-200 rounded-full h-2.5">
                     <div id="value_happy" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
                   </div>
-
-                  <div class="mb-1 text-base font-medium text-red-700">Sad</div>
+                  <div class="flex justify-between mb-1">
+                    <div class="mb-1 text-base font-medium text-red-700">Sad</div>
+                    <span id="value_sad_label" class="text-sm font-medium text-red-700 dark:text-white">%</span>
+                  </div>
                   <div class="w-full bg-gray-200 rounded-full h-2.5">
                     <div id="value_sad" class="bg-red-600 h-2.5 rounded-full" style="width: 0%"></div>
                   </div>
 
-                  <div class="mb-1 text-base font-medium text-green-700">Angry</div>
+                  <div class="flex justify-between mb-1">
+                    <div class="mb-1 text-base font-medium text-green-700">Angry</div>
+                    <span id="value_angry_label" class="text-sm font-medium text-green-700 dark:text-white">%</span>
+                  </div>
                   <div class="w-full bg-gray-200 rounded-full h-2.5">
                     <div id="value_angry" class="bg-green-600 h-2.5 rounded-full" style="width: 0%"></div>
                   </div>
-
-                  <div class="mb-1 text-base font-medium text-yellow-700">Suprised</div>
+                  <div class="flex justify-between mb-1">
+                    <div class="mb-1 text-base font-medium text-yellow-700">Suprised</div>
+                    <span id="value_suprised_label" class="text-sm font-medium text-yellow-700 dark:text-white">%</span>
+                  </div>
                   <div class="w-full bg-gray-200 rounded-full h-2.5">
                     <div id="value_suprised" class="bg-yellow-400 h-2.5 rounded-full" style="width: 0%"></div>
                   </div>
                 </div>
                 <!-- ... -->
                 <div>
-                  <div class="mb-1 text-base font-medium text-indigo-700">Positive</div>
+                  <div class="flex justify-between mb-1">
+                    <div class="mb-1 text-base font-medium text-indigo-700">Positive</div>
+                    <span id="value_positive_label" class="text-sm font-medium text-indigo-700 dark:text-white">%</span>
+                  </div>
                   <div class="w-full bg-gray-200 rounded-full h-2.5">
                     <div id="value_positive" class="bg-indigo-600 h-2.5 rounded-full" style="width: 0%"></div>
                   </div>
 
-                  <div class="mb-1 text-base font-medium text-purple-700">Active</div>
+                  <div class="flex justify-between mb-1">
+                    <div class="mb-1 text-base font-medium text-purple-700">Active</div>
+                    <span id="value_active_label" class="text-sm font-medium text-purple-700 dark:text-white">%</span>
+                  </div>
                   <div class="w-full bg-gray-200 rounded-full h-2.5">
                     <div id="value_active" class="bg-purple-600 h-2.5 rounded-full" style="width: 0%"></div>
                   </div>
-                  <div class="mb-1 text-base font-medium text-purple-700">VIBE</div>
+                  <div class="flex justify-between mb-1">
+                    <div class="mb-1 text-base font-medium text-pink-700">VIBE</div>
+                    <span id="value_vibe_label" class="text-sm font-medium text-pink-700 dark:text-white">%</span>
+                  </div>
                   <div class="w-full bg-gray-200 rounded-full h-2.5">
-                    <div id="value_vibe" class="bg-purple-600 h-2.5 rounded-full" style="width: 0%"></div>
+                    <div id="value_vibe" class="bg-pink-600 h-2.5 rounded-full" style="width: 0%"></div>
                   </div>
                 </div>
               </div>

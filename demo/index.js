@@ -41,7 +41,7 @@ let valueHappy;
 let valueSad;
 let valueAngry;
 let valueSuprised;
-let valuePositve;
+let valuePositive;
 let valueActive;
 let valueVibe;
 
@@ -106,18 +106,26 @@ const renderPrediction = async () => {
       ctx.strokeStyle = 'rgba(0, 255, 0, 1.0)';
       ctx.strokeRect(start[0], start[1], size[0], size[1]);
 
-      valueNeutral.style.width = `${emotions[0].toFixed(2) * 100}%`;
-      valueHappy.style.width = `${emotions[1].toFixed(2) * 100}%`;
-      valueSad.style.width = `${emotions[2].toFixed(2) * 100}%`;
-      valueAngry.style.width = `${emotions[3].toFixed(2) * 100}%`;
-      valueSurprised.style.width = `${emotions[4].toFixed(2) * 100}%`;
+      valueNeutral.style.width = `${(emotions[0] * 100).toFixed(2)}%`;
+      valueNeutralLabel.textContent = `${(emotions[0] * 100).toFixed(2)}%`;
+      valueHappy.style.width = `${(emotions[1] * 100).toFixed(2)}%`;
+      valueHappyLabel.textContent = `${(emotions[1] * 100).toFixed(2)}%`;
+      valueSad.style.width = `${(emotions[2] * 100).toFixed(2)}%`;
+      valueSadLabel.textContent = `${(emotions[2] * 100).toFixed(2)}%`;
+      valueAngry.style.width = `${(emotions[3] * 100).toFixed(2)}%`;
+      valueAngryLabel.textContent = `${(emotions[3] * 100).toFixed(2)}%`;
+      valueSuprised.style.width = `${(emotions[4] * 100).toFixed(2)}%`;
+      valueSuprisedLabel.textContent = `${(emotions[4] * 100).toFixed(2)}%`;
       
       // console.log('Positive: ', pipeline.estimatePositive(emotions));
       // console.log('Active: ', pipeline.estimateActive(emotions));
       // console.log('Vibe: ', pipeline.estimateVibe(emotions));
-      valuePositive.style.width = `${pipeline.estimatePositive(emotions).toFixed(2)*100}%`;
-      valueActive.style.width = `${pipeline.estimateActive(emotions).toFixed(2)*100}%`;
-      valueVibe.style.width = `${pipeline.estimateVibe(emotions).toFixed(2)*100}%`;
+      valuePositive.style.width = `${(pipeline.estimatePositive(emotions) * 100).toFixed(2)}%`;
+      valuePositiveLabel.textContent = `${(pipeline.estimatePositive(emotions) * 100).toFixed(2)}%`;
+      valueActive.style.width = `${(pipeline.estimateActive(emotions) * 100).toFixed(2)}%`;
+      valueActiveLabel.textContent = `${(pipeline.estimateActive(emotions) * 100).toFixed(2)}%`;
+      valueVibe.style.width = `${(pipeline.estimateVibe(emotions) * 100).toFixed(2)}%`;
+      valueVibeLabel.textContent = `${(pipeline.estimateVibe(emotions) * 100).toFixed(2)}%`;
 
 
       // if (annotateBoxes) {
@@ -169,11 +177,21 @@ const setupPage = async () => {
   valueHappy = document.getElementById('value_happy');
   valueSad = document.getElementById('value_sad');
   valueAngry = document.getElementById('value_angry');
-  valueSurprised = document.getElementById('value_suprised');
+  valueSuprised = document.getElementById('value_suprised');
 
   valuePositive = document.getElementById('value_positive');
   valueActive = document.getElementById('value_active');
   valueVibe = document.getElementById('value_vibe');
+
+  valueNeutralLabel = document.getElementById('value_neutral_label');
+  valueHappyLabel = document.getElementById('value_happy_label');
+  valueSadLabel = document.getElementById('value_sad_label');
+  valueAngryLabel = document.getElementById('value_angry_label');
+  valueSuprisedLabel = document.getElementById('value_suprised_label');
+
+  valuePositiveLabel = document.getElementById('value_positive_label');
+  valueActiveLabel = document.getElementById('value_active_label');
+  valueVibeLabel = document.getElementById('value_vibe_label');
 
   renderPrediction();
 };
