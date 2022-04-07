@@ -13,6 +13,8 @@ describeWithFlags('FaceEmotion', NODE_ENVS, () => {
     // originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     // jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000000;
     model = await faceemotion.loadFaceEmotions();
+    // console.log('load model');
+    // console.log(model);
   });
 
   // beforeEach(function () {
@@ -27,8 +29,11 @@ describeWithFlags('FaceEmotion', NODE_ENVS, () => {
   // let originalTimeout: number;
 
   it('infer input and output shape', async () => {
+    // model = await faceemotion.loadFaceEmotions();
+    // console.log('load model');
+    // console.log(model);
     
-    const input: tf.Tensor3D = tf.zeros([60, 60, 3]);
+    const input: tf.Tensor3D = tf.zeros([112, 112, 3]);
     // const beforeTensors = tf.memory().numTensors;
     // console.log(model);
     const predicted = await model.infer(input);
@@ -38,7 +43,7 @@ describeWithFlags('FaceEmotion', NODE_ENVS, () => {
 
   it('infer returns objects with expected properties', async () => {
     // Stubbed image contains a single face.
-    const input: tf.Tensor3D = tf.tensor3d(stubbedImageVals.slice(0, 10800), [60, 60, 3]);
+    const input: tf.Tensor3D = tf.tensor3d(stubbedImageVals.slice(0, 37632), [112, 112, 3]);
     const result = await model.infer(input);
 
     const face = result;
@@ -46,7 +51,7 @@ describeWithFlags('FaceEmotion', NODE_ENVS, () => {
   });
 
   it('model infer doen\'t leak', async () => {
-    const x: tf.Tensor3D = tf.zeros([60, 60, 3]);
+    const x: tf.Tensor3D = tf.zeros([112, 112, 3]);
     const numTensorsBefore = tf.memory().numTensors;
     await model.infer(x);
 

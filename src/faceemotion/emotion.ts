@@ -1,7 +1,7 @@
 import * as tfconv from '@tensorflow/tfjs-converter';
 import * as tf from '@tensorflow/tfjs-core';
 
-const IMAGE_SIZE = 60;
+const IMAGE_SIZE = 112;
 
 export const IMAGENET_CLASSES: { [classId: number]: string } = {
   0: "neutral", 1: "happy", 2: "sad", 3: "angry", 4: "surprised",

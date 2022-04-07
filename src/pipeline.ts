@@ -56,16 +56,16 @@ function dotProduct(v1: number[], v2: number[]): number {
 
 export class EmotionPipeline {
   // private readonly maxFacesNumber: number;
-  private normalizationConstant: number;
-  private inputMin: number;
+  // private normalizationConstant: number;
+  // private inputMin: number;
 
   constructor(
     private readonly faceDetector: BlazeFaceModel,
     private readonly emotionDetector: FaceEmotionModel
   ) {
     // this.maxFacesNumber = 1;
-    this.normalizationConstant = 0.449;
-    this.inputMin = 0.226;
+    // this.normalizationConstant = 0.449;
+    // this.inputMin = 0.226;
   }
 
   async estimateEmotion(
@@ -99,22 +99,23 @@ export class EmotionPipeline {
           start[1] / h, start[0] / w, end[1] / h, end[0] / w
         ]];
 
-        let faceImage = tf.image.cropAndResize(image as tf.Tensor4D, boxes, [0], [60, 60]);
+        let faceImage = tf.image.cropAndResize(image as tf.Tensor4D, boxes, [0], [112, 112]);
 
         // Normalize the image from [0, 255] to [inputMin, inputMax].
-        const normalized = tf.div(
-          tf.sub(
-            tf.div(
-              tf.cast(faceImage, 'float32'),
-              255),
-            this.normalizationConstant),
-          this.inputMin);
+        // const normalized = tf.div(
+        //   tf.sub(
+        //     tf.div(
+        //       tf.cast(faceImage, 'float32'),
+        //       255),
+        //     this.normalizationConstant),
+        //   this.inputMin);
 
-        const logits = await this.emotionDetector.predict(normalized as tf.Tensor4D);
-        // tf.image.
-        const softmax = tf.softmax(logits);
-        const values = await softmax.dataSync();
-        softmax.dispose();
+        const logits = await this.emotionDetector.predict(faceImage as tf.Tensor4D);
+        
+        // const softmax = tf.softmax(logits);
+        // const values = await softmax.dataSync();
+        const values = await logits.dataSync();
+        // softmax.dispose();
 
         const result: Prediction = {
           face: predictions[i],
