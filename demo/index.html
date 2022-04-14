@@ -17,220 +17,46 @@
     Feel free to play with this example if you're just learning, or trash it and
     start from scratch if you know enough to be dangerous. Have fun!
   -->
-  <!-- <div class="flex items-center justify-between bg-white" style="height:50px;">
-    <h1 class="title-font font-medium text-center text-gray-900" style="margin-left: 28px;">VFA MAL FaceEmotion Demo</h1>
-    <svg xmlns="http://www.w3.org/2000/svg" height="28.33px" viewBox="0 0 24 24" width="28.33px" fill="#8C8C8C" style="margin-right: 15.83px;" class="cursor-pointer">
-      <path d="M0 0h24v24H0V0z" fill="none"/><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/>
-    </svg>
-  </div>
-    <div class="min-h-screen bg-gray-50 py-6 flex flex-col justify-center relative overflow-hidden sm:py-12">
-      <img src="beams.jpg" alt="" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-none" width="1308" />
-      <div class="absolute inset-0 bg-[url(/img/grid.svg)] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
-      <div class="relative px-6 pt-10 pb-8 bg-white shadow-xl ring-1 ring-gray-900/5 sm:w-auto sm:mx-auto sm:rounded-lg sm:px-10">
-        <div class="w-auto mx-auto">
-          <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">VFA MAL FaceEmotion Demo</h1>
-          <div class="divide-y divide-gray-300/50">
-            <div class="space-y-6">
-              <div class="relative text-base leading-7 text-gray-600">
-                <video
-                  id="video"
-                  playsinline
-                  class=""
-                  style="-webkit-transform: scaleX(-1); transform: scaleX(-1); width: 640px; height: 480px"
-                ></video>
-                <canvas id="output" class="absolute bottom-0 left-0"></canvas>
-              </div>
-            </div>
-            <div class="pt-8 text-base leading-7 font-semibold">
-              <div class="grid grid-cols-3 gap-3">
-                <div>
-                  <h2 class="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">Face attributes</h2>
-                  <nav class="list-none mb-10">
-                    <li>
-                      <a class="text-gray-600 hover:text-gray-800">Gender: &lt;soon&gt;</a>
-                    </li>
-                    <li>
-                      <a class="text-gray-600 hover:text-gray-800">Age: &lt;soon&gt;</a>
-                    </li>
-                    <li class="py-3">
-                      <a id="stats"></a>
-                    </li>
-                  </nav>
-                </div>
-                <div>
-                  <div class="flex justify-between mb-1">
-                    <div class="mb-1 text-base font-medium">Neutral</div>
-                    <span id="value_neutral_label" class="text-sm font-medium dark:text-white">%</span>
-                  </div>
-                  <div class="w-full bg-gray-200 rounded-full h-2.5">
-                    <div id="value_neutral" class="bg-gray-600 h-2.5 rounded-full" style="width: 0%"></div>
-                  </div>
-                  <div class="flex justify-between mb-1">
-                    <div class="mb-1 text-base font-medium text-blue-700">Happy</div>
-                    <span id="value_happy_label" class="text-sm font-medium text-blue-700 dark:text-white">%</span>
-                  </div>
-                  <div class="w-full bg-gray-200 rounded-full h-2.5">
-                    <div id="value_happy" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
-                  </div>
-                  <div class="flex justify-between mb-1">
-                    <div class="mb-1 text-base font-medium text-red-700">Sad</div>
-                    <span id="value_sad_label" class="text-sm font-medium text-red-700 dark:text-white">%</span>
-                  </div>
-                  <div class="w-full bg-gray-200 rounded-full h-2.5">
-                    <div id="value_sad" class="bg-red-600 h-2.5 rounded-full" style="width: 0%"></div>
-                  </div>
-
-                  <div class="flex justify-between mb-1">
-                    <div class="mb-1 text-base font-medium text-green-700">Angry</div>
-                    <span id="value_angry_label" class="text-sm font-medium text-green-700 dark:text-white">%</span>
-                  </div>
-                  <div class="w-full bg-gray-200 rounded-full h-2.5">
-                    <div id="value_angry" class="bg-green-600 h-2.5 rounded-full" style="width: 0%"></div>
-                  </div>
-                  <div class="flex justify-between mb-1">
-                    <div class="mb-1 text-base font-medium text-yellow-700">Suprised</div>
-                    <span id="value_suprised_label" class="text-sm font-medium text-yellow-700 dark:text-white">%</span>
-                  </div>
-                  <div class="w-full bg-gray-200 rounded-full h-2.5">
-                    <div id="value_suprised" class="bg-yellow-400 h-2.5 rounded-full" style="width: 0%"></div>
-                  </div>
-                </div>
-                <div>
-                  <div class="flex justify-between mb-1">
-                    <div class="mb-1 text-base font-medium text-indigo-700">Positive</div>
-                    <span id="value_positive_label" class="text-sm font-medium text-indigo-700 dark:text-white">%</span>
-                  </div>
-                  <div class="w-full bg-gray-200 rounded-full h-2.5">
-                    <div id="value_positive" class="bg-indigo-600 h-2.5 rounded-full" style="width: 0%"></div>
-                  </div>
-
-                  <div class="flex justify-between mb-1">
-                    <div class="mb-1 text-base font-medium text-purple-700">Active</div>
-                    <span id="value_active_label" class="text-sm font-medium text-purple-700 dark:text-white">%</span>
-                  </div>
-                  <div class="w-full bg-gray-200 rounded-full h-2.5">
-                    <div id="value_active" class="bg-purple-600 h-2.5 rounded-full" style="width: 0%"></div>
-                  </div>
-                  <div class="flex justify-between mb-1">
-                    <div class="mb-1 text-base font-medium text-pink-700">VIBE</div>
-                    <span id="value_vibe_label" class="text-sm font-medium text-pink-700 dark:text-white">%</span>
-                  </div>
-                  <div class="w-full bg-gray-200 rounded-full h-2.5">
-                    <div id="value_vibe" class="bg-pink-600 h-2.5 rounded-full" style="width: 0%"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
-   
-    <!-- <div class="min-h-screen bg-gray-50 py-6 flex justify-center relative overflow-hidden sm:py-12">
-      <div class="relative px-6 pt-10 pb-8 bg-white rounded sm:w-auto sm:mx-auto sm:rounded-lg sm:px-10">
-        <div class="w-autp mx-auto">
-          <div>
-            <button id="dropdownMenuButton" data-dropdown-toggle="dropdown" class="text-white bg-blue-500 rounded text-center flex items-center" type="button" style="width:257px; height:44px;">
-              Webcam
-              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF" float-right>
-                <path d="M0 0h24v24H0V0z" fill="none"/><path d="M7 10l5 5 5-5H7z"/>
-              </svg>
-            </button>
-          </div>
-          <div class="md:flex flex-row">
-            <div class="space-y-6">
-              <div class="relative text-base leading-7 text-gray-600">
-                <video
-                    id="video"
-                    playsinline
-                    class=""
-                    style="-webkit-transform: scaleX(-1); transform: scaleX(-1); width: 562px; height: 379px"
-                  ></video>
-                  <canvas id="output" class="absolute bottom-0 left-0"></canvas>
-              </div>
-            </div>
-            <div>
-              <div class="flex items-center justify-center mb-5">
-                <div class="inline-flex">
-                  <button>Emotions</button>
-                  <button>Active/Positive</button>
-                  <button>Vibes</button>
-                  <button>All</button>
-                </div>
-              </div>
-              <div class="flex justify-between mb-1">
-                <div class="mb-1 text-base font-medium">Neutral</div>
-                <span id="value_neutral_label" class="text-sm font-medium dark:text-white">%</span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
-                <div id="value_neutral" class="h-2.5 rounded-full" style="background-color:#BAE7FF;"></div>
-              </div>
-              <div class="flex justify-between mb-1">
-                <div class="mb-1 text-base font-medium">Happy</div>
-                <span id="value_happy_label" class="text-sm font-medium dark:text-white">%</span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
-                <div id="value_happy" class="h-2.5 rounded-full" style="background-color: #1890FF;"></div>
-              </div>
-              <div class="flex justify-between mb-1">
-                <div class="mb-1 text-base font-medium">Sad</div>
-                <span id="value_sad_label" class="text-sm font-medium dark:text-white">%</span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
-                <div id="value_sad" class="h-2.5 rounded-full" style="background-color: #597EF7;"></div>
-              </div>
-              <div class="flex justify-between mb-1">
-                <div class="mb-1 text-base font-medium">Angry</div>
-                <span id="value_angry_label" class="text-sm font-medium dark:text-white">%</span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
-                <div id="value_angry" class="h-2.5 rounded-full" style="background-color: #FF4D4F;"></div>
-              </div>
-              <div class="flex justify-between mb-1">
-                <div class="mb-1 text-base font-medium">Surprised</div>
-                <span id="value_surprised_label" class="text-sm font-medium dark:text-white">%</span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
-                <div id="value_suprised" class="h-2.5 rounded-full" style="background-color: #FFC53D;"></div>
-              </div>
-              <div class="divide-x">
-                <div class="flex justify-between mb-1">
-                  <div class="mb-1 text-base font-medium">Surprised</div>
-                  <span id="value_surprised_label" class="text-sm font-medium dark:text-white">%</span>
-                </div>
-                <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
-                  <div id="value_suprised" class="h-2.5 rounded-full" style="background-color: #7d7971;"></div>
-                </div>
-              </div>
-          </div>
-        </div> 
-      </div>
-    </div> -->
-
     <div class="flex items-center justify-between bg-white sticky" style="height:50px;">
       <h1 class="title-font font-medium text-center text-gray-900" style="margin-left: 28px;">VFA MAL FaceEmotion Demo</h1>
+      <div>
         <button class="hover:bg-gray-100 rounded-full mr-5">
           <svg xmlns="http://www.w3.org/2000/svg" height="28.33px" viewBox="0 0 24 24" width="28.33px" fill="#8C8C8C">
             <path d="M0 0h24v24H0V0z" fill="none"/><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/>
           </svg>
         </button>
+      </div>
+      
     </div>
     <div class="min-h-screen bg-gray-50 py-6 flex flex-col justify-center relative overflow-hidden sm:py-12">
       <!-- <img src="beams.jpg" alt="" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-none" width="1308" />
       <div class="absolute inset-0 bg-[url(/img/grid.svg)] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div> -->
       <div class="relative px-6 pt-10 pb-8 bg-white shadow-xl ring-1 ring-gray-900/5 sm:w-auto sm:mx-auto sm:rounded-lg sm:px-10">
         <div class="w-auto mx-auto">
-          <div class="mb-6 z-50">
-            <div>
-              <button class="w-56 text-white justify-between hover:bg-blue-600 rounded text-base px-4 py-2.5 text-center inline-flex items-center" type="button" data-dropdown-toggle="dropdown" style="background-color: #1890FF;">Webcam 
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
-                  <path d="M0 0h24v24H0V0z" fill="none"/><path d="M7 10l5 5 5-5H7z"/>
-                </svg>
-              </button>
-            </div>
-          </div>
           <div class="md:flex flex-row">
             <div class="space-y-6 flex-col">
+              <div class="mb-6 z-50 sticky">
+                <div>
+                  <button class="w-56 text-white justify-between rounded text-base px-4 py-2.5 text-center inline-flex items-center" style="background-color: #1890FF;" type="button" data-dropdown-toggle="dropdown">Webcam
+                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                     </svg>
+                 </button>
+                </div>
+                <div class="hidden bg-white text-base z-50 list-none divide-y divide-gray-100 rounded shadow my-4" id="dropdown">
+                  <ul class="py-1" aria-labelledby="dropdown">
+                    <li>
+                      <a href="#" class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2 w-56">Picture</a>
+                    </li>
+                    <li>
+                      <a href="#" class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2 w-56">Video</a>
+                    </li>
+                    <li>
+                      <a href="#" class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2 w-56">Webcam</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
               <div class="relative right-7 text-base leading-7 text-gray-600">
                 <video
                   id="video"
@@ -241,39 +67,39 @@
                 <canvas id="output" class="absolute bottom-0 left-0"></canvas>
                 <div id="stats" class="sm:absolute top-3 left-9"></div>
               </div>
-              <div class="overflow-hidden w-11/12">
-                <canvas id="myChart"></canvas>
-                <div class="left-2">
-                  <div class="flex items-center justify-center">
+              <div class="overflow-hidden" style="width: 507px">
+                <canvas id="myChart" class="mb-7"></canvas>
+                <div class="ml-9">
+                  <div class="flex items-center">
                     <span class="block bg-red-500 mr-1" style="width: 12px; height: 13px"></span>
-                    <span class="text-sm font-normal mr-3">ANGRY</span>
+                    <span class="text-sm font-normal mr-5">ANGRY</span>
                     <span class="block mr-1" style="background-color: #BAE7FF;width: 12px; height: 13px"></span>
-                    <span class="text-sm font-normal mr-3">NEUTRAL</span>
+                    <span class="text-sm font-normal mr-5">NEUTRAL</span>
                     <span class="block mr-1" style="background-color:  #1890FF;width: 12px; height: 13px"></span>
-                    <span class="text-sm font-normal mr-3">HAPPY</span>
+                    <span class="text-sm font-normal mr-5">HAPPY</span>
                     <span class="block mr-1" style="background-color:  #597EF7;width: 12px; height: 13px"></span>
-                    <span class="text-sm font-normal mr-3">SAD</span>
+                    <span class="text-sm font-normal mr-5">SAD</span>
                     <span class="block mr-1" style="background-color:  #FFC53D;width: 12px; height: 13px"></span>
-                    <span class="text-sm font-normal mr-3">SURPRISE</span>
+                    <span class="text-sm font-normal mr-5">SURPRISE</span>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="divided-gray-100 z-20">
+            <div class="divided-gray-100 z-20" style="margin-top: 65px;">
               <div class="flex items-center justify-center mb-5">
                 <div class="inline-flex">
                   <div class="block">
                     <ul class="flex border-b">
-                      <li class="mr-6 hover:text-blue-500 border-transparent border-b hover:border-b-blue-500">
+                      <li class="mr-6 text-sm hover:text-blue-500 border-transparent border-b hover:border-b-blue-500">
                         <a href="#">Emotions</a>
                       </li>
-                      <li class="mr-6 hover:text-blue-600 border-transparent border-b hover:border-b-blue-600">
+                      <li class="mr-6 text-sm hover:text-blue-600 border-transparent border-b hover:border-b-blue-600">
                         <a href="#">Active/Positive</a>
                       </li>
-                      <li class="mr-6 hover:text-blue-600 border-transparent border-b hover:border-b-blue-600">
+                      <li class="mr-6 text-sm hover:text-blue-600 border-transparent border-b hover:border-b-blue-600">
                         <a href="#">Vibes</a>
                       </li>
-                      <li class="w-14 text-blue-600 border-transparent border-b border-b-blue-600 text-center">
+                      <li class="w-14 text-sm text-blue-600 border-transparent border-b border-b-blue-600 text-center">
                         <a href="#">All</a>
                       </li>
                     </ul>
@@ -282,21 +108,21 @@
               </div>
               <div>
                 <div class="flex justify-between mb-1">
-                  <div class="mb-1 text-2sm font-normal">Neutral</div>
+                  <div class="mb-1 text-sm font-normal">Neutral</div>
                   <span id="value_neutral_label" class="text-sm font-normal dark:text-white">%</span>
                 </div>
                 <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
                   <div id="value_neutral" class="h-2.5 rounded-full" style="background-color: #BAE7FF; width: 0%"></div>
                 </div>
                 <div class="flex justify-between mb-1">
-                  <div class="mb-1 text-2sm font-normal">Happy</div>
+                  <div class="mb-1 text-sm font-normal">Happy</div>
                   <span id="value_happy_label" class="text-sm font-normal dark:text-white">%</span>
                 </div>
                 <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
                   <div id="value_happy" class="h-2.5 rounded-full" style="background-color: #1890FF;width: 0%"></div>
                 </div>
                 <div class="flex justify-between mb-1">
-                  <div class="mb-1 text-2sm font-normal">Sad</div>
+                  <div class="mb-1 text-sm font-normal">Sad</div>
                   <span id="value_sad_label" class="text-sm font-normal dark:text-white">%</span>
                 </div>
                 <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
@@ -304,14 +130,14 @@
                 </div>
   
                 <div class="flex justify-between mb-1">
-                  <div class="mb-1 text-2sm font-normal">Angry</div>
+                  <div class="mb-1 text-sm font-normal">Angry</div>
                   <span id="value_angry_label" class="text-sm font-normal dark:text-white">%</span>
                 </div>
                 <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
                   <div id="value_angry" class="bg-green-600 h-2.5 rounded-full" style="background-color: #FF4D4F; width: 0%"></div>
                 </div>
                 <div class="flex justify-between mb-1">
-                  <div class="mb-1 text-2sm font-normal">Surprised</div>
+                  <div class="mb-1 text-sm font-normal">Surprised</div>
                   <span id="value_suprised_label" class="text-sm font-normal dark:text-white">%</span>
                 </div>
                 <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
@@ -320,7 +146,7 @@
                 <div class="border-t mt-4 mb-2"></div>
                 <div>
                   <div class="flex justify-between mb-1">
-                    <div class="mb-1 text-2sm font-normal">Positive</div>
+                    <div class="mb-1 text-sm font-normal">Positive</div>
                     <span id="value_positive_label" class="text-sm font-normal dark:text-white">%</span>
                   </div>
                   <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
@@ -328,7 +154,7 @@
                   </div>
     
                   <div class="flex justify-between mb-1">
-                    <div class="mb-1 text-2sm font-normal">Active</div>
+                    <div class="mb-1 text-sm font-normal">Active</div>
                     <span id="value_active_label" class="text-sm font-normal dark:text-white">%</span>
                   </div>
                   <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
@@ -336,7 +162,7 @@
                   </div>
                   <div class="border-t mt-5 mb-2"></div>
                   <div class="flex justify-between mb-1">
-                    <div class="mb-1 text-2sm font-normal">Vibes</div>
+                    <div class="mb-1 text-sm font-normal">Vibes</div>
                     <span id="value_vibe_label" class="text-sm font-normal dark:text-white">%</span>
                   </div>
                   <div class="w-full bg-gray-200 rounded-full h-2.5">
@@ -353,5 +179,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.6/dat.gui.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/stats.js/r16/Stats.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
+  <script src="https://unpkg.com/@themesberg/flowbite@latest/dist/flowbite.bundle.js"></script>
   <script src="index.js"></script>
 </html>
