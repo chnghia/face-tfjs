@@ -116,7 +116,7 @@ const renderPrediction = async () => {
       valueAngryLabel.textContent = `${(emotions[3] * 100).toFixed(2)}%`;
       valueSuprised.style.width = `${(emotions[4] * 100).toFixed(2)}%`;
       valueSuprisedLabel.textContent = `${(emotions[4] * 100).toFixed(2)}%`;
-      
+
       // console.log('Positive: ', pipeline.estimatePositive(emotions));
       // console.log('Active: ', pipeline.estimateActive(emotions));
       // console.log('Vibe: ', pipeline.estimateVibe(emotions));
@@ -151,6 +151,111 @@ const renderPrediction = async () => {
   stats.end();
 
   requestAnimationFrame(renderPrediction);
+};
+
+const chartEmotions = async () => {
+  let numberCells = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+  const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: numberCells,
+            datasets: [
+              {
+                label: 'ANGRY',
+                data: [0, 0, 0, 0.05, 0.06, 0.1, 0.06, 0.08, 0.1, 0.09, 0.08],
+                fill: false,
+                tension: 0.1,
+                backgroundColor: [
+                    'rgba(255, 77, 79, 1)',
+                ],
+                borderColor: [
+                    'rgba(255, 77, 79, 1)',
+                ],
+                borderWidth: 2,
+            },
+            {
+              label: 'NEUTRAL',
+              data: [0, 0.03, 0.05, 0.07, 0.15, 0.16, 0.1, 0.15, 0.23, 0.24, 0.19],
+              fill: false,
+              backgroundColor: [
+                'rgba(186, 231, 255, 1)',
+              ],
+              borderColor: [
+                'rgba(186, 231, 255, 1)',
+              ],
+              borderWidth: 2,
+            },
+            {
+              label: 'HAPPY',
+              data: [0.6, 0.7, 0.67, 0.65, 0.66, 0.8, 0.84, 0.8, 0.88, 0.8, 0.7],
+              fill: false,
+              backgroundColor: [
+                'rgba(24, 144, 255, 1)',
+              ],
+              borderColor: [
+                'rgba(24, 144, 255, 1)',
+              ],
+              borderWidth: 2,
+            },
+            {
+              label: 'SAD',
+              data: [0, 0.02, 0.01, 0.03, 0.1, 0.05, 0.01, 0.1, 0.15, 0.01, 0.15],
+              fill: false,
+              backgroundColor: [
+                'rgba(89, 126, 247, 1)',
+              ],
+              borderColor: [
+                'rgba(89, 126, 247, 1)',
+              ],
+              borderWidth: 2,
+            },
+            {
+              label: 'SURPRISE',
+              data: [0, 0.04, 0.06, 0.15, 0.1, 0.25, 0.01, 0.17, 0.18, 0.19, 0.05],
+              fill: false,
+              backgroundColor: [
+                'rgba(255, 197, 61, 1)',
+              ],
+              borderColor: [
+                'rgba(255, 197, 61, 1)',
+              ],
+              borderWidth: 2,
+            },
+          ],
+        },
+        options: {
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  min: 0,
+                  max: 1,
+                },
+                }],
+              xAxes: [{
+                  ticks: {
+                    beginAtZero: true,
+                    display: false,
+                  },
+                  }],
+            },
+            legend: {
+              display: false,
+            },
+            tooltips: {
+              enabled: false,
+            },
+            hover: {
+              mode: null,
+            },
+            elements: {
+              point: {
+                radius: 0,
+              },
+            },
+        },
+    });
 };
 
 const setupPage = async () => {
@@ -194,6 +299,7 @@ const setupPage = async () => {
   valueVibeLabel = document.getElementById('value_vibe_label');
 
   renderPrediction();
+  chartEmotions();
 };
 
 setupPage();
