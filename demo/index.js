@@ -44,6 +44,12 @@ let valueSuprised;
 let valuePositive;
 let valueActive;
 let valueVibe;
+let imgWidth;
+let imgHeight;
+let img;
+let videoClip;
+let videoClipWidth;
+let videoClipHeight;
 
 const state = {
   backend: 'wasm',
@@ -70,6 +76,40 @@ async function setupCamera() {
     };
   });
 }
+
+async function setupImg() {
+  img = document.getElementById('img');
+
+  const fileTag = document.getElementById('imageInput');
+  fileTag.addEventListener('change', function() {
+    loadImg(this);
+  });
+  const preview = document.getElementById('img');
+  function loadImg(input) {
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        preview.setAttribute('src', e.target.result);
+      };
+      reader.readAsDataURL(input.files[0]);
+      document.getElementById('dragFile').style.display = 'none';
+    }
+  }
+}
+
+
+// async function setupVideoClip(input) {
+//   videoClip = document.getElementById('videoClip');
+//   source = document.getElementById('source');
+//   const file = input.files[0];
+//   const reader = new FileReader();
+//   reader.onload = function(e) {
+//     const src = e.target.result;
+//     source.setAttribute('src', src);
+//     videoClip.load();
+//     videoClip.play();
+//   };
+// }
 
 const renderPrediction = async () => {
   stats.begin();
@@ -147,11 +187,351 @@ const renderPrediction = async () => {
       // }
     }
   }
-
   stats.end();
 
   requestAnimationFrame(renderPrediction);
 };
+
+const renderPredictionImg = async () => {
+  stats.begin();
+
+  const returnTensors = false;
+  // const flipHorizontal = true;
+  const annotateBoxes = true;
+  // const predictions = await modelFace.estimateFaces(
+  //   video, returnTensors, flipHorizontal, annotateBoxes);
+  const predictions = await pipeline.estimateEmotion(img);
+
+  if (predictions.length > 0) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // console.log(predictions);
+
+    for (let i = 0; i < predictions.length; i++) {
+      let face = predictions[0].face;
+      let emotions = predictions[0].emotions;
+      if (returnTensors) {
+        face.topLeft = face.topLeft.arraySync();
+        face.bottomRight = face.bottomRight.arraySync();
+        if (annotateBoxes) {
+          face.landmarks = face.landmarks.arraySync();
+        }
+      }
+
+      const start = face.topLeft;
+      const end = face.bottomRight;
+      const size = [end[0] - start[0], end[1] - start[1]];
+
+      // const croppedInput = cutBoxFromImageAndResize(
+      //   box, rotatedImage, [this.meshWidth, this.meshHeight]);
+
+      ctx.strokeStyle = 'rgba(0, 255, 0, 1.0)';
+      ctx.strokeRect(start[0], start[1], size[0], size[1]);
+
+      valueNeutral.style.width = `${(emotions[0] * 100).toFixed(2)}%`;
+      valueNeutralLabel.textContent = `${(emotions[0] * 100).toFixed(2)}%`;
+      valueHappy.style.width = `${(emotions[1] * 100).toFixed(2)}%`;
+      valueHappyLabel.textContent = `${(emotions[1] * 100).toFixed(2)}%`;
+      valueSad.style.width = `${(emotions[2] * 100).toFixed(2)}%`;
+      valueSadLabel.textContent = `${(emotions[2] * 100).toFixed(2)}%`;
+      valueAngry.style.width = `${(emotions[3] * 100).toFixed(2)}%`;
+      valueAngryLabel.textContent = `${(emotions[3] * 100).toFixed(2)}%`;
+      valueSuprised.style.width = `${(emotions[4] * 100).toFixed(2)}%`;
+      valueSuprisedLabel.textContent = `${(emotions[4] * 100).toFixed(2)}%`;
+
+      // console.log('Positive: ', pipeline.estimatePositive(emotions));
+      // console.log('Active: ', pipeline.estimateActive(emotions));
+      // console.log('Vibe: ', pipeline.estimateVibe(emotions));
+      valuePositive.style.width = `${(pipeline.estimatePositive(emotions) * 100).toFixed(2)}%`;
+      valuePositiveLabel.textContent = `${(pipeline.estimatePositive(emotions) * 100).toFixed(2)}%`;
+      valueActive.style.width = `${(pipeline.estimateActive(emotions) * 100).toFixed(2)}%`;
+      valueActiveLabel.textContent = `${(pipeline.estimateActive(emotions) * 100).toFixed(2)}%`;
+      valueVibe.style.width = `${(pipeline.estimateVibe(emotions) * 100).toFixed(2)}%`;
+      valueVibeLabel.textContent = `${(pipeline.estimateVibe(emotions) * 100).toFixed(2)}%`;
+
+
+      // if (annotateBoxes) {
+        // const landmarks = face.landmarks;
+
+        // ctx.fillStyle = 'rgba(0, 255, 0, 1.0)';
+        // for (let j = 0; j < landmarks.length; j++) {
+        //   const x = landmarks[j][0];
+        //   const y = landmarks[j][1];
+        //   ctx.fillRect(x, y, 5, 5);
+        // }
+
+        // ctx.font = '16px Georgia';
+        // ctx.fillText(`Neutral: ${emotions[0].toFixed(2)}`, start[0], landmarks[3][1]  - 45);
+        // ctx.fillText(`Happy: ${emotions[1].toFixed(2)}`, start[0], landmarks[3][1]    - 25);
+        // ctx.fillText(`Sad: ${emotions[2].toFixed(2)}`, start[0], landmarks[3][1]      - 5);
+        // ctx.fillText(`Angry: ${emotions[3].toFixed(2)}`, start[0], landmarks[3][1]    + 15);
+        // ctx.fillText(`Surprised: ${emotions[4].toFixed(2)}`, start[0], landmarks[3][1]+ 35);
+      // }
+    }
+  }
+  stats.end();
+
+  requestAnimationFrame(renderPredictionImg);
+};
+
+const renderPredictionVideoClip = async () => {
+  stats.begin();
+
+  const returnTensors = false;
+  // const flipHorizontal = true;
+  const annotateBoxes = true;
+  // const predictions = await modelFace.estimateFaces(
+  //   video, returnTensors, flipHorizontal, annotateBoxes);
+  const predictions = await pipeline.estimateEmotion(videoClip);
+
+  if (predictions.length > 0) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // console.log(predictions);
+
+    for (let i = 0; i < predictions.length; i++) {
+      let face = predictions[0].face;
+      let emotions = predictions[0].emotions;
+      if (returnTensors) {
+        face.topLeft = face.topLeft.arraySync();
+        face.bottomRight = face.bottomRight.arraySync();
+        if (annotateBoxes) {
+          face.landmarks = face.landmarks.arraySync();
+        }
+      }
+
+      const start = face.topLeft;
+      const end = face.bottomRight;
+      const size = [end[0] - start[0], end[1] - start[1]];
+
+      // const croppedInput = cutBoxFromImageAndResize(
+      //   box, rotatedImage, [this.meshWidth, this.meshHeight]);
+
+      ctx.strokeStyle = 'rgba(0, 255, 0, 1.0)';
+      ctx.strokeRect(start[0], start[1], size[0], size[1]);
+
+      valueNeutral.style.width = `${(emotions[0] * 100).toFixed(2)}%`;
+      valueNeutralLabel.textContent = `${(emotions[0] * 100).toFixed(2)}%`;
+      valueHappy.style.width = `${(emotions[1] * 100).toFixed(2)}%`;
+      valueHappyLabel.textContent = `${(emotions[1] * 100).toFixed(2)}%`;
+      valueSad.style.width = `${(emotions[2] * 100).toFixed(2)}%`;
+      valueSadLabel.textContent = `${(emotions[2] * 100).toFixed(2)}%`;
+      valueAngry.style.width = `${(emotions[3] * 100).toFixed(2)}%`;
+      valueAngryLabel.textContent = `${(emotions[3] * 100).toFixed(2)}%`;
+      valueSuprised.style.width = `${(emotions[4] * 100).toFixed(2)}%`;
+      valueSuprisedLabel.textContent = `${(emotions[4] * 100).toFixed(2)}%`;
+
+      // console.log('Positive: ', pipeline.estimatePositive(emotions));
+      // console.log('Active: ', pipeline.estimateActive(emotions));
+      // console.log('Vibe: ', pipeline.estimateVibe(emotions));
+      valuePositive.style.width = `${(pipeline.estimatePositive(emotions) * 100).toFixed(2)}%`;
+      valuePositiveLabel.textContent = `${(pipeline.estimatePositive(emotions) * 100).toFixed(2)}%`;
+      valueActive.style.width = `${(pipeline.estimateActive(emotions) * 100).toFixed(2)}%`;
+      valueActiveLabel.textContent = `${(pipeline.estimateActive(emotions) * 100).toFixed(2)}%`;
+      valueVibe.style.width = `${(pipeline.estimateVibe(emotions) * 100).toFixed(2)}%`;
+      valueVibeLabel.textContent = `${(pipeline.estimateVibe(emotions) * 100).toFixed(2)}%`;
+
+
+      // if (annotateBoxes) {
+        // const landmarks = face.landmarks;
+
+        // ctx.fillStyle = 'rgba(0, 255, 0, 1.0)';
+        // for (let j = 0; j < landmarks.length; j++) {
+        //   const x = landmarks[j][0];
+        //   const y = landmarks[j][1];
+        //   ctx.fillRect(x, y, 5, 5);
+        // }
+
+        // ctx.font = '16px Georgia';
+        // ctx.fillText(`Neutral: ${emotions[0].toFixed(2)}`, start[0], landmarks[3][1]  - 45);
+        // ctx.fillText(`Happy: ${emotions[1].toFixed(2)}`, start[0], landmarks[3][1]    - 25);
+        // ctx.fillText(`Sad: ${emotions[2].toFixed(2)}`, start[0], landmarks[3][1]      - 5);
+        // ctx.fillText(`Angry: ${emotions[3].toFixed(2)}`, start[0], landmarks[3][1]    + 15);
+        // ctx.fillText(`Surprised: ${emotions[4].toFixed(2)}`, start[0], landmarks[3][1]+ 35);
+      // }
+    }
+  }
+  stats.end();
+
+  requestAnimationFrame(renderPredictionVideoClip);
+};
+
+async function showImg() {
+  document.getElementById('uploadImg').style.display = 'block';
+  document.getElementById('video').style.display = 'none';
+  document.getElementById('videoClip').style.display = 'none';
+
+  document.getElementById('value_neutral_label').innerHTML = '%';
+  document.getElementById('value_happy_label').innerHTML = '%';
+  document.getElementById('value_sad_label').innerHTML = '%';
+  document.getElementById('value_suprised_label').innerHTML = '%';
+  document.getElementById('value_positive_label').innerHTML = '%';
+  document.getElementById('value_active_label').innerHTML = '%';
+  document.getElementById('value_vibe_label').innerHTML = '%';
+
+  document.getElementById('value_neutral').style.width = '0%';
+  document.getElementById('value_happy').style.width = '0%';
+  document.getElementById('value_sad').style.width = '0%';
+  document.getElementById('value_angry_label').innerHTML = '%';
+  document.getElementById('value_angry').style.width = '0%';
+  document.getElementById('value_suprised').style.width = '0%';
+  document.getElementById('value_positive').style.width = '0%';
+  document.getElementById('value_active').style.width = '0%';
+  document.getElementById('value_vibe').style.width = '0%';
+
+  stream = video.srcObject;
+  stream.getTracks().forEach(function(track) {
+    track.stop();
+  });
+  await tf.setBackend(state.backend);
+  await setupImg();
+
+  imgWidth = img.width;
+  imgHeight = img.height;
+
+  canvas = document.getElementById('output');
+  canvas.width = imgWidth;
+  canvas.height = imgHeight;
+  ctx = canvas.getContext('2d');
+  ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
+
+  modelFace = await facetfjs.loadBlazeFace();
+  modelEmotion = await facetfjs.loadFaceEmotions();
+  pipeline = new facetfjs.EmotionPipeline(modelFace, modelEmotion);
+
+  valueNeutral = document.getElementById('value_neutral');
+  valueHappy = document.getElementById('value_happy');
+  valueSad = document.getElementById('value_sad');
+  valueAngry = document.getElementById('value_angry');
+  valueSuprised = document.getElementById('value_suprised');
+
+  valuePositive = document.getElementById('value_positive');
+  valueActive = document.getElementById('value_active');
+  valueVibe = document.getElementById('value_vibe');
+
+  valueNeutralLabel = document.getElementById('value_neutral_label');
+  valueHappyLabel = document.getElementById('value_happy_label');
+  valueSadLabel = document.getElementById('value_sad_label');
+  valueAngryLabel = document.getElementById('value_angry_label');
+  valueSuprisedLabel = document.getElementById('value_suprised_label');
+
+  valuePositiveLabel = document.getElementById('value_positive_label');
+  valueActiveLabel = document.getElementById('value_active_label');
+  valueVibeLabel = document.getElementById('value_vibe_label');
+  renderPredictionImg();
+}
+
+async function showVideoClip() {
+  document.getElementById('videoClip').style.display = 'block';
+  document.getElementById('video').style.display = 'none';
+  document.getElementById('uploadImg').style.display = 'none';
+
+  stream = video.srcObject;
+  stream.getTracks().forEach(function(track) {
+    track.stop();
+  });
+
+  document.getElementById('value_neutral_label').innerHTML = '%';
+  document.getElementById('value_happy_label').innerHTML = '%';
+  document.getElementById('value_sad_label').innerHTML = '%';
+  document.getElementById('value_angry_label').innerHTML = '%';
+  document.getElementById('value_suprised_label').innerHTML = '%';
+  document.getElementById('value_positive_label').innerHTML = '%';
+  document.getElementById('value_active_label').innerHTML = '%';
+  document.getElementById('value_vibe_label').innerHTML = '%';
+
+  document.getElementById('value_neutral').style.width = '0%';
+  document.getElementById('value_happy').style.width = '0%';
+  document.getElementById('value_sad').style.width = '0%';
+  document.getElementById('value_angry').style.width = '0%';
+  document.getElementById('value_suprised').style.width = '0%';
+  document.getElementById('value_positive').style.width = '0%';
+  document.getElementById('value_active').style.width = '0%';
+  document.getElementById('value_vibe').style.width = '0%';
+
+  await tf.setBackend(state.backend);
+  videoClip = document.getElementById('videoClip');
+  videoClip.play();
+
+  videoClipWidth = videoClip.width;
+  videoClipHeight = videoClip.height;
+
+  canvas = document.getElementById('output');
+  canvas.width = videoClipWidth;
+  canvas.height = videoClipHeight;
+  ctx = canvas.getContext('2d');
+  ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
+
+  modelFace = await facetfjs.loadBlazeFace();
+  modelEmotion = await facetfjs.loadFaceEmotions();
+  pipeline = new facetfjs.EmotionPipeline(modelFace, modelEmotion);
+
+  valueNeutral = document.getElementById('value_neutral');
+  valueHappy = document.getElementById('value_happy');
+  valueSad = document.getElementById('value_sad');
+  valueAngry = document.getElementById('value_angry');
+  valueSuprised = document.getElementById('value_suprised');
+
+  valuePositive = document.getElementById('value_positive');
+  valueActive = document.getElementById('value_active');
+  valueVibe = document.getElementById('value_vibe');
+
+  valueNeutralLabel = document.getElementById('value_neutral_label');
+  valueHappyLabel = document.getElementById('value_happy_label');
+  valueSadLabel = document.getElementById('value_sad_label');
+  valueAngryLabel = document.getElementById('value_angry_label');
+  valueSuprisedLabel = document.getElementById('value_suprised_label');
+
+  valuePositiveLabel = document.getElementById('value_positive_label');
+  valueActiveLabel = document.getElementById('value_active_label');
+  valueVibeLabel = document.getElementById('value_vibe_label');
+
+  renderPredictionVideoClip();
+}
+
+async function showWebcam() {
+  document.getElementById('video').style.display = 'block';
+  document.getElementById('uploadImg').style.display = 'none';
+  document.getElementById('videoClip').style.display = 'none';
+  await tf.setBackend(state.backend);
+  await setupCamera();
+  video.play();
+
+  videoWidth = video.videoWidth;
+  videoHeight = video.videoHeight;
+  video.width = videoWidth;
+  video.height = videoHeight;
+
+  canvas = document.getElementById('output');
+  canvas.width = videoWidth;
+  canvas.height = videoHeight;
+  ctx = canvas.getContext('2d');
+  ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
+
+  modelFace = await facetfjs.loadBlazeFace();
+  modelEmotion = await facetfjs.loadFaceEmotions();
+  pipeline = new facetfjs.EmotionPipeline(modelFace, modelEmotion);
+
+  valueNeutral = document.getElementById('value_neutral');
+  valueHappy = document.getElementById('value_happy');
+  valueSad = document.getElementById('value_sad');
+  valueAngry = document.getElementById('value_angry');
+  valueSuprised = document.getElementById('value_suprised');
+
+  valuePositive = document.getElementById('value_positive');
+  valueActive = document.getElementById('value_active');
+  valueVibe = document.getElementById('value_vibe');
+
+  valueNeutralLabel = document.getElementById('value_neutral_label');
+  valueHappyLabel = document.getElementById('value_happy_label');
+  valueSadLabel = document.getElementById('value_sad_label');
+  valueAngryLabel = document.getElementById('value_angry_label');
+  valueSuprisedLabel = document.getElementById('value_suprised_label');
+
+  valuePositiveLabel = document.getElementById('value_positive_label');
+  valueActiveLabel = document.getElementById('value_active_label');
+  valueVibeLabel = document.getElementById('value_vibe_label');
+
+  renderPrediction();
+}
 
 const chartEmotions = async () => {
   let numberCells = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
@@ -258,6 +638,7 @@ const chartEmotions = async () => {
     });
 };
 
+
 const setupPage = async () => {
   await tf.setBackend(state.backend);
   await setupCamera();
@@ -300,6 +681,9 @@ const setupPage = async () => {
 
   renderPrediction();
   chartEmotions();
+  document.getElementById('btnPicture').addEventListener('click', showImg);
+  document.getElementById('btnWebcam').addEventListener('click', showWebcam);
+  document.getElementById('btnVideoClip').addEventListener('click', showVideoClip);
 };
 
 setupPage();

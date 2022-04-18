@@ -43,21 +43,36 @@
                      </svg>
                  </button>
                 </div>
-                <div class="hidden bg-white text-base z-50 list-none divide-y divide-gray-100 rounded shadow my-4" id="dropdown">
+                <div class="hidden bg-white text-base list-none divide-y divide-gray-100 rounded shadow my-4" id="dropdown">
                   <ul class="py-1" aria-labelledby="dropdown">
                     <li>
-                      <a href="#" class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2 w-56">Picture</a>
+                      <button class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2 w-56 justify-between cursor-pointer" id="btnPicture">Picture</button>
                     </li>
                     <li>
-                      <a href="#" class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2 w-56">Video</a>
+                      <button class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2 w-56 cursor-pointer" id="btnVideoClip">Video</button>
                     </li>
                     <li>
-                      <a href="#" class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2 w-56">Webcam</a>
+                      <button class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2 w-56 cursor-pointer" id="btnWebcam">Webcam</button>
                     </li>
                   </ul>
                 </div>
               </div>
               <div class="relative right-7 text-base leading-7 text-gray-600">
+                <div id="uploadImg" class="px-7 relative place-items-center" style="display: none;">
+                  <div class="wrapper absolute relative align-center justify-center">
+                    <img id="img" class="object-scale-down" style="width: 520px; height: 379px;"></img>
+                    <div id="dragFile" class="absolute z-10 bottom-2/4 px-36">
+                      <label class="items-center text-center space-x-2">
+                        <span class="font-medium text-gray-600"> Drag files to Attach, or
+                          <span class="text-blue-600 underline cursor-pointer">browse</span>
+                        </span>
+                        <input type="file" class="hidden" name="file_upload" id="imageInput" accept="image/*">
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <video id="videoClip" playsinline class="px-7" controls style="width: 562px; height: 379px; display: none;" src="video.mp4">
+                </video>
                 <video
                   id="video"
                   playsinline
@@ -65,9 +80,9 @@
                   style="-webkit-transform: scaleX(-1); transform: scaleX(-1); width: 562px; height: 379px;"
                 ></video>
                 <canvas id="output" class="absolute bottom-0 left-0"></canvas>
-                <div id="stats" class="sm:absolute top-3 left-9"></div>
+                <div id="stats" class="sm:absolute top-3 h-3.5 left-10 overflow-hidden"></div>
               </div>
-              <div class="overflow-hidden" style="width: 507px">
+              <div class="overflow-hidden" style="width: 507px;">
                 <canvas id="myChart" class="mb-7"></canvas>
                 <div class="ml-9">
                   <div class="flex items-center">
