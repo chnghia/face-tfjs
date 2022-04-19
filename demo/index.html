@@ -59,7 +59,7 @@
               </div>
               <div class="relative right-7 text-base leading-7 text-gray-600">
                 <div id="uploadImg" class="px-7 relative place-items-center" style="display: none;">
-                  <div class="wrapper absolute relative align-center justify-center">
+                  <div class="wrapper absolute relative align-center justify-center border border-gray-300">
                     <img id="img" class="object-scale-down" style="width: 520px; height: 379px;"></img>
                     <div id="dragFile" class="absolute z-10 bottom-2/4 px-36">
                       <label class="items-center text-center space-x-2">
@@ -71,7 +71,9 @@
                     </div>
                   </div>
                 </div>
-                <video id="videoClip" playsinline class="px-7" controls style="width: 562px; height: 379px; display: none;" src="video.mp4">
+                <div id="movie" style="width: 508px; height: 379px; display:none" class="border border-gray-300 ml-7">
+                  <video id="videoClip" playsinline class="w-full" style="height:379px;" controls src="video.mp4"></video>
+                </div>
                 </video>
                 <video
                   id="video"
