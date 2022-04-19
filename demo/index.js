@@ -357,7 +357,7 @@ const renderPredictionVideoClip = async () => {
 async function showImg() {
   document.getElementById('uploadImg').style.display = 'block';
   document.getElementById('video').style.display = 'none';
-  document.getElementById('videoClip').style.display = 'none';
+  document.getElementById('movie').style.display = 'none';
 
   document.getElementById('value_neutral_label').innerHTML = '%';
   document.getElementById('value_happy_label').innerHTML = '%';
@@ -420,7 +420,7 @@ async function showImg() {
 }
 
 async function showVideoClip() {
-  document.getElementById('videoClip').style.display = 'block';
+  document.getElementById('movie').style.display = 'block';
   document.getElementById('video').style.display = 'none';
   document.getElementById('uploadImg').style.display = 'none';
 
@@ -490,7 +490,7 @@ async function showVideoClip() {
 async function showWebcam() {
   document.getElementById('video').style.display = 'block';
   document.getElementById('uploadImg').style.display = 'none';
-  document.getElementById('videoClip').style.display = 'none';
+  document.getElementById('movie').style.display = 'none';
   await tf.setBackend(state.backend);
   await setupCamera();
   video.play();
