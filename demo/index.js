@@ -533,6 +533,154 @@ async function showWebcam() {
   renderPrediction();
 }
 
+async function showEmotions() {
+  document.getElementById('btn_emotions').style.color = 'rgba(24, 144, 255, 1)';
+  document.getElementById('btn_emotions').style.borderColor = 'rgba(24, 144, 255, 1)';
+
+  document.getElementById('btn_positive-active').style.color = 'rgb(17 24 39)';
+  document.getElementById('btn_positive-active').style.borderColor = 'rgb(243 244 246)';
+
+  document.getElementById('btn_vibes').style.color = 'rgb(17 24 39)';
+  document.getElementById('btn_vibes').style.borderColor = 'rgb(243 244 246)';
+
+  document.getElementById('btn_all').style.color = 'rgb(17 24 39)';
+  document.getElementById('btn_all').style.borderColor = 'rgb(243 244 246)';
+
+  document.getElementById('label_neutral').style.display = 'flex';
+  document.getElementById('bar_neutral').style.display = 'flex';
+  document.getElementById('label_sad').style.display = 'flex';
+  document.getElementById('bar_sad').style.display = 'flex';
+  document.getElementById('label_happy').style.display = 'flex';
+  document.getElementById('bar_happy').style.display = 'flex';
+  document.getElementById('label_angry').style.display = 'flex';
+  document.getElementById('bar_angry').style.display = 'flex';
+  document.getElementById('label_surprised').style.display = 'flex';
+  document.getElementById('bar_surprised').style.display = 'flex';
+
+  document.getElementById('border_positive-active').style.borderStyle = 'none';
+
+  document.getElementById('label_positive').style.display = 'none';
+  document.getElementById('bar_positive').style.display = 'none';
+  document.getElementById('label_active').style.display = 'none';
+  document.getElementById('bar_active').style.display = 'none';
+
+
+  document.getElementById('border_vibes').style.borderStyle = 'none';
+  document.getElementById('label_vibes').style.display = 'none';
+  document.getElementById('bar_vibes').style.display = 'none';
+}
+
+async function showPositiveActive() {
+  document.getElementById('btn_positive-active').style.color = 'rgba(24, 144, 255, 1)';
+  document.getElementById('btn_positive-active').style.borderColor = 'rgba(24, 144, 255, 1)';
+
+  document.getElementById('btn_emotions').style.color = 'rgb(17 24 39)';
+  document.getElementById('btn_emotions').style.borderColor = 'rgb(243 244 246)';
+
+  document.getElementById('btn_vibes').style.color = 'rgb(17 24 39)';
+  document.getElementById('btn_vibes').style.borderColor = 'rgb(243 244 246)';
+
+  document.getElementById('btn_all').style.color = 'rgb(17 24 39)';
+  document.getElementById('btn_all').style.borderColor = 'rgb(243 244 246)';
+
+  document.getElementById('border_positive-active').style.borderStyle = 'none';
+
+  document.getElementById('label_neutral').style.display = 'none';
+  document.getElementById('bar_neutral').style.display = 'none';
+  document.getElementById('label_sad').style.display = 'none';
+  document.getElementById('bar_sad').style.display = 'none';
+  document.getElementById('label_happy').style.display = 'none';
+  document.getElementById('bar_happy').style.display = 'none';
+  document.getElementById('label_angry').style.display = 'none';
+  document.getElementById('bar_angry').style.display = 'none';
+  document.getElementById('label_surprised').style.display = 'none';
+  document.getElementById('bar_surprised').style.display = 'none';
+
+  document.getElementById('label_positive').style.display = 'flex';
+  document.getElementById('bar_positive').style.display = 'flex';
+  document.getElementById('label_active').style.display = 'flex';
+  document.getElementById('bar_active').style.display = 'flex';
+
+  document.getElementById('border_vibes').style.borderStyle = 'none';
+  document.getElementById('label_vibes').style.display = 'none';
+  document.getElementById('bar_vibes').style.display = 'none';
+}
+
+async function showVibes() {
+  document.getElementById('btn_vibes').style.color = 'rgba(24, 144, 255, 1)';
+  document.getElementById('btn_vibes').style.borderColor = 'rgba(24, 144, 255, 1)';
+
+  document.getElementById('btn_emotions').style.color = 'rgb(17 24 39)';
+  document.getElementById('btn_emotions').style.borderColor = 'rgb(243 244 246)';
+
+  document.getElementById('btn_positive-active').style.color = 'rgb(17 24 39)';
+  document.getElementById('btn_positive-active').style.borderColor = 'rgb(243 244 246)';
+
+  document.getElementById('btn_all').style.color = 'rgb(17 24 39)';
+  document.getElementById('btn_all').style.borderColor = 'rgb(243 244 246)';
+
+  document.getElementById('border_positive-active').style.borderStyle = 'none';
+
+  document.getElementById('label_neutral').style.display = 'none';
+  document.getElementById('bar_neutral').style.display = 'none';
+  document.getElementById('label_sad').style.display = 'none';
+  document.getElementById('bar_sad').style.display = 'none';
+  document.getElementById('label_happy').style.display = 'none';
+  document.getElementById('bar_happy').style.display = 'none';
+  document.getElementById('label_angry').style.display = 'none';
+  document.getElementById('bar_angry').style.display = 'none';
+  document.getElementById('label_surprised').style.display = 'none';
+  document.getElementById('bar_surprised').style.display = 'none';
+
+  document.getElementById('label_positive').style.display = 'none';
+  document.getElementById('bar_positive').style.display = 'none';
+  document.getElementById('label_active').style.display = 'none';
+  document.getElementById('bar_active').style.display = 'none';
+
+  document.getElementById('border_vibes').style.borderStyle = 'none';
+
+  document.getElementById('label_vibes').style.display = 'flex';
+  document.getElementById('bar_vibes').style.display = 'flex';
+}
+
+async function showAll() {
+  document.getElementById('btn_all').style.color = 'rgba(24, 144, 255, 1)';
+  document.getElementById('btn_all').style.borderColor = 'rgba(24, 144, 255, 1)';
+
+  document.getElementById('btn_emotions').style.color = 'rgb(17 24 39)';
+  document.getElementById('btn_emotions').style.borderColor = 'rgb(243 244 246)';
+
+  document.getElementById('btn_positive-active').style.color = 'rgb(17 24 39)';
+  document.getElementById('btn_positive-active').style.borderColor = 'rgb(243 244 246)';
+
+  document.getElementById('btn_vibes').style.color = 'rgb(17 24 39)';
+  document.getElementById('btn_vibes').style.borderColor = 'rgb(243 244 246)';
+
+  document.getElementById('label_neutral').style.display = 'flex';
+  document.getElementById('bar_neutral').style.display = 'flex';
+  document.getElementById('label_sad').style.display = 'flex';
+  document.getElementById('bar_sad').style.display = 'flex';
+  document.getElementById('label_happy').style.display = 'flex';
+  document.getElementById('bar_happy').style.display = 'flex';
+  document.getElementById('label_angry').style.display = 'flex';
+  document.getElementById('bar_angry').style.display = 'flex';
+  document.getElementById('label_surprised').style.display = 'flex';
+  document.getElementById('bar_surprised').style.display = 'flex';
+
+  document.getElementById('border_positive-active').style.borderStyle = 'solid';
+
+  document.getElementById('label_positive').style.display = 'flex';
+  document.getElementById('bar_positive').style.display = 'flex';
+  document.getElementById('label_active').style.display = 'flex';
+  document.getElementById('bar_active').style.display = 'flex';
+
+  document.getElementById('border_vibes').style.borderStyle = 'solid';
+
+  document.getElementById('label_vibes').style.display = 'flex';
+  document.getElementById('bar_vibes').style.display = 'flex';
+}
+
+
 const chartEmotions = async () => {
   let numberCells = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
   const ctx = document.getElementById('myChart').getContext('2d');
@@ -684,6 +832,10 @@ const setupPage = async () => {
   document.getElementById('btnPicture').addEventListener('click', showImg);
   document.getElementById('btnWebcam').addEventListener('click', showWebcam);
   document.getElementById('btnVideoClip').addEventListener('click', showVideoClip);
+  document.getElementById('btn_emotions').addEventListener('click', showEmotions);
+  document.getElementById('btn_positive-active').addEventListener('click', showPositiveActive);
+  document.getElementById('btn_vibes').addEventListener('click', showVibes);
+  document.getElementById('btn_all').addEventListener('click', showAll);
 };
 
 setupPage();
