@@ -56,6 +56,11 @@ let emotionsHappy;
 let emotionsSad;
 let emotionsNeutral;
 let emotionsSurprise;
+var dataEmotionsNeutral = [];
+var dataEmotionsAngry = [];
+var dataEmotionHappy = [];
+var dataEmotionSurprised = []; 
+var dataEmotionSad = [];
 
 const state = {
   backend: 'wasm',
@@ -132,11 +137,27 @@ const renderPrediction = async () => {
     for (let i = 0; i < predictions.length; i++) {
       let face = predictions[0].face;
       let emotions = predictions[0].emotions;
-      //value = value + emotions[0] + ',';
-      // console.log('value' + i + ':', value);
-      // const jsArray =  JSON.stringify(array);
-      // //array.push(emotions[0]);
-      localStorage.setItem('data', [0, emotions[0]]);
+
+      emotionsNeutral = [emotions[0].toFixed(3)];
+      dataEmotionsNeutral.push(emotionsNeutral);
+      localStorage.setItem('dataNeutral', dataEmotionsNeutral);
+
+      emotionsHappy = [emotions[1].toFixed(3)];
+      dataEmotionHappy.push(emotionsHappy);
+      localStorage.setItem('dataHappy', dataEmotionHappy);
+
+      emotionsSad = [emotions[2].toFixed(3)];
+      dataEmotionSad.push(emotionsSad);
+      localStorage.setItem('dataSad', dataEmotionSad);
+
+      emotionsAngry = [emotions[3].toFixed(3)];
+      dataEmotionsAngry.push(emotionsAngry);
+      localStorage.setItem('dataAngry', dataEmotionsAngry);
+
+      emotionsSurprise = [emotions[4].toFixed(3)];
+      dataEmotionSurprised.push(emotionsSurprise);
+      localStorage.setItem('dataSurprise', dataEmotionSurprised);
+
       if (returnTensors) {  
         face.topLeft = face.topLeft.arraySync();
         face.bottomRight = face.bottomRight.arraySync();
@@ -722,49 +743,14 @@ async function showAll() {
 
 // }
 
-const chartEmotions = async () => {
-  // stats.begin();
-  // const returnTensors = false;
-  // const annotateBoxes = true;
-  // const predictions = await pipeline.estimateEmotion(video);
-
-
-  // if(predictions.length > 0) {
-
-  //   for(let i = 0; i < predictions.length; i++){
-  //     let face = predictions[0].face;
-  //     let emotions = predictions[0].emotions;
-  //     if(returnTensors){
-  //       face.topLeft = face.topLeft.arraySync();
-  //       face.bottomRight = face.bottomRight.arraySync();
-  //       if(annotateBoxes){
-  //         face.landmarks = face.landmarks.arraySync();
-  //       }
-  //     }
-
-  //     const start = face.topLeft;
-  //     const end = face.bottomRight;
-  //     const size = [end[0] - start[0], end[1] - start[1]];
-
-  //     emotionsNeutral = `${(emotions[0]).toFixed(3)}`;
-  //     emotionsHappy = [].concat`${(emotions[1]).toFixed(3)}`;
-  //     emotionsSad = [].concat`${(emotions[2]).toFixed(3)}`
-  //     emotionsAngry = [].concat`${(emotions[3]).toFixed(3)}`;
-  //     emotionsSurprise = [].concat`${(emotions[4]).toFixed(3)}`
-
-
-  //     // console.log('NEUTRAL length: ',emotionsNeutral.length);
-  //     // console.log('HAPPY: ',emotionsHappy);
-  //     // console.log('SAD: ',emotionsSad);
-  //     // console.log('ANGRY',emotionsAngry);
-  //     // console.log('SURPRISE',emotionsSurprise);
-  //   }
-
-  await renderPrediction();
-    const numberCells = ['0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0'];
+const myChartEmotions = async() => {
+  const numberCells = ['0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0'];
     const ctx = document.getElementById('myChart').getContext('2d');
-    const valueEmotions = localStorage.getItem('data');
-    console.log(valueEmotions.split(','));
+    const valueEmotions_Neutral = localStorage.getItem('dataNeutral');
+    const valueEmotions_Angry = localStorage.getItem('dataAngry');
+    const valueEmotions_Sad = localStorage.getItem('dataSad');
+    const valueEmotions_Surprised = localStorage.getItem('dataSurprise');
+    const valueEmotions_Happy = localStorage.getItem('dataHappy');
       const myChart = new Chart(ctx, {
           type: 'line',
           data: {
@@ -772,9 +758,9 @@ const chartEmotions = async () => {
               datasets: [
                 {
                   label: 'ANGRY',
-                  data: valueEmotions.split(','),
+                  data: valueEmotions_Angry.split(','),
                   fill: false,
-                  tension: 0.1,
+                  tension: 0.4,
                   backgroundColor: [
                       'rgba(255, 77, 79, 1)',
                   ],
@@ -783,54 +769,55 @@ const chartEmotions = async () => {
                   ],
                   borderWidth: 2,
             },
-            // {
-            //   label: 'NEUTRAL',
-            //   data: emotionsNeutral,
-            //   fill: false,
-            //   backgroundColor: [
-            //     'rgba(186, 231, 255, 1)',
-            //   ],
-            //   borderColor: [
-            //     'rgba(186, 231, 255, 1)',
-            //   ],
-            //   borderWidth: 2,
-            // },
-            // {
-            //   label: 'HAPPY',
-            //   data: emotionsHappy,
-            //   fill: false,
-            //   backgroundColor: [
-            //     'rgba(24, 144, 255, 1)',
-            //   ],
-            //   borderColor: [
-            //     'rgba(24, 144, 255, 1)',
-            //   ],
-            //   borderWidth: 2,
-            // },
-            // {
-            //   label: 'SAD',
-            //   data: [0, 0.02, 0.01, 0.03, 0.1, 0.05, 0.01, 0.1, 0.15, 0.01, 0.15],
-            //   fill: false,
-            //   backgroundColor: [
-            //     'rgba(89, 126, 247, 1)',
-            //   ],
-            //   borderColor: [
-            //     'rgba(89, 126, 247, 1)',
-            //   ],
-            //   borderWidth: 2,
-            // },
-            // {
-            //   label: 'SURPRISE',
-            //     data: emotionsSurprise,
-            //     fill: false,
-            //     backgroundColor: [
-            //       'rgba(255, 197, 61, 1)',
-            //     ],
-            //     borderColor: [
-            //       'rgba(255, 197, 61, 1)',
-            //     ],
-            //     borderWidth: 2,
-            //   },
+            {
+              label: 'NEUTRAL',
+              data: valueEmotions_Neutral.split(','),
+              fill: false,
+              tension: 0.4,
+              backgroundColor: [
+                'rgba(186, 231, 255, 1)',
+              ],
+              borderColor: [
+                'rgba(186, 231, 255, 1)',
+              ],
+              borderWidth: 2,
+            },
+            {
+              label: 'HAPPY',
+              data: valueEmotions_Happy.split(','),
+              fill: false,
+              backgroundColor: [
+                'rgba(24, 144, 255, 1)',
+              ],
+              borderColor: [
+                'rgba(24, 144, 255, 1)',
+              ],
+              borderWidth: 2,
+            },
+            {
+              label: 'SAD',
+              data: valueEmotions_Sad.split(','),
+              fill: false,
+              backgroundColor: [
+                'rgba(89, 126, 247, 1)',
+              ],
+              borderColor: [
+                'rgba(89, 126, 247, 1)',
+              ],
+              borderWidth: 2,
+            },
+            {
+              label: 'SURPRISE',
+                data: valueEmotions_Surprised.split(','),
+                fill: false,
+                backgroundColor: [
+                  'rgba(255, 197, 61, 1)',
+                ],
+                borderColor: [
+                  'rgba(255, 197, 61, 1)',
+                ],
+                borderWidth: 2,
+              },
             ],
           },
           options: {
@@ -843,11 +830,10 @@ const chartEmotions = async () => {
                     },
                   }],
                 xAxes: [{
-                    ticks: {
-                      beginAtZero: true,
-                      display: false,
-                      min: 0,
-                      max: 1,
+                  ticks: {
+                    beginAtZero: true,
+                    min: 0,
+                    max: 1,
                     },
                     }],
               },
@@ -866,13 +852,8 @@ const chartEmotions = async () => {
                 },
               },
           },
-      });
+    }); 
 }
-
-//setup block
-
-
-
 
 const setupPage = async () => {
   await tf.setBackend(state.backend);
@@ -915,7 +896,8 @@ const setupPage = async () => {
   valueVibeLabel = document.getElementById('value_vibe_label');
 
   renderPrediction();
-  chartEmotions();
+  //chartEmotions();
+  myChartEmotions();
   document.getElementById('btnPicture').addEventListener('click', showImg);
   document.getElementById('btnWebcam').addEventListener('click', showWebcam);
   document.getElementById('btnVideoClip').addEventListener('click', showVideoClip);
@@ -924,5 +906,4 @@ const setupPage = async () => {
   document.getElementById('btn_vibes').addEventListener('click', showVibes);
   document.getElementById('btn_all').addEventListener('click', showAll);
 };
-
 setupPage();
