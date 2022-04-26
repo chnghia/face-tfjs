@@ -845,7 +845,7 @@ const chartEmotions = async () => {
                 xAxes: [{
                     ticks: {
                       beginAtZero: true,
-                      display: true,
+                      display: false,
                       min: 0,
                       max: 1,
                     },
