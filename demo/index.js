@@ -20,6 +20,7 @@ import * as tf from '@tensorflow/tfjs-core';
 import * as tfjsWasm from '@tensorflow/tfjs-backend-wasm';
 import '@tensorflow/tfjs-backend-webgl';
 import '@tensorflow/tfjs-backend-cpu';
+import { math } from '@tensorflow/tfjs-core';
 
 tfjsWasm.setWasmPaths(
   `https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm@${tfjsWasm.version_wasm}/dist/`);
@@ -50,6 +51,16 @@ let img;
 let videoClip;
 let videoClipWidth;
 let videoClipHeight;
+let emotionsAngry;
+let emotionsHappy;
+let emotionsSad;
+let emotionsNeutral;
+let emotionsSurprise;
+var dataEmotionsNeutral = [];
+var dataEmotionsAngry = [];
+var dataEmotionHappy = [];
+var dataEmotionSurprised = []; 
+var dataEmotionSad = [];
 
 const state = {
   backend: 'wasm',
@@ -120,15 +131,34 @@ const renderPrediction = async () => {
   // const predictions = await modelFace.estimateFaces(
   //   video, returnTensors, flipHorizontal, annotateBoxes);
   const predictions = await pipeline.estimateEmotion(video);
-
   if (predictions.length > 0) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     // console.log(predictions);
-
     for (let i = 0; i < predictions.length; i++) {
       let face = predictions[0].face;
       let emotions = predictions[0].emotions;
-      if (returnTensors) {
+
+      emotionsNeutral = [emotions[0].toFixed(3)];
+      dataEmotionsNeutral.push(emotionsNeutral);
+      localStorage.setItem('dataNeutral', dataEmotionsNeutral);
+
+      emotionsHappy = [emotions[1].toFixed(3)];
+      dataEmotionHappy.push(emotionsHappy);
+      localStorage.setItem('dataHappy', dataEmotionHappy);
+
+      emotionsSad = [emotions[2].toFixed(3)];
+      dataEmotionSad.push(emotionsSad);
+      localStorage.setItem('dataSad', dataEmotionSad);
+
+      emotionsAngry = [emotions[3].toFixed(3)];
+      dataEmotionsAngry.push(emotionsAngry);
+      localStorage.setItem('dataAngry', dataEmotionsAngry);
+
+      emotionsSurprise = [emotions[4].toFixed(3)];
+      dataEmotionSurprised.push(emotionsSurprise);
+      localStorage.setItem('dataSurprise', dataEmotionSurprised);
+
+      if (returnTensors) {  
         face.topLeft = face.topLeft.arraySync();
         face.bottomRight = face.bottomRight.arraySync();
         if (annotateBoxes) {
@@ -185,10 +215,24 @@ const renderPrediction = async () => {
         // ctx.fillText(`Angry: ${emotions[3].toFixed(2)}`, start[0], landmarks[3][1]    + 15);
         // ctx.fillText(`Surprised: ${emotions[4].toFixed(2)}`, start[0], landmarks[3][1]+ 35);
       // }
+      emotionsNeutral = `${(emotions[0]).toFixed(3)}`;
+      // console.log('emotionNeutral: ', emotionsNeutral);
+      // dataNeutral = `${(emotions[0]).toFixed(3)}`;
+      // const combine = emotionsNeutral.concat(dataNeutral);
+      // console.log('Combine data: ' ,combine);
+      // dataNeutral = [`${(emotions[0]).toFixed(3)}`];
+      emotionsHappy = `${(emotions[1]).toFixed(3)}`;
+      // console.log('happy: ', emotionsHappy);
+      emotionsSad = `${(emotions[2]).toFixed(3)}`
+      emotionsAngry = `${(emotions[3]).toFixed(3)}`;
+      // console.log('angry: ',emotionsAngry)
+      emotionsSurprise = `${(emotions[4]).toFixed(3)}`
+
+      // arrayEmotions = Array.from(emotions);
+      // console.log(arrayEmotions);
     }
   }
   stats.end();
-
   requestAnimationFrame(renderPrediction);
 };
 
@@ -266,6 +310,7 @@ const renderPredictionImg = async () => {
         // ctx.fillText(`Angry: ${emotions[3].toFixed(2)}`, start[0], landmarks[3][1]    + 15);
         // ctx.fillText(`Surprised: ${emotions[4].toFixed(2)}`, start[0], landmarks[3][1]+ 35);
       // }
+      console.log(emotionsNeutral);
     }
   }
   stats.end();
@@ -680,32 +725,55 @@ async function showAll() {
   document.getElementById('bar_vibes').style.display = 'flex';
 }
 
+// function saveEmotionNeutral() {
+//   // let newData = document.getElementById('value_neutral').value;
+//   let dataNeutral = JSON.parse(localStorage.setItem('data', emotionsNeutral));
+//   console.log('newData', dataNeutral);
+//   if(localStorage.getItem('data') == null){
+//     localStorage.setItem('data',JSON.stringify(dataNeutral));
+//   }
+//   let oldData = JSON.parse(localStorage.getItem('data'));
+//   if(!(oldData instanceof Array))
+//   {
+//     oldData = [oldData];
+//   }
+//   oldData.push(dataNeutral);
+//   localStorage.setItem('data', JSON.stringify(oldData));
+//   // localStorage.setItem('data', JSON.stringify(emotionsNeutral));
 
-const chartEmotions = async () => {
-  let numberCells = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-  const ctx = document.getElementById('myChart').getContext('2d');
-    const myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: numberCells,
-            datasets: [
-              {
-                label: 'ANGRY',
-                data: [0, 0, 0, 0.05, 0.06, 0.1, 0.06, 0.08, 0.1, 0.09, 0.08],
-                fill: false,
-                tension: 0.1,
-                backgroundColor: [
-                    'rgba(255, 77, 79, 1)',
-                ],
-                borderColor: [
-                    'rgba(255, 77, 79, 1)',
-                ],
-                borderWidth: 2,
+// }
+
+const myChartEmotions = async() => {
+  const numberCells = ['0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0'];
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const valueEmotions_Neutral = localStorage.getItem('dataNeutral');
+    const valueEmotions_Angry = localStorage.getItem('dataAngry');
+    const valueEmotions_Sad = localStorage.getItem('dataSad');
+    const valueEmotions_Surprised = localStorage.getItem('dataSurprise');
+    const valueEmotions_Happy = localStorage.getItem('dataHappy');
+      const myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: numberCells,
+              datasets: [
+                {
+                  label: 'ANGRY',
+                  data: valueEmotions_Angry.split(','),
+                  fill: false,
+                  tension: 0.4,
+                  backgroundColor: [
+                      'rgba(255, 77, 79, 1)',
+                  ],
+                  borderColor: [
+                      'rgba(255, 77, 79, 1)',
+                  ],
+                  borderWidth: 2,
             },
             {
               label: 'NEUTRAL',
-              data: [0, 0.03, 0.05, 0.07, 0.15, 0.16, 0.1, 0.15, 0.23, 0.24, 0.19],
+              data: valueEmotions_Neutral.split(','),
               fill: false,
+              tension: 0.4,
               backgroundColor: [
                 'rgba(186, 231, 255, 1)',
               ],
@@ -716,7 +784,7 @@ const chartEmotions = async () => {
             },
             {
               label: 'HAPPY',
-              data: [0.6, 0.7, 0.67, 0.65, 0.66, 0.8, 0.84, 0.8, 0.88, 0.8, 0.7],
+              data: valueEmotions_Happy.split(','),
               fill: false,
               backgroundColor: [
                 'rgba(24, 144, 255, 1)',
@@ -728,7 +796,7 @@ const chartEmotions = async () => {
             },
             {
               label: 'SAD',
-              data: [0, 0.02, 0.01, 0.03, 0.1, 0.05, 0.01, 0.1, 0.15, 0.01, 0.15],
+              data: valueEmotions_Sad.split(','),
               fill: false,
               backgroundColor: [
                 'rgba(89, 126, 247, 1)',
@@ -740,52 +808,52 @@ const chartEmotions = async () => {
             },
             {
               label: 'SURPRISE',
-              data: [0, 0.04, 0.06, 0.15, 0.1, 0.25, 0.01, 0.17, 0.18, 0.19, 0.05],
-              fill: false,
-              backgroundColor: [
-                'rgba(255, 197, 61, 1)',
-              ],
-              borderColor: [
-                'rgba(255, 197, 61, 1)',
-              ],
-              borderWidth: 2,
-            },
-          ],
-        },
-        options: {
-            scales: {
-              yAxes: [{
-                ticks: {
-                  beginAtZero: true,
-                  min: 0,
-                  max: 1,
-                },
-                }],
-              xAxes: [{
+                data: valueEmotions_Surprised.split(','),
+                fill: false,
+                backgroundColor: [
+                  'rgba(255, 197, 61, 1)',
+                ],
+                borderColor: [
+                  'rgba(255, 197, 61, 1)',
+                ],
+                borderWidth: 2,
+              },
+            ],
+          },
+          options: {
+              scales: {
+                yAxes: [{
                   ticks: {
                     beginAtZero: true,
-                    display: false,
-                  },
+                    min: 0,
+                    max: 1,
+                    },
                   }],
-            },
-            legend: {
-              display: false,
-            },
-            tooltips: {
-              enabled: false,
-            },
-            hover: {
-              mode: null,
-            },
-            elements: {
-              point: {
-                radius: 0,
+                xAxes: [{
+                  ticks: {
+                    beginAtZero: true,
+                    min: 0,
+                    max: 1,
+                    },
+                    }],
               },
-            },
-        },
-    });
-};
-
+              legend: {
+                display: false,
+              },
+              tooltips: {
+                enabled: false,
+              },
+              hover: {
+                mode: null,
+              },
+              elements: {
+                point: {
+                  radius: 0,
+                },
+              },
+          },
+    }); 
+}
 
 const setupPage = async () => {
   await tf.setBackend(state.backend);
@@ -828,7 +896,8 @@ const setupPage = async () => {
   valueVibeLabel = document.getElementById('value_vibe_label');
 
   renderPrediction();
-  chartEmotions();
+  //chartEmotions();
+  myChartEmotions();
   document.getElementById('btnPicture').addEventListener('click', showImg);
   document.getElementById('btnWebcam').addEventListener('click', showWebcam);
   document.getElementById('btnVideoClip').addEventListener('click', showVideoClip);
@@ -837,5 +906,4 @@ const setupPage = async () => {
   document.getElementById('btn_vibes').addEventListener('click', showVibes);
   document.getElementById('btn_all').addEventListener('click', showAll);
 };
-
 setupPage();
