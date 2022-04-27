@@ -61,6 +61,8 @@ var dataEmotionsAngry = [];
 var dataEmotionHappy = [];
 var dataEmotionSurprised = []; 
 var dataEmotionSad = [];
+let numberCells;
+let myChart;
 
 const state = {
   backend: 'wasm',
@@ -140,23 +142,45 @@ const renderPrediction = async () => {
 
       emotionsNeutral = [emotions[0].toFixed(3)];
       dataEmotionsNeutral.push(emotionsNeutral);
-      localStorage.setItem('dataNeutral', dataEmotionsNeutral);
+      // localStorage.setItem('dataNeutral', dataEmotionsNeutral);
+      
 
       emotionsHappy = [emotions[1].toFixed(3)];
       dataEmotionHappy.push(emotionsHappy);
-      localStorage.setItem('dataHappy', dataEmotionHappy);
+      // localStorage.setItem('dataHappy', dataEmotionHappy);
 
       emotionsSad = [emotions[2].toFixed(3)];
       dataEmotionSad.push(emotionsSad);
-      localStorage.setItem('dataSad', dataEmotionSad);
+      // localStorage.setItem('dataSad', dataEmotionSad);
 
       emotionsAngry = [emotions[3].toFixed(3)];
       dataEmotionsAngry.push(emotionsAngry);
-      localStorage.setItem('dataAngry', dataEmotionsAngry);
+      // localStorage.setItem('dataAngry', dataEmotionsAngry);
 
       emotionsSurprise = [emotions[4].toFixed(3)];
       dataEmotionSurprised.push(emotionsSurprise);
-      localStorage.setItem('dataSurprise', dataEmotionSurprised);
+      // localStorage.setItem('dataSurprise', dataEmotionSurprised);
+
+      if (dataEmotionsAngry.length >= 500) {
+        
+        dataEmotionsAngry.shift();
+        dataEmotionsNeutral.shift();
+        dataEmotionHappy.shift();
+        dataEmotionSad.shift();
+        dataEmotionSurprised.shift();
+
+        numberCells.push(numberCells.length);
+        numberCells.shift();
+      }
+
+      myChart.data.labels = numberCells;
+      myChart.data.datasets[0].data = dataEmotionsAngry;
+      myChart.data.datasets[1].data = dataEmotionsNeutral;
+      myChart.data.datasets[2].data = dataEmotionHappy;
+      myChart.data.datasets[3].data = dataEmotionSad;
+      myChart.data.datasets[4].data = dataEmotionSurprised;
+      myChart.update();
+
 
       if (returnTensors) {  
         face.topLeft = face.topLeft.arraySync();
@@ -744,21 +768,23 @@ async function showAll() {
 // }
 
 const myChartEmotions = async() => {
-  const numberCells = ['0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0'];
+  // const numberCells = ['0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0'];
+    numberCells = Array.from({length: 500}, (_, i) => i + 1);
+    // debugger;
     const ctx = document.getElementById('myChart').getContext('2d');
-    const valueEmotions_Neutral = localStorage.getItem('dataNeutral');
-    const valueEmotions_Angry = localStorage.getItem('dataAngry');
-    const valueEmotions_Sad = localStorage.getItem('dataSad');
-    const valueEmotions_Surprised = localStorage.getItem('dataSurprise');
-    const valueEmotions_Happy = localStorage.getItem('dataHappy');
-      const myChart = new Chart(ctx, {
+    // const valueEmotions_Neutral = localStorage.getItem('dataNeutral');
+    // const valueEmotions_Angry = localStorage.getItem('dataAngry');
+    // const valueEmotions_Sad = localStorage.getItem('dataSad');
+    // const valueEmotions_Surprised = localStorage.getItem('dataSurprise');
+    // const valueEmotions_Happy = localStorage.getItem('dataHappy');
+      myChart = new Chart(ctx, {
           type: 'line',
           data: {
-            labels: numberCells,
+              labels: numberCells,
               datasets: [
                 {
                   label: 'ANGRY',
-                  data: valueEmotions_Angry.split(','),
+                  data: [], //valueEmotions_Angry.split(','),
                   fill: false,
                   tension: 0.4,
                   backgroundColor: [
@@ -771,7 +797,7 @@ const myChartEmotions = async() => {
             },
             {
               label: 'NEUTRAL',
-              data: valueEmotions_Neutral.split(','),
+              data: [], //valueEmotions_Neutral.split(','),
               fill: false,
               tension: 0.4,
               backgroundColor: [
@@ -784,7 +810,7 @@ const myChartEmotions = async() => {
             },
             {
               label: 'HAPPY',
-              data: valueEmotions_Happy.split(','),
+              data: [], //valueEmotions_Happy.split(','),
               fill: false,
               backgroundColor: [
                 'rgba(24, 144, 255, 1)',
@@ -796,7 +822,7 @@ const myChartEmotions = async() => {
             },
             {
               label: 'SAD',
-              data: valueEmotions_Sad.split(','),
+              data: [], //valueEmotions_Sad.split(','),
               fill: false,
               backgroundColor: [
                 'rgba(89, 126, 247, 1)',
@@ -808,7 +834,7 @@ const myChartEmotions = async() => {
             },
             {
               label: 'SURPRISE',
-                data: valueEmotions_Surprised.split(','),
+                data: [],//valueEmotions_Surprised.split(','),
                 fill: false,
                 backgroundColor: [
                   'rgba(255, 197, 61, 1)',
@@ -832,8 +858,8 @@ const myChartEmotions = async() => {
                 xAxes: [{
                   ticks: {
                     beginAtZero: true,
-                    min: 0,
-                    max: 1,
+                    // min: 0,
+                    // max: 1,
                     },
                     }],
               },
@@ -895,9 +921,10 @@ const setupPage = async () => {
   valueActiveLabel = document.getElementById('value_active_label');
   valueVibeLabel = document.getElementById('value_vibe_label');
 
+  myChartEmotions();
   renderPrediction();
   //chartEmotions();
-  myChartEmotions();
+  // myChartEmotions();
   document.getElementById('btnPicture').addEventListener('click', showImg);
   document.getElementById('btnWebcam').addEventListener('click', showWebcam);
   document.getElementById('btnVideoClip').addEventListener('click', showVideoClip);
