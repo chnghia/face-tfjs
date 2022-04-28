@@ -56,29 +56,44 @@ let emotionsHappy;
 let emotionsSad;
 let emotionsNeutral;
 let emotionsSurprise;
+let emotionPositive;
+let emotionActive;
+let emotionVibe;
 var dataEmotionsNeutral = [];
 var dataEmotionsAngry = [];
 var dataEmotionHappy = [];
 var dataEmotionSurprised = []; 
 var dataEmotionSad = [];
+var dataEmtionsPositive = [];
+var dataEmtionActive = [];
+var dataEmtionVibe = [];
 
 var dataEmotionsNeutral_Img = [];
 var dataEmotionsAngry_Img= [];
 var dataEmotionHappy_Img = [];
 var dataEmotionSurprised_Img = []; 
 var dataEmotionSad_Img = [];
+var dataEmtionsPositive_Img = [];
+var dataEmtionActive_Img = [];
+var dataEmtionVibe_Img = [];
 
 var dataEmotionsNeutral_Clip = [];
 var dataEmotionsAngry_Clip= [];
 var dataEmotionHappy_Clip = [];
 var dataEmotionSurprised_Clip = []; 
 var dataEmotionSad_Clip = [];
+var dataEmtionsPositive_Clip= [];
+var dataEmtionActive_Clip = [];
+var dataEmtionVibe_Clip = [];
 
 var dataEmotionsNeutral_Webcam = [];
 var dataEmotionsAngry_Webcam= [];
 var dataEmotionHappy_Webcam = [];
 var dataEmotionSurprised_Webcam = []; 
 var dataEmotionSad_Webcam = [];
+var dataEmtionsPositive_Webcam = [];
+var dataEmtionActive_Webcam = [];
+var dataEmtionVibe_Webcam = [];
 
 let numberCells;
 let myChart;
@@ -180,6 +195,15 @@ const renderPrediction = async () => {
       dataEmotionSurprised.push(emotionsSurprise);
       // localStorage.setItem('dataSurprise', dataEmotionSurprised);
 
+      emotionPositive = [(pipeline.estimatePositive(emotions).toFixed(3))];
+      dataEmtionsPositive.push(emotionPositive);
+
+      emotionActive = [(pipeline.estimateActive(emotions).toFixed(3))];
+      dataEmtionActive.push(emotionActive);
+
+      emotionVibe = [(pipeline.estimateVibe(emotions).toFixed(3))];
+      dataEmtionVibe.push(emotionVibe);
+
       if (dataEmotionsAngry.length >= 500) {
         
         dataEmotionsAngry.shift();
@@ -187,6 +211,9 @@ const renderPrediction = async () => {
         dataEmotionHappy.shift();
         dataEmotionSad.shift();
         dataEmotionSurprised.shift();
+        dataEmtionsPositive.shift();
+        dataEmtionActive.shift();
+        dataEmtionVibe.shift();
 
         numberCells.push(numberCells.length);
         numberCells.shift();
@@ -198,6 +225,9 @@ const renderPrediction = async () => {
       myChart.data.datasets[2].data = dataEmotionHappy;
       myChart.data.datasets[3].data = dataEmotionSad;
       myChart.data.datasets[4].data = dataEmotionSurprised;
+      myChart.data.datasets[5].data = dataEmtionsPositive;
+      myChart.data.datasets[6].data = dataEmtionActive;
+      myChart.data.datasets[7].data = dataEmtionVibe;
       myChart.update();
 
 
@@ -317,6 +347,15 @@ const renderPredictionImg = async () => {
       emotionsSurprise = [emotions[4].toFixed(3)];
       dataEmotionSurprised_Img.push(emotionsSurprise);
 
+      emotionPositive = [(pipeline.estimatePositive(emotions).toFixed(3))];
+      dataEmtionsPositive_Img.push(emotionPositive);
+
+      emotionActive = [(pipeline.estimateActive(emotions).toFixed(3))];
+      dataEmtionActive_Img.push(emotionActive);
+
+      emotionVibe = [(pipeline.estimateVibe(emotions).toFixed(3))];
+      dataEmtionVibe_Img.push(emotionVibe);
+
       if (dataEmotionsAngry_Img.length >= 500) {
         dataEmotionsAngry_Img.shift();
         dataEmotionsNeutral_Img.shift();
@@ -324,6 +363,9 @@ const renderPredictionImg = async () => {
         console.log(emotionsNeutral);
         dataEmotionSad_Img.shift();
         dataEmotionSurprised_Img.shift();
+        dataEmtionsPositive_Img.shift();
+        dataEmtionActive_Img.shift();
+        dataEmtionVibe_Img.shift();
         numberCells.push(numberCells.length);
         numberCells.shift();
       }
@@ -334,6 +376,9 @@ const renderPredictionImg = async () => {
       myChart.data.datasets[2].data = dataEmotionHappy_Img;
       myChart.data.datasets[3].data = dataEmotionSad_Img;
       myChart.data.datasets[4].data = dataEmotionSurprised_Img;
+      myChart.data.datasets[5].data = dataEmtionsPositive_Img;
+      myChart.data.datasets[6].data = dataEmtionActive_Img;
+      myChart.data.datasets[7].data = dataEmtionVibe_Img;
       myChart.update();
 
       if (returnTensors) {
@@ -436,22 +481,37 @@ const renderPredictionVideoClip = async () => {
       emotionsSurprise = [emotions[4].toFixed(3)];
       dataEmotionSurprised_Clip.push(emotionsSurprise);
 
+      emotionPositive = [(pipeline.estimatePositive(emotions).toFixed(3))];
+      dataEmtionsPositive_Clip.push(emotionPositive);
+
+      emotionActive = [(pipeline.estimateActive(emotions).toFixed(3))];
+      dataEmtionActive_Clip.push(emotionActive);
+
+      emotionVibe = [(pipeline.estimateVibe(emotions).toFixed(3))];
+      dataEmtionVibe_Clip.push(emotionVibe);
+
       if (dataEmotionsAngry_Clip.length >= 500) {
         dataEmotionsAngry_Clip.shift();
         dataEmotionsNeutral_Clip.shift();
         dataEmotionHappy_Clip.shift();
         dataEmotionSad_Clip.shift();
         dataEmotionSurprised_Clip.shift();
+        dataEmtionsPositive_Clip.shift();
+        dataEmtionActive_Clip.shift();
+        dataEmtionVibe_Clip.shift();
         numberCells.push(numberCells.length);
         numberCells.shift();
       }
 
       myChart.data.labels = numberCells;
-      myChart.data.datasets[0].data = dataEmotionsAngry_Img;
-      myChart.data.datasets[1].data = dataEmotionsNeutral_Img;
-      myChart.data.datasets[2].data = dataEmotionHappy_Img;
-      myChart.data.datasets[3].data = dataEmotionSad_Img;
-      myChart.data.datasets[4].data = dataEmotionSurprised_Img;
+      myChart.data.datasets[0].data = dataEmotionsAngry_Clip;
+      myChart.data.datasets[1].data = dataEmotionsNeutral_Clip;
+      myChart.data.datasets[2].data = dataEmotionHappy_Clip;
+      myChart.data.datasets[3].data = dataEmotionSad_Clip;
+      myChart.data.datasets[4].data = dataEmotionSurprised_Clip;
+      myChart.data.datasets[5].data = dataEmtionsPositive_Clip;
+      myChart.data.datasets[6].data = dataEmtionActive_Clip;
+      myChart.data.datasets[7].data = dataEmtionVibe_Clip;
       myChart.update();
 
       if (returnTensors) {
@@ -690,6 +750,15 @@ const renderPrediction_Webcam = async () => {
       dataEmotionSurprised_Webcam.push(emotionsSurprise);
       // localStorage.setItem('dataSurprise', dataEmotionSurprised);
 
+      emotionPositive = [(pipeline.estimatePositive(emotions).toFixed(3))];
+      dataEmtionsPositive_Webcam.push(emotionPositive);
+
+      emotionActive = [(pipeline.estimateActive(emotions).toFixed(3))];
+      dataEmtionActive_Webcam.push(emotionActive);
+
+      emotionVibe = [(pipeline.estimateVibe(emotions).toFixed(3))];
+      dataEmtionVibe_Webcam.push(emotionVibe);
+
       if (dataEmotionsAngry_Webcam.length >= 500) {
         
         dataEmotionsAngry_Webcam.shift();
@@ -697,6 +766,10 @@ const renderPrediction_Webcam = async () => {
         dataEmotionHappy_Webcam.shift();
         dataEmotionSad_Webcam.shift();
         dataEmotionSurprised_Webcam.shift();
+        dataEmotionSurprised_Webcam.shift();
+        dataEmtionsPositive_Webcam.shift();
+        dataEmtionActive_Webcam.shift();
+        dataEmtionVibe_Webcam.shift();
 
         numberCells.push(numberCells.length);
         numberCells.shift();
@@ -708,8 +781,10 @@ const renderPrediction_Webcam = async () => {
       myChart.data.datasets[2].data = dataEmotionHappy_Webcam;
       myChart.data.datasets[3].data = dataEmotionSad_Webcam;
       myChart.data.datasets[4].data = dataEmotionSurprised_Webcam;
+      myChart.data.datasets[5].data = dataEmtionsPositive_Webcam;
+      myChart.data.datasets[6].data = dataEmtionActive_Webcam;
+      myChart.data.datasets[7].data = dataEmtionVibe_Webcam;
       myChart.update();
-
 
       if (returnTensors) {  
         face.topLeft = face.topLeft.arraySync();
@@ -839,6 +914,17 @@ async function showWebcam() {
 }
 
 async function showEmotions() {
+
+  document.getElementById('block_positive').style.display = 'none',
+  document.getElementById('block_active').style.display = 'none',
+  document.getElementById('block_vibe').style.display = 'none',
+
+  document.getElementById('block_neutral').style.display = 'flex',
+  document.getElementById('block_angry').style.display = 'flex',
+  document.getElementById('block_happy').style.display = 'flex',
+  document.getElementById('block_sad').style.display = 'flex',
+  document.getElementById('block_supprise').style.display = 'flex',
+
   document.getElementById('btn_emotions').style.color = 'rgba(24, 144, 255, 1)';
   document.getElementById('btn_emotions').style.borderColor = 'rgba(24, 144, 255, 1)';
 
@@ -876,6 +962,19 @@ async function showEmotions() {
 }
 
 async function showPositiveActive() {
+
+  document.getElementById('block_positive').style.display = 'flex',
+  document.getElementById('block_active').style.display = 'flex',
+  document.getElementById('block_positive').style.paddingLeft = '1em',
+  // document.getElementById('block_active').style.paddingLeft = '1em',
+  document.getElementById('block_vibe').style.display = 'none',
+
+  document.getElementById('block_neutral').style.display = 'none',
+  document.getElementById('block_angry').style.display = 'none',
+  document.getElementById('block_happy').style.display = 'none',
+  document.getElementById('block_sad').style.display = 'none',
+  document.getElementById('block_supprise').style.display = 'none',
+
   document.getElementById('btn_positive-active').style.color = 'rgba(24, 144, 255, 1)';
   document.getElementById('btn_positive-active').style.borderColor = 'rgba(24, 144, 255, 1)';
 
@@ -912,6 +1011,19 @@ async function showPositiveActive() {
 }
 
 async function showVibes() {
+
+  document.getElementById('block_positive').style.display = 'none',
+  document.getElementById('block_active').style.display = 'none',
+
+  document.getElementById('block_vibe').style.display = 'flex',
+  document.getElementById('block_vibe').style.paddingLeft = '5em',
+
+  document.getElementById('block_neutral').style.display = 'none',
+  document.getElementById('block_angry').style.display = 'none',
+  document.getElementById('block_happy').style.display = 'none',
+  document.getElementById('block_sad').style.display = 'none',
+  document.getElementById('block_supprise').style.display = 'none',
+
   document.getElementById('btn_vibes').style.color = 'rgba(24, 144, 255, 1)';
   document.getElementById('btn_vibes').style.borderColor = 'rgba(24, 144, 255, 1)';
 
@@ -949,6 +1061,22 @@ async function showVibes() {
 }
 
 async function showAll() {
+
+  document.getElementById('block_positive').style.display = 'flex',
+  document.getElementById('block_active').style.display = 'flex',
+  document.getElementById('block_vibe').style.display = 'flex',
+
+  document.getElementById('block_vibe').style.paddingLeft = '0px',
+  document.getElementById('block_positive').style.paddingLeft = '0px',
+  document.getElementById('block_active').style.paddingLeft = 'px',
+
+
+  document.getElementById('block_neutral').style.display = 'flex',
+  document.getElementById('block_angry').style.display = 'flex',
+  document.getElementById('block_happy').style.display = 'flex',
+  document.getElementById('block_sad').style.display = 'flex',
+  document.getElementById('block_supprise').style.display = 'flex',
+
   document.getElementById('btn_all').style.color = 'rgba(24, 144, 255, 1)';
   document.getElementById('btn_all').style.borderColor = 'rgba(24, 144, 255, 1)';
 
@@ -983,6 +1111,17 @@ async function showAll() {
 
   document.getElementById('label_vibes').style.display = 'flex';
   document.getElementById('bar_vibes').style.display = 'flex';
+
+  myChart.getDatasetMeta(0).hidden = false;
+  myChart.getDatasetMeta(1).hidden = false;
+  myChart.getDatasetMeta(2).hidden = false;
+  myChart.getDatasetMeta(3).hidden = false;
+  myChart.getDatasetMeta(4).hidden = false;
+
+  myChart.getDatasetMeta(5).hidden = false;
+  myChart.getDatasetMeta(6).hidden = false;
+
+  myChart.getDatasetMeta(7).hidden = false;
 }
 
 
@@ -1063,6 +1202,42 @@ const myChartEmotions = async() => {
                 ],
                 borderWidth: 2,
               },
+              {
+                label: 'POSITIVE',
+                  data: [],//valueEmotions_Surprised.split(','),
+                  fill: false,
+                  backgroundColor: [
+                    'rgba(67, 67, 67, 1)',
+                  ],
+                  borderColor: [
+                    'rgba(67, 67, 61, 1)',
+                  ],
+                  borderWidth: 2,
+                },
+                {
+                  label: 'ACTIVE',
+                    data: [],//valueEmotions_Surprised.split(','),
+                    fill: false,
+                    backgroundColor: [
+                      'rgba(115, 209, 61, 1)',
+                    ],
+                    borderColor: [
+                      'rgba(115, 209, 61, 1)',
+                    ],
+                    borderWidth: 2,
+                  },
+                  {
+                    label: 'VIBE',
+                      data: [],//valueEmotions_Surprised.split(','),
+                      fill: false,
+                      backgroundColor: [
+                        'rgba(247, 89, 171, 1)',
+                      ],
+                      borderColor: [
+                        'rgba(247, 89, 171, 1)',
+                      ],
+                      borderWidth: 2,
+                    },
             ],
           },
           options: {
@@ -1178,6 +1353,42 @@ const myChartEmotions_Img = async() => {
                 ],
                 borderWidth: 2,
               },
+              {
+                label: 'POSITIVE',
+                  data: [],//valueEmotions_Surprised.split(','),
+                  fill: false,
+                  backgroundColor: [
+                    'rgba(67, 67, 67, 1)',
+                  ],
+                  borderColor: [
+                    'rgba(67, 67, 61, 1)',
+                  ],
+                  borderWidth: 2,
+                },
+                {
+                  label: 'ACTIVE',
+                    data: [],//valueEmotions_Surprised.split(','),
+                    fill: false,
+                    backgroundColor: [
+                      'rgba(115, 209, 61, 1)',
+                    ],
+                    borderColor: [
+                      'rgba(115, 209, 61, 1)',
+                    ],
+                    borderWidth: 2,
+                  },
+                  {
+                    label: 'VIBE',
+                      data: [],//valueEmotions_Surprised.split(','),
+                      fill: false,
+                      backgroundColor: [
+                        'rgba(247, 89, 171, 1)',
+                      ],
+                      borderColor: [
+                        'rgba(247, 89, 171, 1)',
+                      ],
+                      borderWidth: 2,
+                    },
             ],
           },
           options: {
@@ -1295,6 +1506,42 @@ const myChartEmotions_Clip = async() => {
                 ],
                 borderWidth: 2,
               },
+              {
+                label: 'POSITIVE',
+                  data: [],//valueEmotions_Surprised.split(','),
+                  fill: false,
+                  backgroundColor: [
+                    'rgba(67, 67, 67, 1)',
+                  ],
+                  borderColor: [
+                    'rgba(67, 67, 61, 1)',
+                  ],
+                  borderWidth: 2,
+                },
+                {
+                  label: 'ACTIVE',
+                    data: [],//valueEmotions_Surprised.split(','),
+                    fill: false,
+                    backgroundColor: [
+                      'rgba(115, 209, 61, 1)',
+                    ],
+                    borderColor: [
+                      'rgba(115, 209, 61, 1)',
+                    ],
+                    borderWidth: 2,
+                  },
+                  {
+                    label: 'VIBE',
+                      data: [],//valueEmotions_Surprised.split(','),
+                      fill: false,
+                      backgroundColor: [
+                        'rgba(247, 89, 171, 1)',
+                      ],
+                      borderColor: [
+                        'rgba(247, 89, 171, 1)',
+                      ],
+                      borderWidth: 2,
+                    },
             ],
           },
           options: {
@@ -1412,6 +1659,42 @@ const myChartEmotions_Webcam = async() => {
                 ],
                 borderWidth: 2,
               },
+              {
+                label: 'POSITIVE',
+                  data: [],//valueEmotions_Surprised.split(','),
+                  fill: false,
+                  backgroundColor: [
+                    'rgba(67, 67, 67, 1)',
+                  ],
+                  borderColor: [
+                    'rgba(67, 67, 61, 1)',
+                  ],
+                  borderWidth: 2,
+                },
+                {
+                  label: 'ACTIVE',
+                    data: [],//valueEmotions_Surprised.split(','),
+                    fill: false,
+                    backgroundColor: [
+                      'rgba(115, 209, 61, 1)',
+                    ],
+                    borderColor: [
+                      'rgba(115, 209, 61, 1)',
+                    ],
+                    borderWidth: 2,
+                  },
+                  {
+                    label: 'VIBE',
+                      data: [],//valueEmotions_Surprised.split(','),
+                      fill: false,
+                      backgroundColor: [
+                        'rgba(247, 89, 171, 1)',
+                      ],
+                      borderColor: [
+                        'rgba(247, 89, 171, 1)',
+                      ],
+                      borderWidth: 2,
+                    },
             ],
           },
           options: {
@@ -1452,6 +1735,52 @@ const myChartEmotions_Webcam = async() => {
     }); 
 }
 
+// function hideData() {
+//   myChart.data.datasets.forEach(function(ds) {
+//     console.log(ds);
+//     ds.hidden = !ds.hidden;
+//     //ds._meta[0].hidden = !ds._meta[0].hidden
+//     //ds._meta[0].dataset.hidden = !ds._meta[0].dataset.hidden
+//   });
+//   myChart.update();
+// }
+
+function hideDataEmotions() {
+  myChart.getDatasetMeta(5).hidden = true;
+  myChart.getDatasetMeta(6).hidden = true;
+  myChart.getDatasetMeta(7).hidden = true;  
+
+  myChart.getDatasetMeta(0).hidden = false;
+  myChart.getDatasetMeta(1).hidden = false;
+  myChart.getDatasetMeta(2).hidden = false;
+  myChart.getDatasetMeta(3).hidden = false;
+  myChart.getDatasetMeta(4).hidden = false;
+}
+
+function hideDataPositive() {
+  myChart.getDatasetMeta(0).hidden = true;
+  myChart.getDatasetMeta(1).hidden = true;
+  myChart.getDatasetMeta(2).hidden = true;
+  myChart.getDatasetMeta(3).hidden = true;
+  myChart.getDatasetMeta(4).hidden = true;
+  myChart.getDatasetMeta(7).hidden = true;
+
+  myChart.getDatasetMeta(5).hidden = false;
+  myChart.getDatasetMeta(6).hidden = false; 
+}
+
+function hideDataVibe () {
+  myChart.getDatasetMeta(0).hidden = true;
+  myChart.getDatasetMeta(1).hidden = true;
+  myChart.getDatasetMeta(2).hidden = true;
+  myChart.getDatasetMeta(3).hidden = true;
+  myChart.getDatasetMeta(4).hidden = true;
+
+  myChart.getDatasetMeta(5).hidden = true;
+  myChart.getDatasetMeta(6).hidden = true;
+
+  myChart.getDatasetMeta(7).hidden = false;
+}
 const setupPage = async () => {
   await tf.setBackend(state.backend);
   await setupCamera();
@@ -1503,5 +1832,9 @@ const setupPage = async () => {
   document.getElementById('btn_positive-active').addEventListener('click', showPositiveActive);
   document.getElementById('btn_vibes').addEventListener('click', showVibes);
   document.getElementById('btn_all').addEventListener('click', showAll);
-};
+  document.getElementById('btn_emotions').addEventListener('click', hideDataEmotions);
+  document.getElementById('btn_positive-active').addEventListener('click', hideDataPositive);
+  document.getElementById('btn_vibes').addEventListener('click', hideDataVibe);
+
+}
 setupPage();
