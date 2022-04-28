@@ -34,7 +34,7 @@
       <div class="relative px-6 pt-10 pb-8 bg-white shadow-xl ring-1 ring-gray-900/5 sm:w-auto sm:mx-auto sm:rounded-lg sm:px-10">
         <div class="w-auto mx-auto">
           <div class="md:flex flex-row">
-            <div class="space-y-6 flex-col">
+            <div class="space-y-2 flex-col">
               <div class="mb-6 z-50 sticky">
                 <div>
                   <button class="w-56 text-white justify-between rounded text-base px-4 py-2.5 text-center inline-flex items-center" style="background-color: #1890FF;" type="button" data-dropdown-toggle="dropdown">Webcam
@@ -84,21 +84,45 @@
                 <canvas id="output" class="absolute bottom-0 left-0"></canvas>
                 <div id="stats" class="sm:absolute top-3 h-3.5 left-10 overflow-hidden"></div>
               </div>
-              <div id="chartEmotions" class="overflow-hidden md:overflow-hidden " style="width: 507px; max-height: 215px;">
+              <div id="chartEmotions" class="mt-1 overflow-hidden md:overflow-hidden " style="width: 507px; max-height: 215px;">
                   <canvas id="myChart"></canvas>
               </div>
-              <div class="ml-9">
+              <div class="ml-9" id="group-positive_active_vibe">
                 <div class="flex items-center">
-                  <span class="block bg-red-500 mr-1" style="width: 12px; height: 13px"></span>
-                  <span class="text-sm font-normal mr-5">ANGRY</span>
-                  <span class="block mr-1" style="background-color: #BAE7FF;width: 12px; height: 13px"></span>
-                  <span class="text-sm font-normal mr-5">NEUTRAL</span>
-                  <span class="block mr-1" style="background-color:  #1890FF;width: 12px; height: 13px"></span>
-                  <span class="text-sm font-normal mr-5">HAPPY</span>
-                  <span class="block mr-1" style="background-color:  #597EF7;width: 12px; height: 13px"></span>
-                  <span class="text-sm font-normal mr-5">SAD</span>
-                  <span class="block mr-1" style="background-color:  #FFC53D;width: 12px; height: 13px"></span>
-                  <span class="text-sm font-normal mr-5">SURPRISE</span>
+                  <div id="block_angry"class="flex items-center">
+                    <span class="block bg-red-500 mr-1" style="width: 12px; height: 13px"></span>
+                    <span class="text-sm font-normal mr-5">ANGRY</span>
+                  </div>
+                  <div id="block_neutral" class="flex items-center">
+                    <span class="block mr-1" style="background-color: #BAE7FF;width: 12px; height: 13px"></span>
+                    <span class="text-sm font-normal mr-5">NEUTRAL</span>
+                  </div>
+                  <div id="block_happy" class="flex items-center">
+                    <span class="block mr-1" style="background-color:  #1890FF;width: 12px; height: 13px"></span>
+                    <span class="text-sm font-normal mr-5">HAPPY</span>
+                  </div>
+                  <div id="block_sad" class="flex items-center">
+                    <span class="block mr-1" style="background-color:  #597EF7;width: 12px; height: 13px"></span>
+                    <span class="text-sm font-normal mr-5">SAD</span>
+                  </div>
+                  <div id="block_supprise" class="flex items-center">
+                    <span class="block mr-1" style="background-color:  #FFC53D;width: 12px; height: 13px"></span>
+                    <span class="text-sm font-normal mr-5">SURPRISE</span>
+                  </div>
+                </div>
+                <div class="flex items-center mt-1" style="padding-left: 5.25em; padding-right:12.3em;">
+                  <div id="block_positive" class="flex items-center">
+                    <span class="block mr-1" style="background-color:  #434343;width: 12px; height: 13px"></span>
+                    <span class="text-sm font-normal mr-5">POSITIVE</span>
+                  </div>
+                  <div id="block_active" class="flex items-center">
+                    <span class="block mr-1" style="background-color:  #73D13D;width: 12px; height: 13px"></span>
+                    <span class="text-sm font-normal mr-5">ACTIVE</span>
+                  </div>
+                  <div id="block_vibe" class="flex items-center">
+                    <span class="block mr-1" style="background-color:  #F759AB;width: 12px; height: 13px"></span>
+                    <span class="text-sm font-normal mr-5">VIBE</span>
+                  </div>
                 </div>
               </div>
             </div>
