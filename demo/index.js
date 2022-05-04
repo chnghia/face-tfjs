@@ -98,7 +98,10 @@ let dataEmtionVibe_Webcam = [];
 
 let numberCells;
 let myChart;
+// eslint-disable-next-line one-var
 let beginTime = Date.now(), prevTime = beginTime;
+const maxFrameChart = 200;
+const timeFrameCapture = 500;
 
 const state = {
   backend: 'wasm',
@@ -168,7 +171,7 @@ const renderPrediction = async () => {
   const annotateBoxes = true;
   let time = Date.now();
 
-  if ( time >= prevTime + 500 ) {
+  if ( time >= prevTime + timeFrameCapture ) {
     prevTime = time;
 
     const predictions = await pipeline.estimateEmotion(video);
@@ -209,7 +212,7 @@ const renderPrediction = async () => {
         emotionVibe = [(pipeline.estimateVibe(emotions).toFixed(3))];
         dataEmtionVibe.push(emotionVibe);
 
-        if (dataEmotionsAngry.length >= 500) {
+        if (dataEmotionsAngry.length >= maxFrameChart) {
           dataEmotionsAngry.shift();
           dataEmotionsNeutral.shift();
           dataEmotionHappy.shift();
@@ -235,7 +238,7 @@ const renderPrediction = async () => {
         myChart.update();
 
 
-        if (returnTensors) {  
+        if (returnTensors) {
           face.topLeft = face.topLeft.arraySync();
           face.bottomRight = face.bottomRight.arraySync();
           if (annotateBoxes) {
@@ -328,7 +331,7 @@ const renderPredictionImg = async () => {
       emotionVibe = [(pipeline.estimateVibe(emotions).toFixed(3))];
       dataEmtionVibe_Img.push(emotionVibe);
 
-      if (dataEmotionsAngry_Img.length >= 500) {
+      if (dataEmotionsAngry_Img.length >= maxFrameChart) {
         dataEmotionsAngry_Img.shift();
         dataEmotionsNeutral_Img.shift();
         dataEmotionHappy_Img.shift();
@@ -462,7 +465,7 @@ const renderPredictionVideoClip = async () => {
       emotionVibe = [(pipeline.estimateVibe(emotions).toFixed(3))];
       dataEmtionVibe_Clip.push(emotionVibe);
 
-      if (dataEmotionsAngry_Clip.length >= 500) {
+      if (dataEmotionsAngry_Clip.length >= maxFrameChart) {
         dataEmotionsAngry_Clip.shift();
         dataEmotionsNeutral_Clip.shift();
         dataEmotionHappy_Clip.shift();
@@ -701,7 +704,7 @@ const renderPrediction_Webcam = async () => {
 
   let time = Date.now();
 
-  if ( time >= prevTime + 500 ) {
+  if ( time >= prevTime + timeFrameCapture ) {
     prevTime = time;
 
     const predictions = await pipeline.estimateEmotion(video);
@@ -741,7 +744,7 @@ const renderPrediction_Webcam = async () => {
         emotionVibe = [(pipeline.estimateVibe(emotions).toFixed(3))];
         dataEmtionVibe_Webcam.push(emotionVibe);
 
-        if (dataEmotionsAngry_Webcam.length >= 500) {
+        if (dataEmotionsAngry_Webcam.length >= maxFrameChart) {
           dataEmotionsAngry_Webcam.shift();
           dataEmotionsNeutral_Webcam.shift();
           dataEmotionHappy_Webcam.shift();
@@ -1085,7 +1088,7 @@ async function showAll() {
 
 const myChartEmotions = async() => {
   // const numberCells = ['0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0'];
-    numberCells = Array.from({length: 500}, (_, i) => i + 1);
+    numberCells = Array.from({length: maxFrameChart}, (_, i) => i + 1);
     // debugger;
     const ctx = document.getElementById('myChart').getContext('2d');
     // const valueEmotions_Neutral = localStorage.getItem('dataNeutral');
@@ -1236,7 +1239,7 @@ const myChartEmotions = async() => {
 
 const myChartEmotions_Img = async() => {
   // const numberCells = ['0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0'];
-    numberCells = Array.from({length: 500}, (_, i) => i + 1);
+    numberCells = Array.from({length: maxFrameChart}, (_, i) => i + 1);
     // debugger;
     const ctx = document.getElementById('myChart').getContext('2d');
     // const valueEmotions_Neutral = localStorage.getItem('dataNeutral');
@@ -1388,7 +1391,7 @@ const myChartEmotions_Img = async() => {
 
 const myChartEmotions_Clip = async() => {
   // const numberCells = ['0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0'];
-    numberCells = Array.from({length: 500}, (_, i) => i + 1);
+    numberCells = Array.from({length: maxFrameChart}, (_, i) => i + 1);
     // debugger;
     const ctx = document.getElementById('myChart').getContext('2d');
     // const valueEmotions_Neutral = localStorage.getItem('dataNeutral');
@@ -1542,7 +1545,7 @@ const myChartEmotions_Clip = async() => {
 
 const myChartEmotions_Webcam = async() => {
   // const numberCells = ['0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0'];
-    numberCells = Array.from({length: 500}, (_, i) => i + 1);
+    numberCells = Array.from({length: maxFrameChart}, (_, i) => i + 1);
     // debugger;
     const ctx = document.getElementById('myChart').getContext('2d');
     // const valueEmotions_Neutral = localStorage.getItem('dataNeutral');
