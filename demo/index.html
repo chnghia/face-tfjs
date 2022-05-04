@@ -27,18 +27,44 @@
         </button>
       </div>
     </div>
-    <div class="min-h-screen bg-gray-50 py-6 flex flex-col justify-center relative overflow-hidden sm:py-12">
-      <div class="relative px-6 pt-10 pb-8 bg-white shadow-xl ring-1 ring-gray-900/5 sm:w-auto sm:mx-auto sm:rounded-lg sm:px-10">
+    <div class="min-h-screen bg-gray-50 py-6 px-4 flex flex-col justify-center relative overflow-hidden sm:py-6">
+      <div class="relative px-6 pt-8 pb-8 bg-white shadow-xl ring-1 ring-gray-900/5 sm:w-auto sm:mx-auto sm:rounded-lg sm:px-10">
         <div class="w-auto mx-auto">
-          <div class="md:flex flex-row">
-            <div class="flex-col">
-              <div class="z-50 sticky">
-                <div>
+          <div class="flex flex-col">
+            <div class="flex flex-col md:flex-row flex-wraps">
+              <div class="relative text-base leading-7 text-gray-600 pb-4">
+                <div id="uploadImg" class="relative place-items-center" style="display: none;">
+                  <div class="wrapper absolute relative align-center justify-center border border-gray-300">
+                    <img id="img" class="object-scale-down w-[520px] h-[300px] md:h-[515px]"></img>
+                    <div id="dragFile" class="absolute z-10 bottom-2/4 px-36">
+                      <label class="items-center text-center space-x-2">
+                        <span class="font-medium text-gray-600"> Drag files to Attach, or
+                          <span class="text-blue-600 underline cursor-pointer">browse</span>
+                        </span>
+                        <input type="file" class="hidden" name="file_upload" id="imageInput" accept="image/*">
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div id="movie" style="display:none" class="border border-gray-300">
+                  <video id="videoClip" playsinline class="w-[520px] sm:h-[524px] md:-h[524px] lg:h-[524px] xl:h-[520px]" controls src="video.mp4"></video>
+                </div>
+                <video
+                  id="video"
+                  playsinline
+                  class="w-[520px] object-cover md:h-[515px]"
+                  style="-webkit-transform: scaleX(-1); transform: scaleX(-1);"
+                ></video>
+                <canvas id="output" class="absolute bottom-0 left-0 "></canvas>
+                <div id="stats" class="absolute top-3 h-3.5 right-56 overflow-hidden left-2"></div>
+              </div>
+              <div class="z-50 sticky order-first md:order-none md:col-span-1 md:w-0 md:pl-5 pb-2 md:pb-0">
+                <div class="md:pl-3">
                   <button class="w-full sm:w-56 md:w-56 lg:w-56 xl-56 text-white justify-between rounded text-base px-4 py-2.5 text-center inline-flex items-center" style="background-color: #1890FF;" type="button" data-dropdown-toggle="dropdown">Webcam
                     <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                     </svg>
-                 </button>
+                    </svg>
+                  </button>
                 </div>
                 <div class="w-full sm:w-56 md:w-56 lg:w-56 xl-56 hidden bg-white text-base list-none divide-y divide-gray-100 rounded shadow my-4" id="dropdown">
                   <ul class="py-1" aria-labelledby="dropdown">
@@ -54,121 +80,94 @@
                   </ul>
                 </div>
               </div>
-              <div class="md:flex flex-row">
-                <div class="relative text-base leading-7 text-gray-600 py-4">
-                  <div id="uploadImg" class="relative place-items-center" style="display: none;">
-                    <div class="wrapper absolute relative align-center justify-center border border-gray-300">
-                      <img id="img" class="object-scale-down" style="width: 520px; height: 456px;"></img>
-                      <div id="dragFile" class="absolute z-10 bottom-2/4 px-36">
-                        <label class="items-center text-center space-x-2">
-                          <span class="font-medium text-gray-600"> Drag files to Attach, or
-                            <span class="text-blue-600 underline cursor-pointer">browse</span>
-                          </span>
-                          <input type="file" class="hidden" name="file_upload" id="imageInput" accept="image/*">
-                        </label>
-                      </div>
+              <div class="reverse divided-gray-100 z-20 sticky sm:pl-5 md:pl-0 sm:pt-6 md:pt-[4rem]">
+                <div class="flex items-center justify-center mb-5">
+                  <div class="inline-flex sm:px-3 md:px-3 lg:px-3 xl:px-3">
+                    <div class="block">
+                      <ul class="flex border-b">
+                        <li id="btn_emotions" class="mr-6 text-sm hover:text-blue-500 border-transparent border-b hover:border-b-blue-500 cursor-pointer">
+                          <button">Emotions</button>
+                        </li>
+                        <li id="btn_positive-active" class="mr-6 text-sm hover:text-blue-500 border-transparent border-b hover:border-b-blue-500 cursor-pointer">
+                          <button>Active/Positive</button>
+                        </li>
+                        <li id="btn_vibes" class="mr-6 text-sm hover:text-blue-500 border-transparent border-b hover:border-b-blue-500 cursor-pointer">
+                          <button">Vibes</button>
+                        </li>
+                        <li id="btn_all" class="w-14 text-sm hover:text-blue-500 border-transparent border-b hover:border-b-blue-500 text-center cursor-pointer">
+                          <button>All</button>
+                        </li>
+                      </ul>
                     </div>
                   </div>
-                  <div id="movie" style="display:none" class="border border-gray-300">
-                    <video id="videoClip" playsinline class="w-[562px] md:-h[456px] lg:h-[456px] xl:h-[457px]" controls src="video.mp4"></video>
-                  </div>
-                  <video
-                    id="video"
-                    playsinline
-                    class="w-[562px] object-cover md:h-[460px] lg:h-[456px] xl:h-[457px]"
-                    style="-webkit-transform: scaleX(-1); transform: scaleX(-1);"
-                  ></video>
-                  <canvas id="output" class="absolute bottom-0 left-0 "></canvas>
-                  <div id="stats" class="absolute top-7 h-3.5 right-56 overflow-hidden left-2 xl:absolute xl:bottom-0"></div>
                 </div>
-                <div class="divided-gray-100 z-20 sticky sm:pl-5 md:pl-5 xl:pl-5 lg:pl-5 sm:pt-6 md:pt-6 lg:pt-6 xl:pt-6">
-                  <div class="flex items-center justify-center mb-5">
-                    <div class="inline-flex sm:px-3 md:px-3 lg:px-3 xl:px-3">
-                      <div class="block">
-                        <ul class="flex border-b">
-                          <li id="btn_emotions" class="mr-6 text-sm hover:text-blue-500 border-transparent border-b hover:border-b-blue-500 cursor-pointer">
-                            <button">Emotions</button>
-                          </li>
-                          <li id="btn_positive-active" class="mr-6 text-sm hover:text-blue-500 border-transparent border-b hover:border-b-blue-500 cursor-pointer">
-                            <button>Active/Positive</button>
-                          </li>
-                          <li id="btn_vibes" class="mr-6 text-sm hover:text-blue-500 border-transparent border-b hover:border-b-blue-500 cursor-pointer">
-                            <button">Vibes</button>
-                          </li>
-                          <li id="btn_all" class="w-14 text-sm hover:text-blue-500 border-transparent border-b hover:border-b-blue-500 text-center cursor-pointer">
-                            <button>All</button>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
+                <div>
+                  <div class="flex justify-between" id="label_neutral">
+                    <div class="mb-1 text-sm font-normal">Neutral</div>
+                    <span id="value_neutral_label" class="text-sm font-normal dark:text-white">%</span>
                   </div>
+                  <div id="bar_neutral" class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
+                    <div id="value_neutral" class="h-2.5 rounded-full" style="background-color: #BAE7FF; width: 0%"></div>
+                  </div>
+                  <div class="flex justify-between mb-1" id="label_happy">
+                    <div class="mb-1 text-sm font-normal">Happy</div>
+                    <span id="value_happy_label" class="text-sm font-normal dark:text-white">%</span>
+                  </div>
+                  <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2" id="bar_happy">
+                    <div id="value_happy" class="h-2.5 rounded-full" style="background-color: #1890FF;width: 0%"></div>
+                  </div>
+                  <div class="flex justify-between mb-1" id="label_sad">
+                    <div class="mb-1 text-sm font-normal">Sad</div>
+                    <span id="value_sad_label" class="text-sm font-normal dark:text-white">%</span>
+                  </div>
+                  <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2" id="bar_sad">
+                    <div id="value_sad" class="bg-red-600 h-2.5 rounded-full" style="background-color: #597EF7; width: 0%"></div>
+                  </div>
+    
+                  <div class="flex justify-between mb-1" id="label_angry">
+                    <div class="mb-1 text-sm font-normal">Angry</div>
+                    <span id="value_angry_label" class="text-sm font-normal dark:text-white">%</span>
+                  </div>
+                  <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2" id="bar_angry">
+                    <div id="value_angry" class="bg-green-600 h-2.5 rounded-full" style="background-color: #FF4D4F; width: 0%"></div>
+                  </div>
+                  <div class="flex justify-between mb-1" id="label_surprised">
+                    <div class="mb-1 text-sm font-normal">Surprised</div>
+                    <span id="value_suprised_label" class="text-sm font-normal dark:text-white">%</span>
+                  </div>
+                  <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2" id="bar_surprised">
+                    <div id="value_suprised" class="h-2.5 rounded-full" style="background-color: #FFC53D;width: 0%"></div>
+                  </div>
+                  <div class="border-t mt-4 mb-2" id="border_positive-active"></div>
                   <div>
-                    <div class="flex justify-between" id="label_neutral">
-                      <div class="mb-1 text-sm font-normal">Neutral</div>
-                      <span id="value_neutral_label" class="text-sm font-normal dark:text-white">%</span>
+                    <div class="flex justify-between mb-1" id="label_positive">
+                      <div class="mb-1 text-sm font-normal">Positive</div>
+                      <span id="value_positive_label" class="text-sm font-normal dark:text-white">%</span>
                     </div>
-                    <div id="bar_neutral" class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
-                      <div id="value_neutral" class="h-2.5 rounded-full" style="background-color: #BAE7FF; width: 0%"></div>
-                    </div>
-                    <div class="flex justify-between mb-1" id="label_happy">
-                      <div class="mb-1 text-sm font-normal">Happy</div>
-                      <span id="value_happy_label" class="text-sm font-normal dark:text-white">%</span>
-                    </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2" id="bar_happy">
-                      <div id="value_happy" class="h-2.5 rounded-full" style="background-color: #1890FF;width: 0%"></div>
-                    </div>
-                    <div class="flex justify-between mb-1" id="label_sad">
-                      <div class="mb-1 text-sm font-normal">Sad</div>
-                      <span id="value_sad_label" class="text-sm font-normal dark:text-white">%</span>
-                    </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2" id="bar_sad">
-                      <div id="value_sad" class="bg-red-600 h-2.5 rounded-full" style="background-color: #597EF7; width: 0%"></div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2" id="bar_positive">
+                      <div id="value_positive" class="h-2.5 rounded-full" style="background-color: #434343;width: 0%"></div>
                     </div>
       
-                    <div class="flex justify-between mb-1" id="label_angry">
-                      <div class="mb-1 text-sm font-normal">Angry</div>
-                      <span id="value_angry_label" class="text-sm font-normal dark:text-white">%</span>
+                    <div class="flex justify-between mb-1" id="label_active">
+                      <div class="mb-1 text-sm font-normal">Active</div>
+                      <span id="value_active_label" class="text-sm font-normal dark:text-white">%</span>
                     </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2" id="bar_angry">
-                      <div id="value_angry" class="bg-green-600 h-2.5 rounded-full" style="background-color: #FF4D4F; width: 0%"></div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2" id="bar_active">
+                      <div id="value_active" class="h-2.5 rounded-full" style="background-color: #73D13D;width: 0%"></div>
                     </div>
-                    <div class="flex justify-between mb-1" id="label_surprised">
-                      <div class="mb-1 text-sm font-normal">Surprised</div>
-                      <span id="value_suprised_label" class="text-sm font-normal dark:text-white">%</span>
+                    <div class="border-t mt-5 mb-5" id="border_vibes"></div>
+                    <div class="flex justify-between mb-1" id="label_vibes">
+                      <div class="mb-1 text-sm font-normal">Vibes</div>
+                      <span id="value_vibe_label" class="text-sm font-normal dark:text-white">%</span>
                     </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2" id="bar_surprised">
-                      <div id="value_suprised" class="h-2.5 rounded-full" style="background-color: #FFC53D;width: 0%"></div>
-                    </div>
-                    <div class="border-t mt-4 mb-2" id="border_positive-active"></div>
-                    <div>
-                      <div class="flex justify-between mb-1" id="label_positive">
-                        <div class="mb-1 text-sm font-normal">Positive</div>
-                        <span id="value_positive_label" class="text-sm font-normal dark:text-white">%</span>
-                      </div>
-                      <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2" id="bar_positive">
-                        <div id="value_positive" class="h-2.5 rounded-full" style="background-color: #434343;width: 0%"></div>
-                      </div>
-        
-                      <div class="flex justify-between mb-1" id="label_active">
-                        <div class="mb-1 text-sm font-normal">Active</div>
-                        <span id="value_active_label" class="text-sm font-normal dark:text-white">%</span>
-                      </div>
-                      <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2" id="bar_active">
-                        <div id="value_active" class="h-2.5 rounded-full" style="background-color: #73D13D;width: 0%"></div>
-                      </div>
-                      <div class="border-t mt-5 mb-5" id="border_vibes"></div>
-                      <div class="flex justify-between mb-1" id="label_vibes">
-                        <div class="mb-1 text-sm font-normal">Vibes</div>
-                        <span id="value_vibe_label" class="text-sm font-normal dark:text-white">%</span>
-                      </div>
-                      <div class="w-full bg-gray-200 rounded-full h-2.5 mb-3" id="bar_vibes">
-                        <div id="value_vibe" class="h-2.5 rounded-full" style="background-color: #F759AB;width: 0%"></div>
-                      </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 mb-3" id="bar_vibes">
+                      <div id="value_vibe" class="h-2.5 rounded-full" style="background-color: #F759AB;width: 0%"></div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="md:w-[494px] lg:w-[562px] xl:w-[562px] mt-2">
+            </div>
+            <div class="md:w-[425px] lg:w-[520px] xl:w-[520px] mt-2 md:h-[290px]">
                 <canvas id="myChart" class="overflow-hidden"></canvas>
                 <div class="flex-col relative bottom-[43px]">
                   <div class="flex flex-wraps inline-flex py-2 pl-[2.25rem]">
@@ -212,7 +211,6 @@
                 </div>
               </div>
               </div>
-            </div>
             </div>
           </div>
         </div>
