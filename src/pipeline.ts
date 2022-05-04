@@ -112,9 +112,12 @@ export class EmotionPipeline {
 
         const logits = await this.emotionDetector.predict(faceImage as tf.Tensor4D);
         
+        
         // const softmax = tf.softmax(logits);
         // const values = await softmax.dataSync();
         const values = await logits.dataSync();
+        logits.dispose();
+        faceImage.dispose();
         // softmax.dispose();
 
         const result: Prediction = {

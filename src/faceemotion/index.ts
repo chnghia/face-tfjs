@@ -3,8 +3,9 @@ import * as tfconv from '@tensorflow/tfjs-converter';
 import { FaceEmotionModel } from './emotion';
 
 const FACEEMOTION_MODEL_URL =
-  // 'http://localhost:8080/web_model4/model.json';
+  // 'http://localhost:8080/best_tfjs_int/model.json';
   'https://storage.googleapis.com/mal-public/emotion/web_model4/model.json';
+  // 'https://storage.googleapis.com/mal-public/emotion/best_tfjs_int/model.json';
 
 interface FaceEmotionConfig {
   modelUrl?: string | tf.io.IOHandler;

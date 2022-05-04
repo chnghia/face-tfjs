@@ -27,15 +27,15 @@
         </button>
       </div>
     </div>
-    <div class="min-h-screen bg-gray-50 py-6 px-4 flex flex-col justify-center relative overflow-hidden sm:py-6">
+    <div class="min-h-screen bg-gray-50 py-6 px-4 flex flex-col justify-center relative overflow-hidden sm:py-2">
       <div class="relative px-6 pt-8 pb-8 bg-white shadow-xl ring-1 ring-gray-900/5 sm:w-auto sm:mx-auto sm:rounded-lg sm:px-10">
         <div class="w-auto mx-auto">
           <div class="flex flex-col">
             <div class="flex flex-col md:flex-row flex-wraps">
-              <div class="relative text-base leading-7 text-gray-600 pb-4">
+              <div class="relative text-base leading-7 text-gray-600">
                 <div id="uploadImg" class="relative place-items-center" style="display: none;">
                   <div class="wrapper absolute relative align-center justify-center border border-gray-300">
-                    <img id="img" class="object-scale-down w-[520px] h-[300px] md:h-[515px]"></img>
+                    <img id="img" class="object-scale-down w-[520px] h-[300px] md:h-[390px]"></img>
                     <div id="dragFile" class="absolute z-10 bottom-2/4 px-36">
                       <label class="items-center text-center space-x-2">
                         <span class="font-medium text-gray-600"> Drag files to Attach, or
@@ -47,20 +47,20 @@
                   </div>
                 </div>
                 <div id="movie" style="display:none" class="border border-gray-300">
-                  <video id="videoClip" playsinline class="w-[520px] sm:h-[524px] md:-h[524px] lg:h-[524px] xl:h-[520px]" controls src="video.mp4"></video>
+                  <video id="videoClip" playsinline class="w-[520px] sm:h-[390px] md:-h[390px] lg:h-[390px] xl:h-[390px]" controls src="video.mp4"></video>
                 </div>
                 <video
                   id="video"
                   playsinline
-                  class="w-[520px] object-cover md:h-[515px]"
+                  class="w-[520px] object-cover md:h-[390px]"
                   style="-webkit-transform: scaleX(-1); transform: scaleX(-1);"
                 ></video>
                 <canvas id="output" class="absolute bottom-0 left-0 "></canvas>
                 <div id="stats" class="absolute top-3 h-3.5 right-56 overflow-hidden left-2"></div>
               </div>
               <div class="z-50 sticky order-first md:order-none md:col-span-1 md:w-0 md:pl-5 pb-2 md:pb-0">
-                <div class="md:pl-3">
-                  <button class="w-full sm:w-56 md:w-56 lg:w-56 xl-56 text-white justify-between rounded text-base px-4 py-2.5 text-center inline-flex items-center" style="background-color: #1890FF;" type="button" data-dropdown-toggle="dropdown">Webcam
+                <div class="">
+                  <button id="dropdown_button" class="w-full sm:w-56 md:w-56 lg:w-56 xl-56 text-white justify-between rounded text-base px-4 py-2.5 text-center inline-flex items-center" style="background-color: #1890FF;" type="button" data-dropdown-toggle="dropdown">Webcam
                     <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
@@ -82,21 +82,21 @@
               </div>
               <div class="reverse divided-gray-100 z-20 sticky sm:pl-5 md:pl-0 sm:pt-6 md:pt-[4rem]">
                 <div class="flex items-center justify-center mb-5">
-                  <div class="inline-flex sm:px-3 md:px-3 lg:px-3 xl:px-3">
+                  <div class="inline-flex">
                     <div class="block">
                       <ul class="flex border-b">
                         <li id="btn_emotions" class="mr-6 text-sm hover:text-blue-500 border-transparent border-b hover:border-b-blue-500 cursor-pointer">
-                          <button">Emotions</button>
+                          <button>Emotions</button>
                         </li>
                         <li id="btn_positive-active" class="mr-6 text-sm hover:text-blue-500 border-transparent border-b hover:border-b-blue-500 cursor-pointer">
                           <button>Active/Positive</button>
                         </li>
                         <li id="btn_vibes" class="mr-6 text-sm hover:text-blue-500 border-transparent border-b hover:border-b-blue-500 cursor-pointer">
-                          <button">Vibes</button>
+                          <button>Vibes</button>
                         </li>
-                        <li id="btn_all" class="w-14 text-sm hover:text-blue-500 border-transparent border-b hover:border-b-blue-500 text-center cursor-pointer">
+                        <!--<li id="btn_all" class="w-14 text-sm hover:text-blue-500 border-transparent border-b hover:border-b-blue-500 text-center cursor-pointer">
                           <button>All</button>
-                        </li>
+                        </li>-->
                       </ul>
                     </div>
                   </div>
@@ -209,17 +209,15 @@
                     </div>
                   </div>
                 </div>
-              </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.6/dat.gui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stats.js/r16/Stats.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
+    <script src="https://unpkg.com/@themesberg/flowbite@latest/dist/flowbite.bundle.js"></script>
+    <script src="index.js"></script>
   </body>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.6/dat.gui.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/stats.js/r16/Stats.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
-  <script src="https://unpkg.com/@themesberg/flowbite@latest/dist/flowbite.bundle.js"></script>
-  <script src="index.js"></script>
 </html>

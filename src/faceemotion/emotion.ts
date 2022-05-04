@@ -65,7 +65,7 @@ export class FaceEmotionModel {
     let result: tf.Tensor2D;
 
     const logits1001 = this.model.predict(input) as tf.Tensor2D;
-    result = logits1001;  
+    result = logits1001;
 
     return result;
   }

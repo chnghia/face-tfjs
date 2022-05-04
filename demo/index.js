@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /**
  * @license
  * Copyright 2019 Google LLC. All Rights Reserved.
@@ -59,44 +60,45 @@ let emotionsSurprise;
 let emotionPositive;
 let emotionActive;
 let emotionVibe;
-var dataEmotionsNeutral = [];
-var dataEmotionsAngry = [];
-var dataEmotionHappy = [];
-var dataEmotionSurprised = []; 
-var dataEmotionSad = [];
-var dataEmtionsPositive = [];
-var dataEmtionActive = [];
-var dataEmtionVibe = [];
+let dataEmotionsNeutral = [];
+let dataEmotionsAngry = [];
+let dataEmotionHappy = [];
+let dataEmotionSurprised = [];
+let dataEmotionSad = [];
+let dataEmtionsPositive = [];
+let dataEmtionActive = [];
+let dataEmtionVibe = [];
 
-var dataEmotionsNeutral_Img = [];
-var dataEmotionsAngry_Img= [];
-var dataEmotionHappy_Img = [];
-var dataEmotionSurprised_Img = []; 
-var dataEmotionSad_Img = [];
-var dataEmtionsPositive_Img = [];
-var dataEmtionActive_Img = [];
-var dataEmtionVibe_Img = [];
+let dataEmotionsNeutral_Img = [];
+let dataEmotionsAngry_Img = [];
+let dataEmotionHappy_Img = [];
+let dataEmotionSurprised_Img = [];
+let dataEmotionSad_Img = [];
+let dataEmtionsPositive_Img = [];
+let dataEmtionActive_Img = [];
+let dataEmtionVibe_Img = [];
 
-var dataEmotionsNeutral_Clip = [];
-var dataEmotionsAngry_Clip= [];
-var dataEmotionHappy_Clip = [];
-var dataEmotionSurprised_Clip = []; 
-var dataEmotionSad_Clip = [];
-var dataEmtionsPositive_Clip= [];
-var dataEmtionActive_Clip = [];
-var dataEmtionVibe_Clip = [];
+let dataEmotionsNeutral_Clip = [];
+let dataEmotionsAngry_Clip= [];
+let dataEmotionHappy_Clip = [];
+let dataEmotionSurprised_Clip = [];
+let dataEmotionSad_Clip = [];
+let dataEmtionsPositive_Clip= [];
+let dataEmtionActive_Clip = [];
+let dataEmtionVibe_Clip = [];
 
-var dataEmotionsNeutral_Webcam = [];
-var dataEmotionsAngry_Webcam= [];
-var dataEmotionHappy_Webcam = [];
-var dataEmotionSurprised_Webcam = []; 
-var dataEmotionSad_Webcam = [];
-var dataEmtionsPositive_Webcam = [];
-var dataEmtionActive_Webcam = [];
-var dataEmtionVibe_Webcam = [];
+let dataEmotionsNeutral_Webcam = [];
+let dataEmotionsAngry_Webcam= [];
+let dataEmotionHappy_Webcam = [];
+let dataEmotionSurprised_Webcam = [];
+let dataEmotionSad_Webcam = [];
+let dataEmtionsPositive_Webcam = [];
+let dataEmtionActive_Webcam = [];
+let dataEmtionVibe_Webcam = [];
 
 let numberCells;
 let myChart;
+let beginTime = Date.now(), prevTime = beginTime;
 
 const state = {
   backend: 'wasm',
@@ -113,7 +115,8 @@ async function setupCamera() {
 
   const stream = await navigator.mediaDevices.getUserMedia({
     'audio': false,
-    'video': {facingMode: 'user'},
+    // 'video': {facingMode: 'user'},
+    'video': {width: 520, height: 390},
   });
   video.srcObject = stream;
 
@@ -162,147 +165,118 @@ const renderPrediction = async () => {
   stats.begin();
 
   const returnTensors = false;
-  // const flipHorizontal = true;
   const annotateBoxes = true;
-  // const predictions = await modelFace.estimateFaces(
-  //   video, returnTensors, flipHorizontal, annotateBoxes);
-  const predictions = await pipeline.estimateEmotion(video);
-  if (predictions.length > 0) {
+  let time = Date.now();
+
+  if ( time >= prevTime + 500 ) {
+    prevTime = time;
+
+    const predictions = await pipeline.estimateEmotion(video);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // console.log(predictions);
-    for (let i = 0; i < predictions.length; i++) {
-      let face = predictions[0].face;
-      let emotions = predictions[0].emotions;
 
-      emotionsNeutral = [emotions[0].toFixed(3)];
-      dataEmotionsNeutral.push(emotionsNeutral);
-      // localStorage.setItem('dataNeutral', dataEmotionsNeutral);
-      
+    if (predictions.length > 0) {
+      // console.log(predictions);
+      for (let i = 0; i < predictions.length; i++) {
+        let face = predictions[0].face;
+        let emotions = predictions[0].emotions;
 
-      emotionsHappy = [emotions[1].toFixed(3)];
-      dataEmotionHappy.push(emotionsHappy);
-      // localStorage.setItem('dataHappy', dataEmotionHappy);
+        emotionsNeutral = [emotions[0].toFixed(3)];
+        dataEmotionsNeutral.push(emotionsNeutral);
+        // localStorage.setItem('dataNeutral', dataEmotionsNeutral);
 
-      emotionsSad = [emotions[2].toFixed(3)];
-      dataEmotionSad.push(emotionsSad);
-      // localStorage.setItem('dataSad', dataEmotionSad);
+        emotionsHappy = [emotions[1].toFixed(3)];
+        dataEmotionHappy.push(emotionsHappy);
+        // localStorage.setItem('dataHappy', dataEmotionHappy);
 
-      emotionsAngry = [emotions[3].toFixed(3)];
-      dataEmotionsAngry.push(emotionsAngry);
-      // localStorage.setItem('dataAngry', dataEmotionsAngry);
+        emotionsSad = [emotions[2].toFixed(3)];
+        dataEmotionSad.push(emotionsSad);
+        // localStorage.setItem('dataSad', dataEmotionSad);
 
-      emotionsSurprise = [emotions[4].toFixed(3)];
-      dataEmotionSurprised.push(emotionsSurprise);
-      // localStorage.setItem('dataSurprise', dataEmotionSurprised);
+        emotionsAngry = [emotions[3].toFixed(3)];
+        dataEmotionsAngry.push(emotionsAngry);
+        // localStorage.setItem('dataAngry', dataEmotionsAngry);
 
-      emotionPositive = [(pipeline.estimatePositive(emotions).toFixed(3))];
-      dataEmtionsPositive.push(emotionPositive);
+        emotionsSurprise = [emotions[4].toFixed(3)];
+        dataEmotionSurprised.push(emotionsSurprise);
+        // localStorage.setItem('dataSurprise', dataEmotionSurprised);
 
-      emotionActive = [(pipeline.estimateActive(emotions).toFixed(3))];
-      dataEmtionActive.push(emotionActive);
+        emotionPositive = [(pipeline.estimatePositive(emotions).toFixed(3))];
+        dataEmtionsPositive.push(emotionPositive);
 
-      emotionVibe = [(pipeline.estimateVibe(emotions).toFixed(3))];
-      dataEmtionVibe.push(emotionVibe);
+        emotionActive = [(pipeline.estimateActive(emotions).toFixed(3))];
+        dataEmtionActive.push(emotionActive);
 
-      if (dataEmotionsAngry.length >= 500) {
-        
-        dataEmotionsAngry.shift();
-        dataEmotionsNeutral.shift();
-        dataEmotionHappy.shift();
-        dataEmotionSad.shift();
-        dataEmotionSurprised.shift();
-        dataEmtionsPositive.shift();
-        dataEmtionActive.shift();
-        dataEmtionVibe.shift();
+        emotionVibe = [(pipeline.estimateVibe(emotions).toFixed(3))];
+        dataEmtionVibe.push(emotionVibe);
 
-        numberCells.push(numberCells.length);
-        numberCells.shift();
-      }
+        if (dataEmotionsAngry.length >= 500) {
+          dataEmotionsAngry.shift();
+          dataEmotionsNeutral.shift();
+          dataEmotionHappy.shift();
+          dataEmotionSad.shift();
+          dataEmotionSurprised.shift();
+          dataEmtionsPositive.shift();
+          dataEmtionActive.shift();
+          dataEmtionVibe.shift();
 
-      myChart.data.labels = numberCells;
-      myChart.data.datasets[0].data = dataEmotionsAngry;
-      myChart.data.datasets[1].data = dataEmotionsNeutral;
-      myChart.data.datasets[2].data = dataEmotionHappy;
-      myChart.data.datasets[3].data = dataEmotionSad;
-      myChart.data.datasets[4].data = dataEmotionSurprised;
-      myChart.data.datasets[5].data = dataEmtionsPositive;
-      myChart.data.datasets[6].data = dataEmtionActive;
-      myChart.data.datasets[7].data = dataEmtionVibe;
-      myChart.update();
-
-
-      if (returnTensors) {  
-        face.topLeft = face.topLeft.arraySync();
-        face.bottomRight = face.bottomRight.arraySync();
-        if (annotateBoxes) {
-          face.landmarks = face.landmarks.arraySync();
+          numberCells.push(numberCells.length);
+          numberCells.shift();
         }
+
+        myChart.data.labels = numberCells;
+        myChart.data.datasets[0].data = dataEmotionsAngry;
+        myChart.data.datasets[1].data = dataEmotionsNeutral;
+        myChart.data.datasets[2].data = dataEmotionHappy;
+        myChart.data.datasets[3].data = dataEmotionSad;
+        myChart.data.datasets[4].data = dataEmotionSurprised;
+        myChart.data.datasets[5].data = dataEmtionsPositive;
+        myChart.data.datasets[6].data = dataEmtionActive;
+        myChart.data.datasets[7].data = dataEmtionVibe;
+        myChart.update();
+
+
+        if (returnTensors) {  
+          face.topLeft = face.topLeft.arraySync();
+          face.bottomRight = face.bottomRight.arraySync();
+          if (annotateBoxes) {
+            face.landmarks = face.landmarks.arraySync();
+          }
+        }
+
+        const start = face.topLeft;
+        const end = face.bottomRight;
+        const size = [end[0] - start[0], end[1] - start[1]];
+
+        // const croppedInput = cutBoxFromImageAndResize(
+        //   box, rotatedImage, [this.meshWidth, this.meshHeight]);
+
+        ctx.strokeStyle = 'rgba(0, 255, 0, 1.0)';
+        ctx.strokeRect(start[0], start[1], size[0], size[1]);
+
+        valueNeutral.style.width = `${(emotions[0] * 100).toFixed(2)}%`;
+        valueNeutralLabel.textContent = `${(emotions[0] * 100).toFixed(2)}%`;
+        valueHappy.style.width = `${(emotions[1] * 100).toFixed(2)}%`;
+        valueHappyLabel.textContent = `${(emotions[1] * 100).toFixed(2)}%`;
+        valueSad.style.width = `${(emotions[2] * 100).toFixed(2)}%`;
+        valueSadLabel.textContent = `${(emotions[2] * 100).toFixed(2)}%`;
+        valueAngry.style.width = `${(emotions[3] * 100).toFixed(2)}%`;
+        valueAngryLabel.textContent = `${(emotions[3] * 100).toFixed(2)}%`;
+        valueSuprised.style.width = `${(emotions[4] * 100).toFixed(2)}%`;
+        valueSuprisedLabel.textContent = `${(emotions[4] * 100).toFixed(2)}%`;
+
+        valuePositive.style.width = `${(pipeline.estimatePositive(emotions) * 100).toFixed(2)}%`;
+        valuePositiveLabel.textContent = `${(pipeline.estimatePositive(emotions) * 100).toFixed(2)}%`;
+        valueActive.style.width = `${(pipeline.estimateActive(emotions) * 100).toFixed(2)}%`;
+        valueActiveLabel.textContent = `${(pipeline.estimateActive(emotions) * 100).toFixed(2)}%`;
+        valueVibe.style.width = `${(pipeline.estimateVibe(emotions) * 100).toFixed(2)}%`;
+        valueVibeLabel.textContent = `${(pipeline.estimateVibe(emotions) * 100).toFixed(2)}%`;
+
+        emotionsNeutral = `${(emotions[0]).toFixed(3)}`;
+        emotionsHappy = `${(emotions[1]).toFixed(3)}`;
+        emotionsSad = `${(emotions[2]).toFixed(3)}`;
+        emotionsAngry = `${(emotions[3]).toFixed(3)}`;
+        emotionsSurprise = `${(emotions[4]).toFixed(3)}`;
       }
-
-      const start = face.topLeft;
-      const end = face.bottomRight;
-      const size = [end[0] - start[0], end[1] - start[1]];
-
-      // const croppedInput = cutBoxFromImageAndResize(
-      //   box, rotatedImage, [this.meshWidth, this.meshHeight]);
-
-      ctx.strokeStyle = 'rgba(0, 255, 0, 1.0)';
-      ctx.strokeRect(start[0], start[1], size[0], size[1]);
-
-      valueNeutral.style.width = `${(emotions[0] * 100).toFixed(2)}%`;
-      valueNeutralLabel.textContent = `${(emotions[0] * 100).toFixed(2)}%`;
-      valueHappy.style.width = `${(emotions[1] * 100).toFixed(2)}%`;
-      valueHappyLabel.textContent = `${(emotions[1] * 100).toFixed(2)}%`;
-      valueSad.style.width = `${(emotions[2] * 100).toFixed(2)}%`;
-      valueSadLabel.textContent = `${(emotions[2] * 100).toFixed(2)}%`;
-      valueAngry.style.width = `${(emotions[3] * 100).toFixed(2)}%`;
-      valueAngryLabel.textContent = `${(emotions[3] * 100).toFixed(2)}%`;
-      valueSuprised.style.width = `${(emotions[4] * 100).toFixed(2)}%`;
-      valueSuprisedLabel.textContent = `${(emotions[4] * 100).toFixed(2)}%`;
-
-      // console.log('Positive: ', pipeline.estimatePositive(emotions));
-      // console.log('Active: ', pipeline.estimateActive(emotions));
-      // console.log('Vibe: ', pipeline.estimateVibe(emotions));
-      valuePositive.style.width = `${(pipeline.estimatePositive(emotions) * 100).toFixed(2)}%`;
-      valuePositiveLabel.textContent = `${(pipeline.estimatePositive(emotions) * 100).toFixed(2)}%`;
-      valueActive.style.width = `${(pipeline.estimateActive(emotions) * 100).toFixed(2)}%`;
-      valueActiveLabel.textContent = `${(pipeline.estimateActive(emotions) * 100).toFixed(2)}%`;
-      valueVibe.style.width = `${(pipeline.estimateVibe(emotions) * 100).toFixed(2)}%`;
-      valueVibeLabel.textContent = `${(pipeline.estimateVibe(emotions) * 100).toFixed(2)}%`;
-
-
-      // if (annotateBoxes) {
-        // const landmarks = face.landmarks;
-
-        // ctx.fillStyle = 'rgba(0, 255, 0, 1.0)';
-        // for (let j = 0; j < landmarks.length; j++) {
-        //   const x = landmarks[j][0];
-        //   const y = landmarks[j][1];
-        //   ctx.fillRect(x, y, 5, 5);
-        // }
-
-        // ctx.font = '16px Georgia';
-        // ctx.fillText(`Neutral: ${emotions[0].toFixed(2)}`, start[0], landmarks[3][1]  - 45);
-        // ctx.fillText(`Happy: ${emotions[1].toFixed(2)}`, start[0], landmarks[3][1]    - 25);
-        // ctx.fillText(`Sad: ${emotions[2].toFixed(2)}`, start[0], landmarks[3][1]      - 5);
-        // ctx.fillText(`Angry: ${emotions[3].toFixed(2)}`, start[0], landmarks[3][1]    + 15);
-        // ctx.fillText(`Surprised: ${emotions[4].toFixed(2)}`, start[0], landmarks[3][1]+ 35);
-      // }
-      emotionsNeutral = `${(emotions[0]).toFixed(3)}`;
-      // console.log('emotionNeutral: ', emotionsNeutral);
-      // dataNeutral = `${(emotions[0]).toFixed(3)}`;
-      // const combine = emotionsNeutral.concat(dataNeutral);
-      // console.log('Combine data: ' ,combine);
-      // dataNeutral = [`${(emotions[0]).toFixed(3)}`];
-      emotionsHappy = `${(emotions[1]).toFixed(3)}`;
-      // console.log('happy: ', emotionsHappy);
-      emotionsSad = `${(emotions[2]).toFixed(3)}`
-      emotionsAngry = `${(emotions[3]).toFixed(3)}`;
-      // console.log('angry: ',emotionsAngry)
-      emotionsSurprise = `${(emotions[4]).toFixed(3)}`
-
-      // arrayEmotions = Array.from(emotions);
-      // console.log(arrayEmotions);
     }
   }
   stats.end();
@@ -317,11 +291,9 @@ const renderPredictionImg = async () => {
   // const predictions = await modelFace.estimateFaces(
   //   video, returnTensors, flipHorizontal, annotateBoxes);
   const predictions = await pipeline.estimateEmotion(img);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   if (predictions.length > 0) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // console.log(predictions);
-
     for (let i = 0; i < predictions.length; i++) {
       let face = predictions[0].face;
       let emotions = predictions[0].emotions;
@@ -581,6 +553,9 @@ const renderPredictionVideoClip = async () => {
 async function showImg() {
   myChart.reset();
   myChartEmotions_Img();
+
+  document.getElementById('dropdown_button').innerHTML = 'Picture<svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>';
+
   document.getElementById('uploadImg').style.display = 'block';
   document.getElementById('video').style.display = 'none';
   document.getElementById('movie').style.display = 'none';
@@ -647,6 +622,9 @@ async function showImg() {
 
 async function showVideoClip() {
   myChart.reset();
+
+  document.getElementById('dropdown_button').innerHTML = 'Video<svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>';
+
   document.getElementById('movie').style.display = 'block';
   document.getElementById('video').style.display = 'none';
   document.getElementById('uploadImg').style.display = 'none';
@@ -718,155 +696,137 @@ async function showVideoClip() {
 const renderPrediction_Webcam = async () => {
   stats.begin();
 
-  const returnTensors  = false;
+  const returnTensors = false;
   const annotateBoxes = true;
 
-  const predictions = await pipeline.estimateEmotion(video);
-  if (predictions.length > 0) {
+  let time = Date.now();
+
+  if ( time >= prevTime + 500 ) {
+    prevTime = time;
+
+    const predictions = await pipeline.estimateEmotion(video);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // console.log(predictions);
-    for (let i = 0; i < predictions.length; i++) {
-      let face = predictions[0].face;
-      let emotions = predictions[0].emotions;
+    if (predictions.length > 0) {
+      // console.log(predictions);
+      for (let i = 0; i < predictions.length; i++) {
+        let face = predictions[0].face;
+        let emotions = predictions[0].emotions;
 
-      emotionsNeutral = [emotions[0].toFixed(3)];
-      dataEmotionsNeutral_Webcam.push(emotionsNeutral);
-      // localStorage.setItem('dataNeutral', dataEmotionsNeutral);
-      
+        emotionsNeutral = [emotions[0].toFixed(3)];
+        dataEmotionsNeutral_Webcam.push(emotionsNeutral);
+        // localStorage.setItem('dataNeutral', dataEmotionsNeutral);
 
-      emotionsHappy = [emotions[1].toFixed(3)];
-      dataEmotionHappy_Webcam.push(emotionsHappy);
-      // localStorage.setItem('dataHappy', dataEmotionHappy);
+        emotionsHappy = [emotions[1].toFixed(3)];
+        dataEmotionHappy_Webcam.push(emotionsHappy);
+        // localStorage.setItem('dataHappy', dataEmotionHappy);
 
-      emotionsSad = [emotions[2].toFixed(3)];
-      dataEmotionSad_Webcam.push(emotionsSad);
-      // localStorage.setItem('dataSad', dataEmotionSad);
+        emotionsSad = [emotions[2].toFixed(3)];
+        dataEmotionSad_Webcam.push(emotionsSad);
+        // localStorage.setItem('dataSad', dataEmotionSad);
 
-      emotionsAngry = [emotions[3].toFixed(3)];
-      dataEmotionsAngry_Webcam.push(emotionsAngry);
-      // localStorage.setItem('dataAngry', dataEmotionsAngry);
+        emotionsAngry = [emotions[3].toFixed(3)];
+        dataEmotionsAngry_Webcam.push(emotionsAngry);
+        // localStorage.setItem('dataAngry', dataEmotionsAngry);
 
-      emotionsSurprise = [emotions[4].toFixed(3)];
-      dataEmotionSurprised_Webcam.push(emotionsSurprise);
-      // localStorage.setItem('dataSurprise', dataEmotionSurprised);
+        emotionsSurprise = [emotions[4].toFixed(3)];
+        dataEmotionSurprised_Webcam.push(emotionsSurprise);
+        // localStorage.setItem('dataSurprise', dataEmotionSurprised);
 
-      emotionPositive = [(pipeline.estimatePositive(emotions).toFixed(3))];
-      dataEmtionsPositive_Webcam.push(emotionPositive);
+        emotionPositive = [(pipeline.estimatePositive(emotions).toFixed(3))];
+        dataEmtionsPositive_Webcam.push(emotionPositive);
 
-      emotionActive = [(pipeline.estimateActive(emotions).toFixed(3))];
-      dataEmtionActive_Webcam.push(emotionActive);
+        emotionActive = [(pipeline.estimateActive(emotions).toFixed(3))];
+        dataEmtionActive_Webcam.push(emotionActive);
 
-      emotionVibe = [(pipeline.estimateVibe(emotions).toFixed(3))];
-      dataEmtionVibe_Webcam.push(emotionVibe);
+        emotionVibe = [(pipeline.estimateVibe(emotions).toFixed(3))];
+        dataEmtionVibe_Webcam.push(emotionVibe);
 
-      if (dataEmotionsAngry_Webcam.length >= 500) {
-        
-        dataEmotionsAngry_Webcam.shift();
-        dataEmotionsNeutral_Webcam.shift();
-        dataEmotionHappy_Webcam.shift();
-        dataEmotionSad_Webcam.shift();
-        dataEmotionSurprised_Webcam.shift();
-        dataEmotionSurprised_Webcam.shift();
-        dataEmtionsPositive_Webcam.shift();
-        dataEmtionActive_Webcam.shift();
-        dataEmtionVibe_Webcam.shift();
+        if (dataEmotionsAngry_Webcam.length >= 500) {
+          dataEmotionsAngry_Webcam.shift();
+          dataEmotionsNeutral_Webcam.shift();
+          dataEmotionHappy_Webcam.shift();
+          dataEmotionSad_Webcam.shift();
+          dataEmotionSurprised_Webcam.shift();
+          dataEmotionSurprised_Webcam.shift();
+          dataEmtionsPositive_Webcam.shift();
+          dataEmtionActive_Webcam.shift();
+          dataEmtionVibe_Webcam.shift();
 
-        numberCells.push(numberCells.length);
-        numberCells.shift();
-      }
-
-      myChart.data.labels = numberCells;
-      myChart.data.datasets[0].data = dataEmotionsAngry_Webcam;
-      myChart.data.datasets[1].data = dataEmotionsNeutral_Webcam;
-      myChart.data.datasets[2].data = dataEmotionHappy_Webcam;
-      myChart.data.datasets[3].data = dataEmotionSad_Webcam;
-      myChart.data.datasets[4].data = dataEmotionSurprised_Webcam;
-      myChart.data.datasets[5].data = dataEmtionsPositive_Webcam;
-      myChart.data.datasets[6].data = dataEmtionActive_Webcam;
-      myChart.data.datasets[7].data = dataEmtionVibe_Webcam;
-      myChart.update();
-
-      if (returnTensors) {  
-        face.topLeft = face.topLeft.arraySync();
-        face.bottomRight = face.bottomRight.arraySync();
-        if (annotateBoxes) {
-          face.landmarks = face.landmarks.arraySync();
+          numberCells.push(numberCells.length);
+          numberCells.shift();
         }
+
+        myChart.data.labels = numberCells;
+        myChart.data.datasets[0].data = dataEmotionsAngry_Webcam;
+        myChart.data.datasets[1].data = dataEmotionsNeutral_Webcam;
+        myChart.data.datasets[2].data = dataEmotionHappy_Webcam;
+        myChart.data.datasets[3].data = dataEmotionSad_Webcam;
+        myChart.data.datasets[4].data = dataEmotionSurprised_Webcam;
+        myChart.data.datasets[5].data = dataEmtionsPositive_Webcam;
+        myChart.data.datasets[6].data = dataEmtionActive_Webcam;
+        myChart.data.datasets[7].data = dataEmtionVibe_Webcam;
+        myChart.update();
+
+        if (returnTensors) {  
+          face.topLeft = face.topLeft.arraySync();
+          face.bottomRight = face.bottomRight.arraySync();
+          if (annotateBoxes) {
+            face.landmarks = face.landmarks.arraySync();
+          }
+        }
+
+        const start = face.topLeft;
+        const end = face.bottomRight;
+        const size = [end[0] - start[0], end[1] - start[1]];
+
+        // const croppedInput = cutBoxFromImageAndResize(
+        //   box, rotatedImage, [this.meshWidth, this.meshHeight]);
+
+        ctx.strokeStyle = 'rgba(0, 255, 0, 1.0)';
+        ctx.strokeRect(start[0], start[1], size[0], size[1]);
+
+        valueNeutral.style.width = `${(emotions[0] * 100).toFixed(2)}%`;
+        valueNeutralLabel.textContent = `${(emotions[0] * 100).toFixed(2)}%`;
+        valueHappy.style.width = `${(emotions[1] * 100).toFixed(2)}%`;
+        valueHappyLabel.textContent = `${(emotions[1] * 100).toFixed(2)}%`;
+        valueSad.style.width = `${(emotions[2] * 100).toFixed(2)}%`;
+        valueSadLabel.textContent = `${(emotions[2] * 100).toFixed(2)}%`;
+        valueAngry.style.width = `${(emotions[3] * 100).toFixed(2)}%`;
+        valueAngryLabel.textContent = `${(emotions[3] * 100).toFixed(2)}%`;
+        valueSuprised.style.width = `${(emotions[4] * 100).toFixed(2)}%`;
+        valueSuprisedLabel.textContent = `${(emotions[4] * 100).toFixed(2)}%`;
+
+        // console.log('Positive: ', pipeline.estimatePositive(emotions));
+        // console.log('Active: ', pipeline.estimateActive(emotions));
+        // console.log('Vibe: ', pipeline.estimateVibe(emotions));
+        valuePositive.style.width = `${(pipeline.estimatePositive(emotions) * 100).toFixed(2)}%`;
+        valuePositiveLabel.textContent = `${(pipeline.estimatePositive(emotions) * 100).toFixed(2)}%`;
+        valueActive.style.width = `${(pipeline.estimateActive(emotions) * 100).toFixed(2)}%`;
+        valueActiveLabel.textContent = `${(pipeline.estimateActive(emotions) * 100).toFixed(2)}%`;
+        valueVibe.style.width = `${(pipeline.estimateVibe(emotions) * 100).toFixed(2)}%`;
+        valueVibeLabel.textContent = `${(pipeline.estimateVibe(emotions) * 100).toFixed(2)}%`;
+
+        emotionsNeutral = `${(emotions[0]).toFixed(3)}`;
+        emotionsHappy = `${(emotions[1]).toFixed(3)}`;
+        emotionsSad = `${(emotions[2]).toFixed(3)}`;
+        emotionsAngry = `${(emotions[3]).toFixed(3)}`;
+        emotionsSurprise = `${(emotions[4]).toFixed(3)}`;
+
+        // arrayEmotions = Array.from(emotions);
+        // console.log(arrayEmotions);
       }
-
-      const start = face.topLeft;
-      const end = face.bottomRight;
-      const size = [end[0] - start[0], end[1] - start[1]];
-
-      // const croppedInput = cutBoxFromImageAndResize(
-      //   box, rotatedImage, [this.meshWidth, this.meshHeight]);
-
-      ctx.strokeStyle = 'rgba(0, 255, 0, 1.0)';
-      ctx.strokeRect(start[0], start[1], size[0], size[1]);
-
-      valueNeutral.style.width = `${(emotions[0] * 100).toFixed(2)}%`;
-      valueNeutralLabel.textContent = `${(emotions[0] * 100).toFixed(2)}%`;
-      valueHappy.style.width = `${(emotions[1] * 100).toFixed(2)}%`;
-      valueHappyLabel.textContent = `${(emotions[1] * 100).toFixed(2)}%`;
-      valueSad.style.width = `${(emotions[2] * 100).toFixed(2)}%`;
-      valueSadLabel.textContent = `${(emotions[2] * 100).toFixed(2)}%`;
-      valueAngry.style.width = `${(emotions[3] * 100).toFixed(2)}%`;
-      valueAngryLabel.textContent = `${(emotions[3] * 100).toFixed(2)}%`;
-      valueSuprised.style.width = `${(emotions[4] * 100).toFixed(2)}%`;
-      valueSuprisedLabel.textContent = `${(emotions[4] * 100).toFixed(2)}%`;
-
-      // console.log('Positive: ', pipeline.estimatePositive(emotions));
-      // console.log('Active: ', pipeline.estimateActive(emotions));
-      // console.log('Vibe: ', pipeline.estimateVibe(emotions));
-      valuePositive.style.width = `${(pipeline.estimatePositive(emotions) * 100).toFixed(2)}%`;
-      valuePositiveLabel.textContent = `${(pipeline.estimatePositive(emotions) * 100).toFixed(2)}%`;
-      valueActive.style.width = `${(pipeline.estimateActive(emotions) * 100).toFixed(2)}%`;
-      valueActiveLabel.textContent = `${(pipeline.estimateActive(emotions) * 100).toFixed(2)}%`;
-      valueVibe.style.width = `${(pipeline.estimateVibe(emotions) * 100).toFixed(2)}%`;
-      valueVibeLabel.textContent = `${(pipeline.estimateVibe(emotions) * 100).toFixed(2)}%`;
-
-
-      // if (annotateBoxes) {
-        // const landmarks = face.landmarks;
-
-        // ctx.fillStyle = 'rgba(0, 255, 0, 1.0)';
-        // for (let j = 0; j < landmarks.length; j++) {
-        //   const x = landmarks[j][0];
-        //   const y = landmarks[j][1];
-        //   ctx.fillRect(x, y, 5, 5);
-        // }
-
-        // ctx.font = '16px Georgia';
-        // ctx.fillText(`Neutral: ${emotions[0].toFixed(2)}`, start[0], landmarks[3][1]  - 45);
-        // ctx.fillText(`Happy: ${emotions[1].toFixed(2)}`, start[0], landmarks[3][1]    - 25);
-        // ctx.fillText(`Sad: ${emotions[2].toFixed(2)}`, start[0], landmarks[3][1]      - 5);
-        // ctx.fillText(`Angry: ${emotions[3].toFixed(2)}`, start[0], landmarks[3][1]    + 15);
-        // ctx.fillText(`Surprised: ${emotions[4].toFixed(2)}`, start[0], landmarks[3][1]+ 35);
-      // }
-      emotionsNeutral = `${(emotions[0]).toFixed(3)}`;
-      // console.log('emotionNeutral: ', emotionsNeutral);
-      // dataNeutral = `${(emotions[0]).toFixed(3)}`;
-      // const combine = emotionsNeutral.concat(dataNeutral);
-      // console.log('Combine data: ' ,combine);
-      // dataNeutral = [`${(emotions[0]).toFixed(3)}`];
-      emotionsHappy = `${(emotions[1]).toFixed(3)}`;
-      // console.log('happy: ', emotionsHappy);
-      emotionsSad = `${(emotions[2]).toFixed(3)}`
-      emotionsAngry = `${(emotions[3]).toFixed(3)}`;
-      // console.log('angry: ',emotionsAngry)
-      emotionsSurprise = `${(emotions[4]).toFixed(3)}`
-
-      // arrayEmotions = Array.from(emotions);
-      // console.log(arrayEmotions);
+    } else {
     }
   }
   stats.end();
   requestAnimationFrame(renderPrediction_Webcam);
-}
+};
 
 async function showWebcam() {
   await myChart.destroy();
-  
+
+  document.getElementById('dropdown_button').innerHTML = 'Webcam<svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>';
+
   document.getElementById('video').style.display = 'block';
   document.getElementById('uploadImg').style.display = 'none';
   document.getElementById('movie').style.display = 'none';
@@ -934,8 +894,8 @@ async function showEmotions() {
   document.getElementById('btn_vibes').style.color = 'rgb(17 24 39)';
   document.getElementById('btn_vibes').style.borderColor = 'rgb(243 244 246)';
 
-  document.getElementById('btn_all').style.color = 'rgb(17 24 39)';
-  document.getElementById('btn_all').style.borderColor = 'rgb(243 244 246)';
+  // document.getElementById('btn_all').style.color = 'rgb(17 24 39)';
+  // document.getElementById('btn_all').style.borderColor = 'rgb(243 244 246)';
 
   document.getElementById('label_neutral').style.display = 'flex';
   document.getElementById('bar_neutral').style.display = 'flex';
@@ -984,8 +944,8 @@ async function showPositiveActive() {
   document.getElementById('btn_vibes').style.color = 'rgb(17 24 39)';
   document.getElementById('btn_vibes').style.borderColor = 'rgb(243 244 246)';
 
-  document.getElementById('btn_all').style.color = 'rgb(17 24 39)';
-  document.getElementById('btn_all').style.borderColor = 'rgb(243 244 246)';
+  // document.getElementById('btn_all').style.color = 'rgb(17 24 39)';
+  // document.getElementById('btn_all').style.borderColor = 'rgb(243 244 246)';
 
   document.getElementById('border_positive-active').style.borderStyle = 'none';
 
@@ -1032,8 +992,8 @@ async function showVibes() {
   document.getElementById('btn_positive-active').style.color = 'rgb(17 24 39)';
   document.getElementById('btn_positive-active').style.borderColor = 'rgb(243 244 246)';
 
-  document.getElementById('btn_all').style.color = 'rgb(17 24 39)';
-  document.getElementById('btn_all').style.borderColor = 'rgb(243 244 246)';
+  // document.getElementById('btn_all').style.color = 'rgb(17 24 39)';
+  // document.getElementById('btn_all').style.borderColor = 'rgb(243 244 246)';
 
   document.getElementById('border_positive-active').style.borderStyle = 'none';
 
@@ -1060,7 +1020,6 @@ async function showVibes() {
 }
 
 async function showAll() {
-
   document.getElementById('block_positive').style.display = 'flex',
   document.getElementById('block_active').style.display = 'flex',
   document.getElementById('block_vibe').style.display = 'flex',
@@ -1076,8 +1035,8 @@ async function showAll() {
   document.getElementById('block_sad').style.display = 'flex',
   document.getElementById('block_supprise').style.display = 'flex',
 
-  document.getElementById('btn_all').style.color = 'rgba(24, 144, 255, 1)';
-  document.getElementById('btn_all').style.borderColor = 'rgba(24, 144, 255, 1)';
+  // document.getElementById('btn_all').style.color = 'rgba(24, 144, 255, 1)';
+  // document.getElementById('btn_all').style.borderColor = 'rgba(24, 144, 255, 1)';
 
   document.getElementById('btn_emotions').style.color = 'rgb(17 24 39)';
   document.getElementById('btn_emotions').style.borderColor = 'rgb(243 244 246)';
@@ -1192,7 +1151,7 @@ const myChartEmotions = async() => {
             },
             {
               label: 'SURPRISE',
-                data: [],//valueEmotions_Surprised.split(','),
+                data: [], //valueEmotions_Surprised.split(','),
                 fill: false,
                 backgroundColor: [
                   'rgba(255, 197, 61, 1)',
@@ -1204,7 +1163,7 @@ const myChartEmotions = async() => {
               },
               {
                 label: 'POSITIVE',
-                  data: [],//valueEmotions_Surprised.split(','),
+                  data: [], //valueEmotions_Surprised.split(','),
                   fill: false,
                   backgroundColor: [
                     'rgba(67, 67, 67, 1)',
@@ -1216,7 +1175,7 @@ const myChartEmotions = async() => {
                 },
                 {
                   label: 'ACTIVE',
-                    data: [],//valueEmotions_Surprised.split(','),
+                    data: [], //valueEmotions_Surprised.split(','),
                     fill: false,
                     backgroundColor: [
                       'rgba(115, 209, 61, 1)',
@@ -1228,7 +1187,7 @@ const myChartEmotions = async() => {
                   },
                   {
                     label: 'VIBE',
-                      data: [],//valueEmotions_Surprised.split(','),
+                      data: [],
                       fill: false,
                       backgroundColor: [
                         'rgba(247, 89, 171, 1)',
@@ -1732,8 +1691,8 @@ const myChartEmotions_Webcam = async() => {
                 },
               },
           },
-    }); 
-}
+    });
+};
 
 // function hideData() {
 //   myChart.data.datasets.forEach(function(ds) {
@@ -1769,7 +1728,7 @@ function hideDataPositive() {
   myChart.getDatasetMeta(6).hidden = false; 
 }
 
-function hideDataVibe () {
+function hideDataVibe() {
   myChart.getDatasetMeta(0).hidden = true;
   myChart.getDatasetMeta(1).hidden = true;
   myChart.getDatasetMeta(2).hidden = true;
@@ -1823,7 +1782,7 @@ const setupPage = async () => {
 
   myChartEmotions();
   renderPrediction();
-  //chartEmotions();
+  // chartEmotions();
   // myChartEmotions();
   document.getElementById('btnPicture').addEventListener('click', showImg);
   document.getElementById('btnWebcam').addEventListener('click', showWebcam);
@@ -1831,11 +1790,11 @@ const setupPage = async () => {
   document.getElementById('btn_emotions').addEventListener('click', showEmotions);
   document.getElementById('btn_positive-active').addEventListener('click', showPositiveActive);
   document.getElementById('btn_vibes').addEventListener('click', showVibes);
-  document.getElementById('btn_all').addEventListener('click', showAll);
+  // document.getElementById('btn_all').addEventListener('click', showAll);
   document.getElementById('btn_emotions').addEventListener('click', hideDataEmotions);
   document.getElementById('btn_positive-active').addEventListener('click', hideDataPositive);
   document.getElementById('btn_vibes').addEventListener('click', hideDataVibe);
   document.getElementById('btn_emotions').click();
+};
 
-}
 setupPage();
