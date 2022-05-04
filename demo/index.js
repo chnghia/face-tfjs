@@ -965,7 +965,7 @@ async function showPositiveActive() {
 
   document.getElementById('block_positive').style.display = 'flex',
   document.getElementById('block_active').style.display = 'flex',
-  document.getElementById('block_positive').style.paddingLeft = '1em',
+  document.getElementById('block_positive').style.paddingLeft = '3em'
   // document.getElementById('block_active').style.paddingLeft = '1em',
   document.getElementById('block_vibe').style.display = 'none',
 
@@ -1016,7 +1016,6 @@ async function showVibes() {
   document.getElementById('block_active').style.display = 'none',
 
   document.getElementById('block_vibe').style.display = 'flex',
-  document.getElementById('block_vibe').style.paddingLeft = '5em',
 
   document.getElementById('block_neutral').style.display = 'none',
   document.getElementById('block_angry').style.display = 'none',
@@ -1129,13 +1128,14 @@ const myChartEmotions = async() => {
   // const numberCells = ['0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0'];
     numberCells = Array.from({length: 500}, (_, i) => i + 1);
     // debugger;
-    const ctx = document.getElementById('myChart');
+    const ctx = document.getElementById('myChart').getContext('2d');
     // const valueEmotions_Neutral = localStorage.getItem('dataNeutral');
     // const valueEmotions_Angry = localStorage.getItem('dataAngry');
     // const valueEmotions_Sad = localStorage.getItem('dataSad');
     // const valueEmotions_Surprised = localStorage.getItem('dataSurprise');
     // const valueEmotions_Happy = localStorage.getItem('dataHappy');
       myChart = new Chart(ctx, {
+          backgroundColor: 'white',
           type: 'line',
           data: {
               labels: numberCells,
@@ -1249,15 +1249,14 @@ const myChartEmotions = async() => {
                     max: 1,
                     },
                   }],
-                xAxes: [{
-                  ticks: {
-                    beginAtZero: true,
-                    // min: 0,
-                    // max: 1,
-                  },
-                }],
+                  xAxes: [{
+                    position: 'bottom',
+                    ticks: {
+                      beginAtZero: true,
+                      fontColor: 'white',
+                    },
+                    }],
               },
-              backgroundColor: 'pink',
               legend: {
                 display: false,
               },
@@ -1406,8 +1405,7 @@ const myChartEmotions_Img = async() => {
                 xAxes: [{
                   ticks: {
                     beginAtZero: true,
-                    // min: 0,
-                    // max: 1,
+                    fontColor: 'white',
                     },
                     }],
               },
@@ -1559,6 +1557,7 @@ const myChartEmotions_Clip = async() => {
                 xAxes: [{
                   ticks: {
                     beginAtZero: true,
+                    fontColor: 'white',
                     // min: 0,
                     // max: 1,
                     },
@@ -1712,6 +1711,7 @@ const myChartEmotions_Webcam = async() => {
                 xAxes: [{
                   ticks: {
                     beginAtZero: true,
+                    fontColor: 'white',
                     // min: 0,
                     // max: 1,
                     },
@@ -1835,6 +1835,7 @@ const setupPage = async () => {
   document.getElementById('btn_emotions').addEventListener('click', hideDataEmotions);
   document.getElementById('btn_positive-active').addEventListener('click', hideDataPositive);
   document.getElementById('btn_vibes').addEventListener('click', hideDataVibe);
+  document.getElementById('btn_emotions').click();
 
 }
 setupPage();
