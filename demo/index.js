@@ -100,8 +100,102 @@ let numberCells;
 let myChart;
 // eslint-disable-next-line one-var
 let beginTime = Date.now(), prevTime = beginTime;
-const maxFrameChart = 200;
+const maxFrameChart = 100;
 const timeFrameCapture = 500;
+
+const colorAngry = 'rgba(255, 77, 79, 1)';
+const colorNeutral = 'rgba(186, 231, 255, 1)';
+const datasetAngry = {
+  label: 'ANGRY',
+  data: [],
+  fill: false,
+  tension: 0.4,
+  backgroundColor: [colorAngry],
+  borderColor: [colorAngry],
+  borderWidth: 2,
+};
+const datasetNeutral = {
+  label: 'NEUTRAL',
+  data: [],
+  fill: false,
+  tension: 0.4,
+  backgroundColor: [colorNeutral],
+  borderColor: [colorNeutral],
+  borderWidth: 2,
+};
+const datasetHappy = {
+  label: 'HAPPY',
+  data: [],
+  fill: false,
+  backgroundColor: [
+    'rgba(24, 144, 255, 1)',
+  ],
+  borderColor: [
+    'rgba(24, 144, 255, 1)',
+  ],
+  borderWidth: 2,
+};
+const datasetSad = {
+  label: 'SAD',
+  data: [],
+  fill: false,
+  backgroundColor: [
+    'rgba(89, 126, 247, 1)',
+  ],
+  borderColor: [
+    'rgba(89, 126, 247, 1)',
+  ],
+  borderWidth: 2,
+};
+const datasetSurprised = {
+label: 'SURPRISE',
+  data: [],
+  fill: false,
+  backgroundColor: [
+    'rgba(255, 197, 61, 1)',
+  ],
+  borderColor: [
+    'rgba(255, 197, 61, 1)',
+  ],
+  borderWidth: 2,
+};
+
+const datasetPositive = {
+label: 'POSITIVE',
+  data: [],
+  fill: false,
+  backgroundColor: [
+    'rgba(67, 67, 67, 1)',
+  ],
+  borderColor: [
+    'rgba(67, 67, 61, 1)',
+  ],
+  borderWidth: 2,
+};
+const datasetActive = {
+label: 'ACTIVE',
+  data: [],
+  fill: false,
+  backgroundColor: [
+    'rgba(115, 209, 61, 1)',
+  ],
+  borderColor: [
+    'rgba(115, 209, 61, 1)',
+  ],
+  borderWidth: 2,
+};
+const datasetVibe = {
+  label: 'VIBE',
+  data: [],
+  fill: false,
+  backgroundColor: [
+    'rgba(247, 89, 171, 1)',
+  ],
+  borderColor: [
+    'rgba(247, 89, 171, 1)',
+  ],
+  borderWidth: 2,
+};
 
 const state = {
   backend: 'wasm',
@@ -308,7 +402,7 @@ const renderPredictionImg = async () => {
       emotionsHappy = [emotions[1].toFixed(3)];
       dataEmotionHappy_Img.push(emotionsHappy);
 
-      //console.log(emotionsAngry);
+      // console.log(emotionsAngry);
       // localStorage.setItem('dataHappy', dataEmotionHappy);
 
       emotionsSad = [emotions[2].toFixed(3)];
@@ -335,7 +429,7 @@ const renderPredictionImg = async () => {
         dataEmotionsAngry_Img.shift();
         dataEmotionsNeutral_Img.shift();
         dataEmotionHappy_Img.shift();
-        console.log(emotionsNeutral);
+        // console.log(emotionsNeutral);
         dataEmotionSad_Img.shift();
         dataEmotionSurprised_Img.shift();
         dataEmtionsPositive_Img.shift();
@@ -527,25 +621,6 @@ const renderPredictionVideoClip = async () => {
       valueActiveLabel.textContent = `${(pipeline.estimateActive(emotions) * 100).toFixed(2)}%`;
       valueVibe.style.width = `${(pipeline.estimateVibe(emotions) * 100).toFixed(2)}%`;
       valueVibeLabel.textContent = `${(pipeline.estimateVibe(emotions) * 100).toFixed(2)}%`;
-
-
-      // if (annotateBoxes) {
-        // const landmarks = face.landmarks;
-
-        // ctx.fillStyle = 'rgba(0, 255, 0, 1.0)';
-        // for (let j = 0; j < landmarks.length; j++) {
-        //   const x = landmarks[j][0];
-        //   const y = landmarks[j][1];
-        //   ctx.fillRect(x, y, 5, 5);
-        // }
-
-        // ctx.font = '16px Georgia';
-        // ctx.fillText(`Neutral: ${emotions[0].toFixed(2)}`, start[0], landmarks[3][1]  - 45);
-        // ctx.fillText(`Happy: ${emotions[1].toFixed(2)}`, start[0], landmarks[3][1]    - 25);
-        // ctx.fillText(`Sad: ${emotions[2].toFixed(2)}`, start[0], landmarks[3][1]      - 5);
-        // ctx.fillText(`Angry: ${emotions[3].toFixed(2)}`, start[0], landmarks[3][1]    + 15);
-        // ctx.fillText(`Surprised: ${emotions[4].toFixed(2)}`, start[0], landmarks[3][1]+ 35);
-      // }
     }
   }
   stats.end();
@@ -926,9 +1001,9 @@ async function showEmotions() {
 
 async function showPositiveActive() {
 
-  document.getElementById('block_positive').style.display = 'flex',
-  document.getElementById('block_active').style.display = 'flex',
-  document.getElementById('block_positive').style.paddingLeft = '3em'
+  document.getElementById('block_positive').style.display = 'flex';
+  document.getElementById('block_active').style.display = 'flex';
+  document.getElementById('block_positive').style.paddingLeft = '3em';
   // document.getElementById('block_active').style.paddingLeft = '1em',
   document.getElementById('block_vibe').style.display = 'none',
 
@@ -974,7 +1049,6 @@ async function showPositiveActive() {
 }
 
 async function showVibes() {
-
   document.getElementById('block_positive').style.display = 'none',
   document.getElementById('block_active').style.display = 'none',
 
@@ -1030,7 +1104,6 @@ async function showAll() {
   document.getElementById('block_vibe').style.paddingLeft = '0px',
   document.getElementById('block_positive').style.paddingLeft = '0px',
   document.getElementById('block_active').style.paddingLeft = 'px',
-
 
   document.getElementById('block_neutral').style.display = 'flex',
   document.getElementById('block_angry').style.display = 'flex',
@@ -1096,111 +1169,21 @@ const myChartEmotions = async() => {
     // const valueEmotions_Sad = localStorage.getItem('dataSad');
     // const valueEmotions_Surprised = localStorage.getItem('dataSurprise');
     // const valueEmotions_Happy = localStorage.getItem('dataHappy');
-      myChart = new Chart(ctx, {
+    myChart = new Chart(ctx, {
           backgroundColor: 'white',
           type: 'line',
           data: {
               labels: numberCells,
               datasets: [
-                {
-                  label: 'ANGRY',
-                  data: [], //valueEmotions_Angry.split(','),
-                  fill: false,
-                  tension: 0.4,
-                  backgroundColor: [
-                      'rgba(255, 77, 79, 1)',
-                  ],
-                  borderColor: [
-                      'rgba(255, 77, 79, 1)',
-                  ],
-                  borderWidth: 2,
-            },
-            {
-              label: 'NEUTRAL',
-              data: [], //valueEmotions_Neutral.split(','),
-              fill: false,
-              tension: 0.4,
-              backgroundColor: [
-                'rgba(186, 231, 255, 1)',
+                datasetAngry,
+                datasetNeutral,
+                datasetHappy,
+                datasetSad,
+                datasetSurprised,
+                datasetPositive,
+                datasetActive,
+                datasetVibe,
               ],
-              borderColor: [
-                'rgba(186, 231, 255, 1)',
-              ],
-              borderWidth: 2,
-            },
-            {
-              label: 'HAPPY',
-              data: [], //valueEmotions_Happy.split(','),
-              fill: false,
-              backgroundColor: [
-                'rgba(24, 144, 255, 1)',
-              ],
-              borderColor: [
-                'rgba(24, 144, 255, 1)',
-              ],
-              borderWidth: 2,
-            },
-            {
-              label: 'SAD',
-              data: [], //valueEmotions_Sad.split(','),
-              fill: false,
-              backgroundColor: [
-                'rgba(89, 126, 247, 1)',
-              ],
-              borderColor: [
-                'rgba(89, 126, 247, 1)',
-              ],
-              borderWidth: 2,
-            },
-            {
-              label: 'SURPRISE',
-                data: [], //valueEmotions_Surprised.split(','),
-                fill: false,
-                backgroundColor: [
-                  'rgba(255, 197, 61, 1)',
-                ],
-                borderColor: [
-                  'rgba(255, 197, 61, 1)',
-                ],
-                borderWidth: 2,
-              },
-              {
-                label: 'POSITIVE',
-                  data: [], //valueEmotions_Surprised.split(','),
-                  fill: false,
-                  backgroundColor: [
-                    'rgba(67, 67, 67, 1)',
-                  ],
-                  borderColor: [
-                    'rgba(67, 67, 61, 1)',
-                  ],
-                  borderWidth: 2,
-                },
-                {
-                  label: 'ACTIVE',
-                    data: [], //valueEmotions_Surprised.split(','),
-                    fill: false,
-                    backgroundColor: [
-                      'rgba(115, 209, 61, 1)',
-                    ],
-                    borderColor: [
-                      'rgba(115, 209, 61, 1)',
-                    ],
-                    borderWidth: 2,
-                  },
-                  {
-                    label: 'VIBE',
-                      data: [],
-                      fill: false,
-                      backgroundColor: [
-                        'rgba(247, 89, 171, 1)',
-                      ],
-                      borderColor: [
-                        'rgba(247, 89, 171, 1)',
-                      ],
-                      borderWidth: 2,
-                    },
-            ],
           },
           options: {
               scales: {
@@ -1234,8 +1217,8 @@ const myChartEmotions = async() => {
                 },
               },
           },
-    }); 
-}
+    });
+};
 
 const myChartEmotions_Img = async() => {
   // const numberCells = ['0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0'];
@@ -1252,104 +1235,14 @@ const myChartEmotions_Img = async() => {
           data: {
               labels: numberCells,
               datasets: [
-                {
-                  label: 'ANGRY',
-                  data: [], //valueEmotions_Angry.split(','),
-                  fill: false,
-                  tension: 0.4,
-                  backgroundColor: [
-                      'rgba(255, 77, 79, 1)',
-                  ],
-                  borderColor: [
-                      'rgba(255, 77, 79, 1)',
-                  ],
-                  borderWidth: 2,
-            },
-            {
-              label: 'NEUTRAL',
-              data: [], //valueEmotions_Neutral.split(','),
-              fill: false,
-              tension: 0.4,
-              backgroundColor: [
-                'rgba(186, 231, 255, 1)',
-              ],
-              borderColor: [
-                'rgba(186, 231, 255, 1)',
-              ],
-              borderWidth: 2,
-            },
-            {
-              label: 'HAPPY',
-              data: [], //valueEmotions_Happy.split(','),
-              fill: false,
-              backgroundColor: [
-                'rgba(24, 144, 255, 1)',
-              ],
-              borderColor: [
-                'rgba(24, 144, 255, 1)',
-              ],
-              borderWidth: 2,
-            },
-            {
-              label: 'SAD',
-              data: [], //valueEmotions_Sad.split(','),
-              fill: false,
-              backgroundColor: [
-                'rgba(89, 126, 247, 1)',
-              ],
-              borderColor: [
-                'rgba(89, 126, 247, 1)',
-              ],
-              borderWidth: 2,
-            },
-            {
-              label: 'SURPRISE',
-                data: [],//valueEmotions_Surprised.split(','),
-                fill: false,
-                backgroundColor: [
-                  'rgba(255, 197, 61, 1)',
-                ],
-                borderColor: [
-                  'rgba(255, 197, 61, 1)',
-                ],
-                borderWidth: 2,
-              },
-              {
-                label: 'POSITIVE',
-                  data: [],//valueEmotions_Surprised.split(','),
-                  fill: false,
-                  backgroundColor: [
-                    'rgba(67, 67, 67, 1)',
-                  ],
-                  borderColor: [
-                    'rgba(67, 67, 61, 1)',
-                  ],
-                  borderWidth: 2,
-                },
-                {
-                  label: 'ACTIVE',
-                    data: [],//valueEmotions_Surprised.split(','),
-                    fill: false,
-                    backgroundColor: [
-                      'rgba(115, 209, 61, 1)',
-                    ],
-                    borderColor: [
-                      'rgba(115, 209, 61, 1)',
-                    ],
-                    borderWidth: 2,
-                  },
-                  {
-                    label: 'VIBE',
-                      data: [],//valueEmotions_Surprised.split(','),
-                      fill: false,
-                      backgroundColor: [
-                        'rgba(247, 89, 171, 1)',
-                      ],
-                      borderColor: [
-                        'rgba(247, 89, 171, 1)',
-                      ],
-                      borderWidth: 2,
-                    },
+                datasetAngry,
+                datasetNeutral,
+                datasetHappy,
+                datasetSad,
+                datasetSurprised,
+                datasetPositive,
+                datasetActive,
+                datasetVibe,
             ],
           },
           options: {
@@ -1386,10 +1279,10 @@ const myChartEmotions_Img = async() => {
                 },
               },
           },
-    }); 
-}
+    });
+};
 
-const myChartEmotions_Clip = async() => {
+const myChartEmotions_Clip = async () => {
   // const numberCells = ['0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0'];
     numberCells = Array.from({length: maxFrameChart}, (_, i) => i + 1);
     // debugger;
@@ -1404,104 +1297,14 @@ const myChartEmotions_Clip = async() => {
           data: {
               labels: numberCells,
               datasets: [
-                {
-                  label: 'ANGRY',
-                  data: [], //valueEmotions_Angry.split(','),
-                  fill: false,
-                  tension: 0.4,
-                  backgroundColor: [
-                      'rgba(255, 77, 79, 1)',
-                  ],
-                  borderColor: [
-                      'rgba(255, 77, 79, 1)',
-                  ],
-                  borderWidth: 2,
-            },
-            {
-              label: 'NEUTRAL',
-              data: [], //valueEmotions_Neutral.split(','),
-              fill: false,
-              tension: 0.4,
-              backgroundColor: [
-                'rgba(186, 231, 255, 1)',
-              ],
-              borderColor: [
-                'rgba(186, 231, 255, 1)',
-              ],
-              borderWidth: 2,
-            },
-            {
-              label: 'HAPPY',
-              data: [], //valueEmotions_Happy.split(','),
-              fill: false,
-              backgroundColor: [
-                'rgba(24, 144, 255, 1)',
-              ],
-              borderColor: [
-                'rgba(24, 144, 255, 1)',
-              ],
-              borderWidth: 2,
-            },
-            {
-              label: 'SAD',
-              data: [], //valueEmotions_Sad.split(','),
-              fill: false,
-              backgroundColor: [
-                'rgba(89, 126, 247, 1)',
-              ],
-              borderColor: [
-                'rgba(89, 126, 247, 1)',
-              ],
-              borderWidth: 2,
-            },
-            {
-              label: 'SURPRISE',
-                data: [],//valueEmotions_Surprised.split(','),
-                fill: false,
-                backgroundColor: [
-                  'rgba(255, 197, 61, 1)',
-                ],
-                borderColor: [
-                  'rgba(255, 197, 61, 1)',
-                ],
-                borderWidth: 2,
-              },
-              {
-                label: 'POSITIVE',
-                  data: [],//valueEmotions_Surprised.split(','),
-                  fill: false,
-                  backgroundColor: [
-                    'rgba(67, 67, 67, 1)',
-                  ],
-                  borderColor: [
-                    'rgba(67, 67, 61, 1)',
-                  ],
-                  borderWidth: 2,
-                },
-                {
-                  label: 'ACTIVE',
-                    data: [],//valueEmotions_Surprised.split(','),
-                    fill: false,
-                    backgroundColor: [
-                      'rgba(115, 209, 61, 1)',
-                    ],
-                    borderColor: [
-                      'rgba(115, 209, 61, 1)',
-                    ],
-                    borderWidth: 2,
-                  },
-                  {
-                    label: 'VIBE',
-                      data: [],//valueEmotions_Surprised.split(','),
-                      fill: false,
-                      backgroundColor: [
-                        'rgba(247, 89, 171, 1)',
-                      ],
-                      borderColor: [
-                        'rgba(247, 89, 171, 1)',
-                      ],
-                      borderWidth: 2,
-                    },
+                datasetAngry,
+                datasetNeutral,
+                datasetHappy,
+                datasetSad,
+                datasetSurprised,
+                datasetPositive,
+                datasetActive,
+                datasetVibe,
             ],
           },
           options: {
@@ -1558,104 +1361,14 @@ const myChartEmotions_Webcam = async() => {
           data: {
               labels: numberCells,
               datasets: [
-                {
-                  label: 'ANGRY',
-                  data: [], //valueEmotions_Angry.split(','),
-                  fill: false,
-                  tension: 0.4,
-                  backgroundColor: [
-                      'rgba(255, 77, 79, 1)',
-                  ],
-                  borderColor: [
-                      'rgba(255, 77, 79, 1)',
-                  ],
-                  borderWidth: 2,
-            },
-            {
-              label: 'NEUTRAL',
-              data: [], //valueEmotions_Neutral.split(','),
-              fill: false,
-              tension: 0.4,
-              backgroundColor: [
-                'rgba(186, 231, 255, 1)',
-              ],
-              borderColor: [
-                'rgba(186, 231, 255, 1)',
-              ],
-              borderWidth: 2,
-            },
-            {
-              label: 'HAPPY',
-              data: [], //valueEmotions_Happy.split(','),
-              fill: false,
-              backgroundColor: [
-                'rgba(24, 144, 255, 1)',
-              ],
-              borderColor: [
-                'rgba(24, 144, 255, 1)',
-              ],
-              borderWidth: 2,
-            },
-            {
-              label: 'SAD',
-              data: [], //valueEmotions_Sad.split(','),
-              fill: false,
-              backgroundColor: [
-                'rgba(89, 126, 247, 1)',
-              ],
-              borderColor: [
-                'rgba(89, 126, 247, 1)',
-              ],
-              borderWidth: 2,
-            },
-            {
-              label: 'SURPRISE',
-                data: [],//valueEmotions_Surprised.split(','),
-                fill: false,
-                backgroundColor: [
-                  'rgba(255, 197, 61, 1)',
-                ],
-                borderColor: [
-                  'rgba(255, 197, 61, 1)',
-                ],
-                borderWidth: 2,
-              },
-              {
-                label: 'POSITIVE',
-                  data: [],//valueEmotions_Surprised.split(','),
-                  fill: false,
-                  backgroundColor: [
-                    'rgba(67, 67, 67, 1)',
-                  ],
-                  borderColor: [
-                    'rgba(67, 67, 61, 1)',
-                  ],
-                  borderWidth: 2,
-                },
-                {
-                  label: 'ACTIVE',
-                    data: [],//valueEmotions_Surprised.split(','),
-                    fill: false,
-                    backgroundColor: [
-                      'rgba(115, 209, 61, 1)',
-                    ],
-                    borderColor: [
-                      'rgba(115, 209, 61, 1)',
-                    ],
-                    borderWidth: 2,
-                  },
-                  {
-                    label: 'VIBE',
-                      data: [],//valueEmotions_Surprised.split(','),
-                      fill: false,
-                      backgroundColor: [
-                        'rgba(247, 89, 171, 1)',
-                      ],
-                      borderColor: [
-                        'rgba(247, 89, 171, 1)',
-                      ],
-                      borderWidth: 2,
-                    },
+                datasetAngry,
+                datasetNeutral,
+                datasetHappy,
+                datasetSad,
+                datasetSurprised,
+                datasetPositive,
+                datasetActive,
+                datasetVibe,
             ],
           },
           options: {
@@ -1710,7 +1423,7 @@ const myChartEmotions_Webcam = async() => {
 function hideDataEmotions() {
   myChart.getDatasetMeta(5).hidden = true;
   myChart.getDatasetMeta(6).hidden = true;
-  myChart.getDatasetMeta(7).hidden = true;  
+  myChart.getDatasetMeta(7).hidden = true;
 
   myChart.getDatasetMeta(0).hidden = false;
   myChart.getDatasetMeta(1).hidden = false;
