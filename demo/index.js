@@ -1457,6 +1457,13 @@ function hideDataVibe() {
 
   myChart.getDatasetMeta(7).hidden = false;
 }
+
+function showPrivacyPage() {
+  document.getElementById('privacy_page').style.display='block';
+}
+function closePrivacyPage(){
+  document.getElementById('privacy_page').style.display='none';
+}
 const setupPage = async () => {
   await tf.setBackend(state.backend);
   await setupCamera();
@@ -1523,6 +1530,8 @@ const setupPage = async () => {
   document.getElementById('btn_positive-active').addEventListener('click', hideDataPositive);
   document.getElementById('btn_vibes').addEventListener('click', hideDataVibe);
   document.getElementById('btn_emotions').click();
+  document.getElementById('btn_privacy_page').addEventListener('click', showPrivacyPage);
+  document.getElementById('close_privacy_page').addEventListener('click',closePrivacyPage);
 
   window.addEventListener('resize', () =>{
     video_width = video.offsetWidth;
