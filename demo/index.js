@@ -99,6 +99,10 @@ let dataEmtionVibe_Webcam = [];
 let numberCells;
 let myChart;
 let beginTime = Date.now(), prevTime = beginTime;
+let video_width;
+let video_height;
+let resizeWidth;
+let resizeHeight;
 
 const state = {
   backend: 'wasm',
@@ -246,13 +250,10 @@ const renderPrediction = async () => {
         const start = face.topLeft;
         const end = face.bottomRight;
         const size = [end[0] - start[0], end[1] - start[1]];
-
-        // const croppedInput = cutBoxFromImageAndResize(
-        //   box, rotatedImage, [this.meshWidth, this.meshHeight]);
-
         ctx.strokeStyle = 'rgba(0, 255, 0, 1.0)';
-        ctx.strokeRect(start[0], start[1], size[0], size[1]);
+        ctx.strokeRect(resizeWidth * start[0], resizeHeight * start[1], resizeHeight * size[0], resizeWidth * size[1]);
 
+        console.log(resizeWidth * start[0], resizeHeight * start[1], resizeWidth * size[0], resizeHeight * size[1])
         valueNeutral.style.width = `${(emotions[0] * 100).toFixed(2)}%`;
         valueNeutralLabel.textContent = `${(emotions[0] * 100).toFixed(2)}%`;
         valueHappy.style.width = `${(emotions[1] * 100).toFixed(2)}%`;
@@ -1756,6 +1757,17 @@ const setupPage = async () => {
   ctx = canvas.getContext('2d');
   ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
 
+  video_width = video.offsetWidth;
+  video_height = video.offsetHeight;
+  resizeWidth = (video_width / canvas.width);
+  console.log('canvas width: ', canvas.width);
+  console.log('input width: ',video_width);
+  console.log('resize width: ',resizeWidth);
+  resizeHeight = (video_height / canvas.height);
+  console.log('canvas height: ', canvas.height);
+  console.log('input height: ',video_height);
+  console.log('resize height:',resizeHeight);
+
   modelFace = await facetfjs.loadBlazeFace();
   modelEmotion = await facetfjs.loadFaceEmotions();
   pipeline = new facetfjs.EmotionPipeline(modelFace, modelEmotion);
@@ -1795,6 +1807,19 @@ const setupPage = async () => {
   document.getElementById('btn_positive-active').addEventListener('click', hideDataPositive);
   document.getElementById('btn_vibes').addEventListener('click', hideDataVibe);
   document.getElementById('btn_emotions').click();
+
+  window.addEventListener('resize', () =>{
+    video_width = video.offsetWidth;
+    video_height = video.offsetHeight;
+    resizeWidth = (video_width / canvas.width);
+    console.log('canvas width: ', canvas.width);
+    console.log('input width: ',video_width);
+    console.log('resize width: ',resizeWidth);
+    resizeHeight = (video_height / canvas.height);
+    console.log('canvas height: ', canvas.height);
+    console.log('input height: ',video_height);
+    console.log('resize height:',resizeHeight);
+  })
 };
 
 setupPage();
