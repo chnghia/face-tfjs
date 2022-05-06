@@ -34,9 +34,9 @@ document.getElementById('stats').appendChild(stats.domElement);
 let modelFace;
 let modelEmotion;
 let ctx;
-let videoWidth;
-let videoHeight;
-let video;
+let webcamWidth;
+let webcamHeight;
+let webcam;
 let canvas;
 let valueNeutral;
 let valueHappy;
@@ -52,14 +52,14 @@ let img;
 let videoClip;
 let videoClipWidth;
 let videoClipHeight;
-let emotionsAngry;
-let emotionsHappy;
-let emotionsSad;
-let emotionsNeutral;
-let emotionsSurprise;
-let emotionPositive;
-let emotionActive;
-let emotionVibe;
+// let emotionsAngry;
+// let emotionsHappy;
+// let emotionsSad;
+// let emotionsNeutral;
+// let emotionsSurprise;
+// let emotionPositive;
+// let emotionActive;
+// let emotionVibe;
 let dataEmotionsNeutral = [];
 let dataEmotionsAngry = [];
 let dataEmotionHappy = [];
@@ -69,34 +69,35 @@ let dataEmtionsPositive = [];
 let dataEmtionActive = [];
 let dataEmtionVibe = [];
 
-let dataEmotionsNeutral_Img = [];
-let dataEmotionsAngry_Img = [];
-let dataEmotionHappy_Img = [];
-let dataEmotionSurprised_Img = [];
-let dataEmotionSad_Img = [];
-let dataEmtionsPositive_Img = [];
-let dataEmtionActive_Img = [];
-let dataEmtionVibe_Img = [];
+// let dataEmotionsNeutral_Img = [];
+// let dataEmotionsAngry_Img = [];
+// let dataEmotionHappy_Img = [];
+// let dataEmotionSurprised_Img = [];
+// let dataEmotionSad_Img = [];
+// let dataEmtionsPositive_Img = [];
+// let dataEmtionActive_Img = [];
+// let dataEmtionVibe_Img = [];
 
-let dataEmotionsNeutral_Clip = [];
-let dataEmotionsAngry_Clip= [];
-let dataEmotionHappy_Clip = [];
-let dataEmotionSurprised_Clip = [];
-let dataEmotionSad_Clip = [];
-let dataEmtionsPositive_Clip= [];
-let dataEmtionActive_Clip = [];
-let dataEmtionVibe_Clip = [];
+// let dataEmotionsNeutral_Clip = [];
+// let dataEmotionsAngry_Clip= [];
+// let dataEmotionHappy_Clip = [];
+// let dataEmotionSurprised_Clip = [];
+// let dataEmotionSad_Clip = [];
+// let dataEmtionsPositive_Clip= [];
+// let dataEmtionActive_Clip = [];
+// let dataEmtionVibe_Clip = [];
 
-let dataEmotionsNeutral_Webcam = [];
-let dataEmotionsAngry_Webcam= [];
-let dataEmotionHappy_Webcam = [];
-let dataEmotionSurprised_Webcam = [];
-let dataEmotionSad_Webcam = [];
-let dataEmtionsPositive_Webcam = [];
-let dataEmtionActive_Webcam = [];
-let dataEmtionVibe_Webcam = [];
+// let dataEmotionsNeutral_Webcam = [];
+// let dataEmotionsAngry_Webcam= [];
+// let dataEmotionHappy_Webcam = [];
+// let dataEmotionSurprised_Webcam = [];
+// let dataEmotionSad_Webcam = [];
+// let dataEmtionsPositive_Webcam = [];
+// let dataEmtionActive_Webcam = [];
+// let dataEmtionVibe_Webcam = [];
 
 let numberCells;
+let numberCell;
 let myChart;
 // eslint-disable-next-line one-var
 let beginTime = Date.now(), prevTime = beginTime;
@@ -208,18 +209,18 @@ const state = {
 //     });
 
 async function setupCamera() {
-  video = document.getElementById('video');
+  webcam = document.getElementById('webcam');
 
   const stream = await navigator.mediaDevices.getUserMedia({
     'audio': false,
     // 'video': {facingMode: 'user'},
     'video': {width: 520, height: 390},
   });
-  video.srcObject = stream;
+  webcam.srcObject = stream;
 
   return new Promise((resolve) => {
-    video.onloadedmetadata = () => {
-      resolve(video);
+    webcam.onloadedmetadata = () => {
+      resolve(webcam);
     };
   });
 }
@@ -258,6 +259,77 @@ async function setupImg() {
 //   };
 // }
 
+function emotionValue(emotion, toFixed=2) {
+  return emotion.toFixed(toFixed);
+}
+
+function emotionValuePercent(emotion, toFixed=2) {
+  return (emotion * 100).toFixed(toFixed);
+}
+
+function pushEmotionsToChart(emotions) {
+  const emotionsNeutral = [emotionValue(emotions[0], 3)];
+  dataEmotionsNeutral.push(emotionsNeutral);
+
+  const emotionsHappy = [emotionValue(emotions[1], 3)];
+  dataEmotionHappy.push(emotionsHappy);
+
+  const emotionsSad = [emotionValue(emotions[2], 3)];
+  dataEmotionSad.push(emotionsSad);
+
+  const emotionsAngry = [emotionValue(emotions[3], 3)];
+  dataEmotionsAngry.push(emotionsAngry);
+
+  const emotionsSurprise = [emotionValue(emotions[4], 3)];
+  dataEmotionSurprised.push(emotionsSurprise);
+
+  const emotionPositive = [emotionValue(pipeline.estimatePositive(emotions), 3)];
+  dataEmtionsPositive.push(emotionPositive);
+
+  const emotionActive = [emotionValue(pipeline.estimateActive(emotions), 3)];
+  dataEmtionActive.push(emotionActive);
+
+  const emotionVibe = [emotionValue(pipeline.estimateVibe(emotions), 3)];
+  dataEmtionVibe.push(emotionVibe);
+
+  if (dataEmotionsAngry.length >= maxFrameChart) {
+    dataEmotionsAngry.shift();
+    dataEmotionsNeutral.shift();
+    dataEmotionHappy.shift();
+    dataEmotionSad.shift();
+    dataEmotionSurprised.shift();
+    dataEmtionsPositive.shift();
+    dataEmtionActive.shift();
+    dataEmtionVibe.shift();
+
+    numberCell += 1;
+    numberCells.push(numberCell);
+    numberCells.shift();
+  }
+
+  myChart.data.labels = numberCells;
+  myChart.data.datasets[0].data = dataEmotionsAngry;
+  myChart.data.datasets[1].data = dataEmotionsNeutral;
+  myChart.data.datasets[2].data = dataEmotionHappy;
+  myChart.data.datasets[3].data = dataEmotionSad;
+  myChart.data.datasets[4].data = dataEmotionSurprised;
+  myChart.data.datasets[5].data = dataEmtionsPositive;
+  myChart.data.datasets[6].data = dataEmtionActive;
+  myChart.data.datasets[7].data = dataEmtionVibe;
+  myChart.update();
+}
+
+function convertRange(value, newMax, oldMax) {
+  // const oldMax = oldRange;
+  const oldMin = 0;
+  // const newMax = newRange;
+  const newMin = 0;
+  const oldRange = (oldMax - oldMin);
+  const newRange = (newMax - newMin);
+  const newValue = (((value - oldMin) * newRange) / oldRange) + newMin;
+  return newValue;
+}
+
 const renderPrediction = async () => {
   stats.begin();
 
@@ -268,7 +340,12 @@ const renderPrediction = async () => {
   if ( time >= prevTime + timeFrameCapture ) {
     prevTime = time;
 
-    const predictions = await pipeline.estimateEmotion(video);
+    canvas.width = webcam.offsetWidth;
+    canvas.height = webcam.offsetHeight;
+    const ratioWidth = webcam.offsetWidth / webcam.width;
+    const ratioHeight= webcam.offsetHeight / webcam.height;
+
+    const predictions = await pipeline.estimateEmotion(webcam);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (predictions.length > 0) {
@@ -277,60 +354,7 @@ const renderPrediction = async () => {
         let face = predictions[0].face;
         let emotions = predictions[0].emotions;
 
-        emotionsNeutral = [emotions[0].toFixed(3)];
-        dataEmotionsNeutral.push(emotionsNeutral);
-        // localStorage.setItem('dataNeutral', dataEmotionsNeutral);
-
-        emotionsHappy = [emotions[1].toFixed(3)];
-        dataEmotionHappy.push(emotionsHappy);
-        // localStorage.setItem('dataHappy', dataEmotionHappy);
-
-        emotionsSad = [emotions[2].toFixed(3)];
-        dataEmotionSad.push(emotionsSad);
-        // localStorage.setItem('dataSad', dataEmotionSad);
-
-        emotionsAngry = [emotions[3].toFixed(3)];
-        dataEmotionsAngry.push(emotionsAngry);
-        // localStorage.setItem('dataAngry', dataEmotionsAngry);
-
-        emotionsSurprise = [emotions[4].toFixed(3)];
-        dataEmotionSurprised.push(emotionsSurprise);
-        // localStorage.setItem('dataSurprise', dataEmotionSurprised);
-
-        emotionPositive = [(pipeline.estimatePositive(emotions).toFixed(3))];
-        dataEmtionsPositive.push(emotionPositive);
-
-        emotionActive = [(pipeline.estimateActive(emotions).toFixed(3))];
-        dataEmtionActive.push(emotionActive);
-
-        emotionVibe = [(pipeline.estimateVibe(emotions).toFixed(3))];
-        dataEmtionVibe.push(emotionVibe);
-
-        if (dataEmotionsAngry.length >= maxFrameChart) {
-          dataEmotionsAngry.shift();
-          dataEmotionsNeutral.shift();
-          dataEmotionHappy.shift();
-          dataEmotionSad.shift();
-          dataEmotionSurprised.shift();
-          dataEmtionsPositive.shift();
-          dataEmtionActive.shift();
-          dataEmtionVibe.shift();
-
-          numberCells.push(numberCells.length);
-          numberCells.shift();
-        }
-
-        myChart.data.labels = numberCells;
-        myChart.data.datasets[0].data = dataEmotionsAngry;
-        myChart.data.datasets[1].data = dataEmotionsNeutral;
-        myChart.data.datasets[2].data = dataEmotionHappy;
-        myChart.data.datasets[3].data = dataEmotionSad;
-        myChart.data.datasets[4].data = dataEmotionSurprised;
-        myChart.data.datasets[5].data = dataEmtionsPositive;
-        myChart.data.datasets[6].data = dataEmtionActive;
-        myChart.data.datasets[7].data = dataEmtionVibe;
-        myChart.update();
-
+        pushEmotionsToChart(emotions);
 
         if (returnTensors) {
           face.topLeft = face.topLeft.arraySync();
@@ -344,35 +368,32 @@ const renderPrediction = async () => {
         const end = face.bottomRight;
         const size = [end[0] - start[0], end[1] - start[1]];
 
-        // const croppedInput = cutBoxFromImageAndResize(
-        //   box, rotatedImage, [this.meshWidth, this.meshHeight]);
-
         ctx.strokeStyle = 'rgba(0, 255, 0, 1.0)';
-        ctx.strokeRect(start[0], start[1], size[0], size[1]);
+        const newX = convertRange(start[0], webcam.offsetWidth, webcam.width);
+        const newY = convertRange(start[1], webcam.offsetHeight, webcam.height);
+        // console.log('x: ' + start[0]);
+        // console.log('y: ' + start[1]);
+        // console.log('new x: ' + newX);
+        // console.log('new y: ' + newY);
+        ctx.strokeRect(newX, newY, size[0]*ratioWidth, size[1]*ratioHeight);
 
-        valueNeutral.style.width = `${(emotions[0] * 100).toFixed(2)}%`;
-        valueNeutralLabel.textContent = `${(emotions[0] * 100).toFixed(2)}%`;
-        valueHappy.style.width = `${(emotions[1] * 100).toFixed(2)}%`;
-        valueHappyLabel.textContent = `${(emotions[1] * 100).toFixed(2)}%`;
-        valueSad.style.width = `${(emotions[2] * 100).toFixed(2)}%`;
-        valueSadLabel.textContent = `${(emotions[2] * 100).toFixed(2)}%`;
-        valueAngry.style.width = `${(emotions[3] * 100).toFixed(2)}%`;
-        valueAngryLabel.textContent = `${(emotions[3] * 100).toFixed(2)}%`;
-        valueSuprised.style.width = `${(emotions[4] * 100).toFixed(2)}%`;
-        valueSuprisedLabel.textContent = `${(emotions[4] * 100).toFixed(2)}%`;
+        valueNeutral.style.width = `${emotionValuePercent(emotions[0])}%`;
+        valueNeutralLabel.textContent = `${emotionValuePercent(emotions[0])}%`;
+        valueHappy.style.width = `${emotionValuePercent(emotions[1])}%`;
+        valueHappyLabel.textContent = `${emotionValuePercent(emotions[1])}%`;
+        valueSad.style.width = `${emotionValuePercent(emotions[2])}%`;
+        valueSadLabel.textContent = `${emotionValuePercent(emotions[2])}%`;
+        valueAngry.style.width = `${emotionValuePercent(emotions[3])}%`;
+        valueAngryLabel.textContent = `${emotionValuePercent(emotions[3])}%`;
+        valueSuprised.style.width = `${emotionValuePercent(emotions[4])}%`;
+        valueSuprisedLabel.textContent = `${emotionValuePercent(emotions[4])}%`;
 
-        valuePositive.style.width = `${(pipeline.estimatePositive(emotions) * 100).toFixed(2)}%`;
-        valuePositiveLabel.textContent = `${(pipeline.estimatePositive(emotions) * 100).toFixed(2)}%`;
-        valueActive.style.width = `${(pipeline.estimateActive(emotions) * 100).toFixed(2)}%`;
-        valueActiveLabel.textContent = `${(pipeline.estimateActive(emotions) * 100).toFixed(2)}%`;
-        valueVibe.style.width = `${(pipeline.estimateVibe(emotions) * 100).toFixed(2)}%`;
-        valueVibeLabel.textContent = `${(pipeline.estimateVibe(emotions) * 100).toFixed(2)}%`;
-
-        emotionsNeutral = `${(emotions[0]).toFixed(3)}`;
-        emotionsHappy = `${(emotions[1]).toFixed(3)}`;
-        emotionsSad = `${(emotions[2]).toFixed(3)}`;
-        emotionsAngry = `${(emotions[3]).toFixed(3)}`;
-        emotionsSurprise = `${(emotions[4]).toFixed(3)}`;
+        valuePositive.style.width = `${emotionValuePercent(pipeline.estimatePositive(emotions))}%`;
+        valuePositiveLabel.textContent = `${emotionValuePercent(pipeline.estimatePositive(emotions))}%`;
+        valueActive.style.width = `${emotionValuePercent(pipeline.estimateActive(emotions))}%`;
+        valueActiveLabel.textContent = `${emotionValuePercent(pipeline.estimateActive(emotions))}%`;
+        valueVibe.style.width = `${emotionValuePercent(pipeline.estimateVibe(emotions))}%`;
+        valueVibeLabel.textContent = `${emotionValuePercent(pipeline.estimateVibe(emotions))}%`;
       }
     }
   }
@@ -488,25 +509,6 @@ const renderPredictionImg = async () => {
       valueActiveLabel.textContent = `${(pipeline.estimateActive(emotions) * 100).toFixed(2)}%`;
       valueVibe.style.width = `${(pipeline.estimateVibe(emotions) * 100).toFixed(2)}%`;
       valueVibeLabel.textContent = `${(pipeline.estimateVibe(emotions) * 100).toFixed(2)}%`;
-
-
-      // if (annotateBoxes) {
-        // const landmarks = face.landmarks;
-
-        // ctx.fillStyle = 'rgba(0, 255, 0, 1.0)';
-        // for (let j = 0; j < landmarks.length; j++) {
-        //   const x = landmarks[j][0];
-        //   const y = landmarks[j][1];
-        //   ctx.fillRect(x, y, 5, 5);
-        // }
-
-        // ctx.font = '16px Georgia';
-        // ctx.fillText(`Neutral: ${emotions[0].toFixed(2)}`, start[0], landmarks[3][1]  - 45);
-        // ctx.fillText(`Happy: ${emotions[1].toFixed(2)}`, start[0], landmarks[3][1]    - 25);
-        // ctx.fillText(`Sad: ${emotions[2].toFixed(2)}`, start[0], landmarks[3][1]      - 5);
-        // ctx.fillText(`Angry: ${emotions[3].toFixed(2)}`, start[0], landmarks[3][1]    + 15);
-        // ctx.fillText(`Surprised: ${emotions[4].toFixed(2)}`, start[0], landmarks[3][1]+ 35);
-      // }
     }
   }
   stats.end();
@@ -612,9 +614,6 @@ const renderPredictionVideoClip = async () => {
       valueSuprised.style.width = `${(emotions[4] * 100).toFixed(2)}%`;
       valueSuprisedLabel.textContent = `${(emotions[4] * 100).toFixed(2)}%`;
 
-      // console.log('Positive: ', pipeline.estimatePositive(emotions));
-      // console.log('Active: ', pipeline.estimateActive(emotions));
-      // console.log('Vibe: ', pipeline.estimateVibe(emotions));
       valuePositive.style.width = `${(pipeline.estimatePositive(emotions) * 100).toFixed(2)}%`;
       valuePositiveLabel.textContent = `${(pipeline.estimatePositive(emotions) * 100).toFixed(2)}%`;
       valueActive.style.width = `${(pipeline.estimateActive(emotions) * 100).toFixed(2)}%`;
@@ -635,7 +634,7 @@ async function showImg() {
   document.getElementById('dropdown_button').innerHTML = 'Picture<svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>';
 
   document.getElementById('uploadImg').style.display = 'block';
-  document.getElementById('video').style.display = 'none';
+  document.getElementById('webcam').style.display = 'none';
   document.getElementById('movie').style.display = 'none';
 
   document.getElementById('value_neutral_label').innerHTML = '%';
@@ -656,7 +655,7 @@ async function showImg() {
   document.getElementById('value_active').style.width = '0%';
   document.getElementById('value_vibe').style.width = '0%';
 
-  stream = video.srcObject;
+  stream = webcam.srcObject;
   stream.getTracks().forEach(function(track) {
     track.stop();
   });
@@ -698,37 +697,39 @@ async function showImg() {
   renderPredictionImg();
 }
 
+function setupOutputValue() {
+  valueNeutralLabel.innerHTML = '%';
+  valueHappyLabel.innerHTML = '%';
+  valueSadLabel.innerHTML = '%';
+  valueAngryLabel.innerHTML = '%';
+  valueSuprisedLabelinnerHTML = '%';
+  valuePositiveLabel.innerHTML = '%';
+  valueActiveLabel.innerHTML = '%';
+  valueVibeLabel.innerHTML = '%';
+
+  valueNeutral.style.width = '0%';
+  valueHappy.style.width = '0%';
+  valueSad.style.width = '0%';
+  valueAngry.style.width = '0%';
+  valueSuprised.style.width = '0%';
+  valuePositive.style.width = '0%';
+  valueActive.style.width = '0%';
+  valueVibe.style.width = '0%';
+};
+
 async function showVideoClip() {
   myChart.reset();
 
   document.getElementById('dropdown_button').innerHTML = 'Video<svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>';
 
   document.getElementById('movie').style.display = 'block';
-  document.getElementById('video').style.display = 'none';
+  document.getElementById('webcam').style.display = 'none';
   document.getElementById('uploadImg').style.display = 'none';
 
-  stream = video.srcObject;
+  stream = webcam.srcObject;
   stream.getTracks().forEach(function(track) {
     track.stop();
   });
-
-  document.getElementById('value_neutral_label').innerHTML = '%';
-  document.getElementById('value_happy_label').innerHTML = '%';
-  document.getElementById('value_sad_label').innerHTML = '%';
-  document.getElementById('value_angry_label').innerHTML = '%';
-  document.getElementById('value_suprised_label').innerHTML = '%';
-  document.getElementById('value_positive_label').innerHTML = '%';
-  document.getElementById('value_active_label').innerHTML = '%';
-  document.getElementById('value_vibe_label').innerHTML = '%';
-
-  document.getElementById('value_neutral').style.width = '0%';
-  document.getElementById('value_happy').style.width = '0%';
-  document.getElementById('value_sad').style.width = '0%';
-  document.getElementById('value_angry').style.width = '0%';
-  document.getElementById('value_suprised').style.width = '0%';
-  document.getElementById('value_positive').style.width = '0%';
-  document.getElementById('value_active').style.width = '0%';
-  document.getElementById('value_vibe').style.width = '0%';
 
   await tf.setBackend(state.backend);
   videoClip = document.getElementById('videoClip');
@@ -768,6 +769,7 @@ async function showVideoClip() {
   valueActiveLabel = document.getElementById('value_active_label');
   valueVibeLabel = document.getElementById('value_vibe_label');
 
+  setupOutputValue();
   renderPredictionVideoClip();
 }
 
@@ -782,7 +784,7 @@ const renderPrediction_Webcam = async () => {
   if ( time >= prevTime + timeFrameCapture ) {
     prevTime = time;
 
-    const predictions = await pipeline.estimateEmotion(video);
+    const predictions = await pipeline.estimateEmotion(webcam);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (predictions.length > 0) {
       // console.log(predictions);
@@ -905,22 +907,22 @@ async function showWebcam() {
 
   document.getElementById('dropdown_button').innerHTML = 'Webcam<svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>';
 
-  document.getElementById('video').style.display = 'block';
+  document.getElementById('webcam').style.display = 'block';
   document.getElementById('uploadImg').style.display = 'none';
   document.getElementById('movie').style.display = 'none';
   await tf.setBackend(state.backend);
   await setupCamera();
   myChartEmotions_Webcam();
-  video.play();
+  webcam.play();
 
-  videoWidth = video.videoWidth;
-  videoHeight = video.videoHeight;
-  video.width = videoWidth;
-  video.height = videoHeight;
+  webcamWidth = webcam.videoWidth;
+  webcamHeight = webcam.videoHeight;
+  webcam.width = webcamWidth;
+  webcam.height = webcamHeight;
 
   canvas = document.getElementById('output');
-  canvas.width = videoWidth;
-  canvas.height = videoHeight;
+  canvas.width = webcamWidth;
+  canvas.height = webcamHeight;
   ctx = canvas.getContext('2d');
   ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
 
@@ -1159,65 +1161,66 @@ async function showAll() {
 }
 
 
-const myChartEmotions = async() => {
+const setupMyChartEmotions = async() => {
   // const numberCells = ['0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0'];
-    numberCells = Array.from({length: maxFrameChart}, (_, i) => i + 1);
-    // debugger;
-    const ctx = document.getElementById('myChart').getContext('2d');
-    // const valueEmotions_Neutral = localStorage.getItem('dataNeutral');
-    // const valueEmotions_Angry = localStorage.getItem('dataAngry');
-    // const valueEmotions_Sad = localStorage.getItem('dataSad');
-    // const valueEmotions_Surprised = localStorage.getItem('dataSurprise');
-    // const valueEmotions_Happy = localStorage.getItem('dataHappy');
-    myChart = new Chart(ctx, {
-          backgroundColor: 'white',
-          type: 'line',
-          data: {
-              labels: numberCells,
-              datasets: [
-                datasetAngry,
-                datasetNeutral,
-                datasetHappy,
-                datasetSad,
-                datasetSurprised,
-                datasetPositive,
-                datasetActive,
-                datasetVibe,
-              ],
-          },
-          options: {
-              scales: {
-                yAxes: [{
+  numberCell = maxFrameChart;
+  numberCells = Array.from({length: maxFrameChart}, (_, i) => i + 1);
+  // debugger;
+  const ctx = document.getElementById('myChart').getContext('2d');
+  // const valueEmotions_Neutral = localStorage.getItem('dataNeutral');
+  // const valueEmotions_Angry = localStorage.getItem('dataAngry');
+  // const valueEmotions_Sad = localStorage.getItem('dataSad');
+  // const valueEmotions_Surprised = localStorage.getItem('dataSurprise');
+  // const valueEmotions_Happy = localStorage.getItem('dataHappy');
+  myChart = new Chart(ctx, {
+        backgroundColor: 'white',
+        type: 'line',
+        data: {
+            labels: numberCells,
+            datasets: [
+              datasetAngry,
+              datasetNeutral,
+              datasetHappy,
+              datasetSad,
+              datasetSurprised,
+              datasetPositive,
+              datasetActive,
+              datasetVibe,
+            ],
+        },
+        options: {
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  min: 0,
+                  max: 1,
+                  },
+                }],
+                xAxes: [{
+                  position: 'bottom',
                   ticks: {
                     beginAtZero: true,
-                    min: 0,
-                    max: 1,
-                    },
+                    fontColor: 'white',
+                  },
                   }],
-                  xAxes: [{
-                    position: 'bottom',
-                    ticks: {
-                      beginAtZero: true,
-                      fontColor: 'white',
-                    },
-                    }],
+            },
+            legend: {
+              display: false,
+            },
+            tooltips: {
+              enabled: false,
+            },
+            hover: {
+              mode: null,
+            },
+            elements: {
+              point: {
+                radius: 0,
               },
-              legend: {
-                display: false,
-              },
-              tooltips: {
-                enabled: false,
-              },
-              hover: {
-                mode: null,
-              },
-              elements: {
-                point: {
-                  radius: 0,
-                },
-              },
-          },
-    });
+            },
+        },
+  });
 };
 
 const myChartEmotions_Img = async() => {
@@ -1348,66 +1351,66 @@ const myChartEmotions_Clip = async () => {
 
 const myChartEmotions_Webcam = async() => {
   // const numberCells = ['0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0'];
-    numberCells = Array.from({length: maxFrameChart}, (_, i) => i + 1);
+    // numberCells = Array.from({length: maxFrameChart}, (_, i) => i + 1);
     // debugger;
-    const ctx = document.getElementById('myChart').getContext('2d');
+    // const ctx = document.getElementById('myChart').getContext('2d');
     // const valueEmotions_Neutral = localStorage.getItem('dataNeutral');
     // const valueEmotions_Angry = localStorage.getItem('dataAngry');
     // const valueEmotions_Sad = localStorage.getItem('dataSad');
     // const valueEmotions_Surprised = localStorage.getItem('dataSurprise');
     // const valueEmotions_Happy = localStorage.getItem('dataHappy');
-      myChart = new Chart(ctx, {
-          type: 'line',
-          data: {
-              labels: numberCells,
-              datasets: [
-                datasetAngry,
-                datasetNeutral,
-                datasetHappy,
-                datasetSad,
-                datasetSurprised,
-                datasetPositive,
-                datasetActive,
-                datasetVibe,
-            ],
-          },
-          options: {
-              interaction: {
-                intersect: false,
-              },
-              scales: {
-                yAxes: [{
-                  ticks: {
-                    beginAtZero: true,
-                    min: 0,
-                    max: 1,
-                    },
-                  }],
-                xAxes: [{
-                  ticks: {
-                    beginAtZero: true,
-                    fontColor: 'white',
-                    // min: 0,
-                    // max: 1,
-                    },
-                    }],
-              },
-              legend: {
-                display: false,
-              },
-              tooltips: {
-                enabled: false,
-              },
-              hover: {
-                mode: null,
-              },
-              elements: {
-                point: {
-                  radius: 0,
-                },
-              },
-          },
-    });
+    //   myChart = new Chart(ctx, {
+    //       type: 'line',
+    //       data: {
+    //           labels: numberCells,
+    //           datasets: [
+    //             datasetAngry,
+    //             datasetNeutral,
+    //             datasetHappy,
+    //             datasetSad,
+    //             datasetSurprised,
+    //             datasetPositive,
+    //             datasetActive,
+    //             datasetVibe,
+    //         ],
+    //       },
+    //       options: {
+    //           interaction: {
+    //             intersect: false,
+    //           },
+    //           scales: {
+    //             yAxes: [{
+    //               ticks: {
+    //                 beginAtZero: true,
+    //                 min: 0,
+    //                 max: 1,
+    //                 },
+    //               }],
+    //             xAxes: [{
+    //               ticks: {
+    //                 beginAtZero: true,
+    //                 fontColor: 'white',
+    //                 // min: 0,
+    //                 // max: 1,
+    //                 },
+    //                 }],
+    //           },
+    //           legend: {
+    //             display: false,
+    //           },
+    //           tooltips: {
+    //             enabled: false,
+    //           },
+    //           hover: {
+    //             mode: null,
+    //           },
+    //           elements: {
+    //             point: {
+    //               radius: 0,
+    //             },
+    //           },
+    //       },
+    // });
 };
 
 // function hideData() {
@@ -1439,9 +1442,8 @@ function hideDataPositive() {
   myChart.getDatasetMeta(3).hidden = true;
   myChart.getDatasetMeta(4).hidden = true;
   myChart.getDatasetMeta(7).hidden = true;
-
   myChart.getDatasetMeta(5).hidden = false;
-  myChart.getDatasetMeta(6).hidden = false; 
+  myChart.getDatasetMeta(6).hidden = false;
 }
 
 function hideDataVibe() {
@@ -1459,12 +1461,12 @@ function hideDataVibe() {
 const setupPage = async () => {
   await tf.setBackend(state.backend);
   await setupCamera();
-  video.play();
+  webcam.play();
 
-  videoWidth = video.videoWidth;
-  videoHeight = video.videoHeight;
-  video.width = videoWidth;
-  video.height = videoHeight;
+  videoWidth = webcam.videoWidth;
+  videoHeight = webcam.videoHeight;
+  webcam.width = videoWidth;
+  webcam.height = videoHeight;
 
   canvas = document.getElementById('output');
   canvas.width = videoWidth;
@@ -1496,7 +1498,7 @@ const setupPage = async () => {
   valueActiveLabel = document.getElementById('value_active_label');
   valueVibeLabel = document.getElementById('value_vibe_label');
 
-  myChartEmotions();
+  setupMyChartEmotions();
   renderPrediction();
   // chartEmotions();
   // myChartEmotions();
