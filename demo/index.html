@@ -33,28 +33,30 @@
           <div class="flex flex-col">
             <div class="flex flex-col md:flex-row flex-wraps">
               <div class="relative text-base leading-7 text-gray-600">
-                <div id="uploadImg" class="relative place-items-center" style="display: none;">
-                  <div class="wrapper absolute relative align-center justify-center border border-gray-300">
-                    <img id="img" class="object-scale-down w-[520px] h-[300px] md:h-[390px]"></img>
-                    <div id="dragFile" class="absolute z-10 bottom-2/4 px-36">
-                      <label class="items-center text-center space-x-2">
-                        <span class="font-medium text-gray-600"> Drag files to Attach, or
-                          <span class="text-blue-600 underline cursor-pointer">browse</span>
-                        </span>
-                        <input type="file" class="hidden" name="file_upload" id="imageInput" accept="image/*">
-                      </label>
+                <div>
+                  <div id="uploadImg" class="relative place-items-center" style="display: none;">
+                    <div class="wrapper absolute relative align-center justify-center border border-gray-300">
+                      <img id="img" class="object-scale-down w-[520px] h-[300px] md:h-[390px]"></img>
+                      <div id="dragFile" class="absolute z-10 bottom-2/4 px-36">
+                        <label class="items-center text-center space-x-2">
+                          <span class="font-medium text-gray-600"> Drag files to Attach, or
+                            <span class="text-blue-600 underline cursor-pointer">browse</span>
+                          </span>
+                          <input type="file" class="hidden" name="file_upload" id="imageInput" accept="image/*">
+                        </label>
+                      </div>
                     </div>
                   </div>
+                  <div id="movie" style="display:none" class="border border-gray-300">
+                    <video id="videoClip" playsinline class="w-[520px] sm:h-[390px] md:-h[390px] lg:h-[390px] xl:h-[390px]" style="-webkit-transform: scaleX(-1); transform: scaleX(-1);" controls loop src="video.mp4"></video>
+                  </div>
+                  <video
+                    id="webcam"
+                    playsinline
+                    class="w-[520px] object-cover md:h-[390px]"
+                    style="-webkit-transform: scaleX(-1); transform: scaleX(-1);"
+                  ></video>
                 </div>
-                <div id="movie" style="display:none" class="border border-gray-300">
-                  <video id="videoClip" playsinline class="w-[520px] sm:h-[390px] md:-h[390px] lg:h-[390px] xl:h-[390px]" controls src="video.mp4"></video>
-                </div>
-                <video
-                  id="webcam"
-                  playsinline
-                  class="w-[520px] object-cover md:h-[390px]"
-                  style="-webkit-transform: scaleX(-1); transform: scaleX(-1);"
-                ></video>
                 <canvas id="output" class="absolute bottom-0 left-0 "></canvas>
                 <div id="stats" class="absolute top-3 h-3.5 right-56 overflow-hidden left-2"></div>
               </div>
