@@ -68,7 +68,7 @@ let numberCell;
 let myChart;
 // eslint-disable-next-line one-var
 let beginTime = Date.now(), prevTime = beginTime;
-const maxFrameChart = 100;
+const maxFrameChart = 70;
 const timeFrameCapture = 500;
 
 const colorAngry = 'rgba(255, 77, 79, 1)';
@@ -688,12 +688,15 @@ const setupMyChartEmotions = async () => {
                   },
                 }],
                 xAxes: [{
+                  gridLines: {
+                    display: false,
+                  },
                   position: 'bottom',
                   ticks: {
                     beginAtZero: true,
                     fontColor: 'white',
                   },
-                  }],
+                }],
             },
             legend: {
               display: false,
