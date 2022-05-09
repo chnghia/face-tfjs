@@ -298,18 +298,18 @@ function displayBoundingBox(face, newWidth, newHeight, oldWidth, oldHeight, retu
 
   const newX = convertRange(start[0], newWidth, oldWidth);
   const newY = convertRange(start[1], newHeight, oldHeight);
-  console.log('offsetWidth:' + newWidth);
-  console.log('offsetHeight:' + oldHeight);
-  console.log('width:' + oldWidth);
-  console.log('height:' + oldHeight);
-  console.log('topleft:' + face.topLeft);
-  console.log('bottomRight:' + face.bottomRight);
-  console.log('width:' + size[0]);
-  console.log('height:' + size[1]);
-  console.log('x: ' + start[0]);
-  console.log('y: ' + start[1]);
-  console.log('new x: ' + newX);
-  console.log('new y: ' + newY);
+  // console.log('offsetWidth:' + newWidth);
+  // console.log('offsetHeight:' + oldHeight);
+  // console.log('width:' + oldWidth);
+  // console.log('height:' + oldHeight);
+  // console.log('topleft:' + face.topLeft);
+  // console.log('bottomRight:' + face.bottomRight);
+  // console.log('width:' + size[0]);
+  // console.log('height:' + size[1]);
+  // console.log('x: ' + start[0]);
+  // console.log('y: ' + start[1]);
+  // console.log('new x: ' + newX);
+  // console.log('new y: ' + newY);
   ctxOutput.strokeRect(newX, newY, size[0]*ratioWidth, size[1]*ratioHeight);
 }
 
@@ -423,7 +423,7 @@ const renderPrediction = async () => {
 
     const predictions = await pipeline.estimateEmotion(viewer);
     ctxOutput.clearRect(0, 0, canvas.width, canvas.height);
-    console.log('predictions: ' + predictions.length);
+    // console.log('predictions: ' + predictions.length);
 
     if (predictions.length > 0) {
       // console.log(predictions);
