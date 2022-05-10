@@ -780,8 +780,36 @@ function setupEmotionElements() {
   valueVibeLabel = document.getElementById('value_vibe_label');
 }
 
+function closePopup(){
+  document.getElementById('authorized_camera').style.display = 'none';
+}
+
+function checkChecked () {
+  if(document.getElementById('check_dnst').checked){
+    const saveChecked = document.getElementById('authorized_camera').style.display = 'none';
+    localStorage.setItem('remember',saveChecked);
+    localStorage.setItem('saveChecked', document.getElementById('check_dnst').checked);
+  }
+}
+
+function getUserChecked() {
+  const checked = JSON.parse(localStorage.getItem('saveChecked'));
+  document.getElementById('check_dnst').checked = checked;
+}
+
+function checkUserChecked() {
+  if(document.getElementById('check_dnst').checked){
+    document.getElementById('authorized_camera').style.display = 'none';
+  }
+}
+
 const setupPage = async () => {
   await tf.setBackend(state.backend);
+  document.getElementById('authorized_camera').style.display = 'block';
+  document.getElementById('btn_close_popup').addEventListener('click', closePopup);
+  document.getElementById('check_dnst').addEventListener('click',checkChecked);
+  getUserChecked();
+  checkUserChecked();
   await setupCamera();
   webcam.play();
 
@@ -806,6 +834,7 @@ const setupPage = async () => {
   setupEmotionElements();
   setupMyChartEmotions();
   renderPrediction();
+
   document.getElementById('btnPicture').addEventListener('click', showImg);
   document.getElementById('btnWebcam').addEventListener('click', showWebcam);
   document.getElementById('btnVideoClip').addEventListener('click', showVideoClip);
@@ -818,6 +847,7 @@ const setupPage = async () => {
   document.getElementById('btn_positive-active').addEventListener('click', hideDataPositive);
   document.getElementById('btn_vibes').addEventListener('click', hideDataVibe);
   document.getElementById('btn_emotions').click();
+
 };
 
 setupPage();
