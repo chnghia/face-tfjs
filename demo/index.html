@@ -29,6 +29,24 @@
         </a>
       </div>
     </div>
+    <div id="authorized_camera" class="modal fade fixed top-0 bottom-0 l-2 w-full bg-gray-100 z-50 md:left-[35%] md:w-[400px] md:h-[200px] mt-1 bg-gray-100 bg-opacity-60 hidden">
+      <div class="modal-dialog modal-sm relative w-auto bg-white px-5 py-2 border border-2 rounded shadow-lg">
+        <div class="modal-content flex justify-between pb-2">
+          <h1 class="font-medium">Allow us to use your camera</h1>
+          <button id="btn_close_popup">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+          <div>We need access to your camera. We will ask you to confirm this decision on each browser and computer you use.</div>
+          <div>All info is processed in the browser and it is not stored anywhere.</div>
+          <div class="form-check justify-end flex mt-2">
+            <input class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="checkbox" id="check_dnst">
+            <label class="form-check-label inline-block" for="check_dnst">Don't display this again</label>
+          </div>
+        </div>
+    </div>
     <div class="bg-gray-50 py-7 px-4 flex flex-col justify-center relative overflow-hidden sm:py-6 pb-3">
       <div class="relative px-6 pt-8 pb-8 bg-white shadow-xl ring-1 ring-gray-900/5 sm:w-auto sm:mx-auto sm:rounded-lg sm:px-10">
         <div class="w-auto mx-auto">
@@ -62,7 +80,7 @@
                 <canvas id="output" class="absolute bottom-0 left-0 "></canvas>
                 <div id="stats" class="absolute top-3 h-3.5 right-56 overflow-hidden left-2"></div>
               </div>
-              <div class="z-50 sticky order-first md:order-none md:col-span-1 md:w-0 md:pl-5 pb-2 md:pb-0">
+              <div class="z-20 sticky order-first md:order-none md:col-span-1 md:w-0 md:pl-5 pb-2 md:pb-0">
                 <div class="">
                   <button id="dropdown_button" class="w-full sm:w-56 md:w-56 lg:w-56 xl-56 text-white justify-between rounded text-base px-4 py-2.5 text-center inline-flex items-center" style="background-color: #1890FF;" type="button" data-dropdown-toggle="dropdown">Webcam
                     <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
