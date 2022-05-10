@@ -3,10 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://unpkg.com/flowbite@1.4.5/dist/flowbite.min.css" />
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
 
-  <body>
+  <body class="bg-gray-50">
     <!--
     Welcome to Tailwind Play, the official Tailwind CSS playground!
 
@@ -28,24 +29,6 @@
           </button>
         </a>
       </div>
-    </div>
-    <div id="authorized_camera" class="modal fade fixed top-0 bottom-0 l-2 w-full bg-gray-100 z-50 md:left-[35%] md:w-[400px] md:h-[200px] mt-1 bg-gray-100 bg-opacity-60 hidden">
-      <div class="modal-dialog modal-sm relative w-auto bg-white px-5 py-2 border border-2 rounded shadow-lg">
-        <div class="modal-content flex justify-between pb-2">
-          <h1 class="font-medium">Allow us to use your camera</h1>
-          <button id="btn_close_popup">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-          <div>We need access to your camera. We will ask you to confirm this decision on each browser and computer you use.</div>
-          <div>All info is processed in the browser and it is not stored anywhere.</div>
-          <div class="form-check justify-end flex mt-2">
-            <input class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="checkbox" id="check_dnst">
-            <label class="form-check-label inline-block" for="check_dnst">Don't display this again</label>
-          </div>
-        </div>
     </div>
     <div class="bg-gray-50 py-7 px-4 flex flex-col justify-center relative overflow-hidden sm:py-6 pb-3">
       <div class="relative px-6 pt-8 pb-8 bg-white shadow-xl ring-1 ring-gray-900/5 sm:w-auto sm:mx-auto sm:rounded-lg sm:px-10">
@@ -239,6 +222,34 @@
       <a href="privacy.html" class="">
         <div class="text-gray-400">Privacy</div>
       </a>
+    </div>
+    <div id="authorized_camera" aria-hidden="true" tabindex="-1"  class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full flex-col justify-center">
+      <div class="relative p-4 w-full max-w-2xl h-full md:h-auto mx-auto">
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                  Allow us to use your camera
+                </h3>
+                <button id="btn_close_popup" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="authorized_camera">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
+                </button>
+            </div>
+            <!-- Modal body -->
+            <div class="p-6 space-y-6">
+                <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                  We need access to your camera. We will ask you to confirm this decision on each browser and computer you use.
+                </p>
+                <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                  All info is processed in the browser and it is not stored anywhere.
+                </p>
+            </div>
+            <!-- Modal footer -->
+            <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
+                <button id="remember_no_popup" data-modal-toggle="authorized_camera" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Don't display this again</button>
+            </div>
+        </div> 
+      </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.6/dat.gui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stats.js/r16/Stats.min.js"></script>

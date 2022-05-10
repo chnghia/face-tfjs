@@ -780,36 +780,20 @@ function setupEmotionElements() {
   valueVibeLabel = document.getElementById('value_vibe_label');
 }
 
-function closePopup(){
-  document.getElementById('authorized_camera').style.display = 'none';
-}
-
-function checkChecked () {
-  if(document.getElementById('check_dnst').checked){
-    const saveChecked = document.getElementById('authorized_camera').style.display = 'none';
-    localStorage.setItem('remember',saveChecked);
-    localStorage.setItem('saveChecked', document.getElementById('check_dnst').checked);
-  }
-}
-
-function getUserChecked() {
-  const checked = JSON.parse(localStorage.getItem('saveChecked'));
-  document.getElementById('check_dnst').checked = checked;
-}
-
-function checkUserChecked() {
-  if(document.getElementById('check_dnst').checked){
-    document.getElementById('authorized_camera').style.display = 'none';
-  }
+function rememberNoPopup() {
+  localStorage.setItem('remember', true);
 }
 
 const setupPage = async () => {
   await tf.setBackend(state.backend);
-  document.getElementById('authorized_camera').style.display = 'block';
-  document.getElementById('btn_close_popup').addEventListener('click', closePopup);
-  document.getElementById('check_dnst').addEventListener('click',checkChecked);
-  getUserChecked();
-  checkUserChecked();
+  document.getElementById('remember_no_popup').addEventListener('click', rememberNoPopup);
+
+  const remember = localStorage.getItem('remember');
+  if (remember !== undefined && remember) {
+  } else {
+    toggleModal('authorized_camera');
+  }
+
   await setupCamera();
   webcam.play();
 
