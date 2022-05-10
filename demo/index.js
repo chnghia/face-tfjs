@@ -694,7 +694,7 @@ const setupMyChartEmotions = async () => {
                   position: 'bottom',
                   ticks: {
                     beginAtZero: true,
-                    fontColor: 'white',
+                    display: false,
                   },
                 }],
             },
