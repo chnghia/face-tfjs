@@ -63,16 +63,14 @@
                 <canvas id="output" class="absolute bottom-0 left-0 "></canvas>
                 <div id="stats" class="absolute top-3 h-3.5 right-56 overflow-hidden left-2"></div>
               </div>
-              <div class="z-20 sticky order-first md:order-none md:col-span-1 md:w-0 md:pl-5 pb-2 md:pb-0">
-                <div class="">
-                  <button id="dropdown_button" class="w-full sm:w-56 md:w-56 lg:w-56 xl-56 text-white justify-between rounded text-base px-4 py-2.5 text-center inline-flex items-center" style="background-color: #1890FF;" type="button" data-dropdown-toggle="dropdown">Webcam
-                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                  </button>
-                </div>
-                <div class="w-full sm:w-56 md:w-56 lg:w-56 xl-56 hidden bg-white text-base list-none divide-y divide-gray-100 rounded shadow my-4" id="dropdown">
-                  <ul class="py-1" aria-labelledby="dropdown">
+              <div class="z-40 sticky order-first md:order-none md:col-span-1 md:w-0 md:pl-5 pb-2 md:pb-0">
+                <button id="dropdown_button" class="w-full sm:w-56 md:w-56 lg:w-56 xl-56 text-white justify-between rounded text-base px-4 py-2.5 text-center inline-flex items-center" style="background-color: #1890FF;" type="button" data-dropdown-toggle="dropdownInfo">Webcam
+                  <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </button>
+                <div class="w-full sm:w-56 md:w-56 lg:w-56 xl-56 hidden bg-white text-base list-none divide-y divide-gray-100 rounded shadow my-4" id="dropdownInfo">
+                  <ul class="py-1" aria-labelledby="dropdown_button">
                     <li>
                       <button class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2 w-full sm:w-56 md:w-56 lg:w-56 xl:w-56 justify-between cursor-pointer" id="btnPicture">Picture</button>
                     </li>
