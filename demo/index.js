@@ -56,20 +56,20 @@ let canvasV;
 
 let dataEmotionsNeutral = [];
 let dataEmotionsAngry = [];
-let dataEmotionHappy = [];
-let dataEmotionSurprised = [];
-let dataEmotionSad = [];
-let dataEmtionsPositive = [];
-let dataEmtionActive = [];
-let dataEmtionVibe = [];
+let dataEmotionsHappy = [];
+let dataEmotionsSurprised = [];
+let dataEmotionsSad = [];
+let dataEmotionsPositive = [];
+let dataEmotionsActive = [];
+let dataEmotionsVibe = [];
 
 let numberCells;
 let numberCell;
 let myChart;
 // eslint-disable-next-line one-var
 let beginTime = Date.now(), prevTime = beginTime;
-const maxFrameChart = 70;
-const timeFrameCapture = 500;
+const maxFrameChart = 50;
+const timeFrameCapture = 400;
 
 const colorAngry = 'rgba(255, 77, 79, 1)';
 const colorNeutral = 'rgba(186, 231, 255, 1)';
@@ -77,7 +77,7 @@ const datasetAngry = {
   label: 'ANGRY',
   data: [],
   fill: false,
-  tension: 0.4,
+  tension: 0.6,
   backgroundColor: [colorAngry],
   borderColor: [colorAngry],
   borderWidth: 2,
@@ -86,7 +86,7 @@ const datasetNeutral = {
   label: 'NEUTRAL',
   data: [],
   fill: false,
-  tension: 0.4,
+  tension: 0.6,
   backgroundColor: [colorNeutral],
   borderColor: [colorNeutral],
   borderWidth: 2,
@@ -95,6 +95,7 @@ const datasetHappy = {
   label: 'HAPPY',
   data: [],
   fill: false,
+  tension: 0.6,
   backgroundColor: [
     'rgba(24, 144, 255, 1)',
   ],
@@ -107,6 +108,7 @@ const datasetSad = {
   label: 'SAD',
   data: [],
   fill: false,
+  tension: 0.6,
   backgroundColor: [
     'rgba(89, 126, 247, 1)',
   ],
@@ -116,9 +118,10 @@ const datasetSad = {
   borderWidth: 2,
 };
 const datasetSurprised = {
-label: 'SURPRISE',
+  label: 'SURPRISE',
   data: [],
   fill: false,
+  tension: 0.6,
   backgroundColor: [
     'rgba(255, 197, 61, 1)',
   ],
@@ -129,9 +132,10 @@ label: 'SURPRISE',
 };
 
 const datasetPositive = {
-label: 'POSITIVE',
+  label: 'POSITIVE',
   data: [],
   fill: false,
+  tension: 0.6,
   backgroundColor: [
     'rgba(67, 67, 67, 1)',
   ],
@@ -141,9 +145,10 @@ label: 'POSITIVE',
   borderWidth: 2,
 };
 const datasetActive = {
-label: 'ACTIVE',
+  label: 'ACTIVE',
   data: [],
   fill: false,
+  tension: 0.6,
   backgroundColor: [
     'rgba(115, 209, 61, 1)',
   ],
@@ -156,6 +161,7 @@ const datasetVibe = {
   label: 'VIBE',
   data: [],
   fill: false,
+  tension: 0.6,
   backgroundColor: [
     'rgba(247, 89, 171, 1)',
   ],
@@ -318,50 +324,52 @@ function pushEmotionsToChart(emotions) {
   dataEmotionsNeutral.push(emotionsNeutral);
 
   const emotionsHappy = [emotionValue(emotions[1], 3)];
-  dataEmotionHappy.push(emotionsHappy);
+  dataEmotionsHappy.push(emotionsHappy);
 
   const emotionsSad = [emotionValue(emotions[2], 3)];
-  dataEmotionSad.push(emotionsSad);
+  dataEmotionsSad.push(emotionsSad);
 
   const emotionsAngry = [emotionValue(emotions[3], 3)];
   dataEmotionsAngry.push(emotionsAngry);
 
   const emotionsSurprise = [emotionValue(emotions[4], 3)];
-  dataEmotionSurprised.push(emotionsSurprise);
+  dataEmotionsSurprised.push(emotionsSurprise);
 
   const emotionPositive = [emotionValue(pipeline.estimatePositive(emotions), 3)];
-  dataEmtionsPositive.push(emotionPositive);
+  dataEmotionsPositive.push(emotionPositive);
 
   const emotionActive = [emotionValue(pipeline.estimateActive(emotions), 3)];
-  dataEmtionActive.push(emotionActive);
+  dataEmotionsActive.push(emotionActive);
 
   const emotionVibe = [emotionValue(pipeline.estimateVibe(emotions), 3)];
-  dataEmtionVibe.push(emotionVibe);
+  dataEmotionsVibe.push(emotionVibe);
 
   if (dataEmotionsAngry.length >= maxFrameChart) {
-    dataEmotionsAngry.shift();
-    dataEmotionsNeutral.shift();
-    dataEmotionHappy.shift();
-    dataEmotionSad.shift();
-    dataEmotionSurprised.shift();
-    dataEmtionsPositive.shift();
-    dataEmtionActive.shift();
-    dataEmtionVibe.shift();
-
     numberCell += 1;
     numberCells.push(numberCell);
-    numberCells.shift();
   }
 
   myChart.data.labels = numberCells;
   myChart.data.datasets[0].data = dataEmotionsAngry;
   myChart.data.datasets[1].data = dataEmotionsNeutral;
-  myChart.data.datasets[2].data = dataEmotionHappy;
-  myChart.data.datasets[3].data = dataEmotionSad;
-  myChart.data.datasets[4].data = dataEmotionSurprised;
-  myChart.data.datasets[5].data = dataEmtionsPositive;
-  myChart.data.datasets[6].data = dataEmtionActive;
-  myChart.data.datasets[7].data = dataEmtionVibe;
+  myChart.data.datasets[2].data = dataEmotionsHappy;
+  myChart.data.datasets[3].data = dataEmotionsSad;
+  myChart.data.datasets[4].data = dataEmotionsSurprised;
+  myChart.data.datasets[5].data = dataEmotionsPositive;
+  myChart.data.datasets[6].data = dataEmotionsActive;
+  myChart.data.datasets[7].data = dataEmotionsVibe;
+
+  if (dataEmotionsAngry.length >= maxFrameChart) {
+    dataEmotionsAngry.shift();
+    dataEmotionsNeutral.shift();
+    dataEmotionsHappy.shift();
+    dataEmotionsSad.shift();
+    dataEmotionsSurprised.shift();
+    dataEmotionsPositive.shift();
+    dataEmotionsActive.shift();
+    dataEmotionsVibe.shift();
+    numberCells.shift();
+  }
   myChart.update();
 }
 
@@ -443,7 +451,7 @@ const renderPrediction = async () => {
 };
 
 async function showImg() {
-  myChart.reset();
+  // myChart.reset();
 
   document.getElementById('dropdown_button').innerHTML = 'Picture<svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>';
 
@@ -483,7 +491,7 @@ function setupOutputValue() {
 };
 
 async function showVideoClip() {
-  myChart.reset();
+  // myChart.reset();
   viewerType = 'video';
 
   document.getElementById('dropdown_button').innerHTML = 'Video<svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>';
@@ -500,7 +508,7 @@ async function showVideoClip() {
 }
 
 async function showWebcam() {
-  myChart.reset();
+  // myChart.reset();
 
   document.getElementById('dropdown_button').innerHTML = 'Webcam<svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>';
 
@@ -661,6 +669,14 @@ async function showVibes() {
 const setupMyChartEmotions = async () => {
   numberCell = maxFrameChart;
   numberCells = Array.from({length: maxFrameChart}, (_, i) => i + 1);
+  dataEmotionsNeutral = Array.from({length: maxFrameChart}, (_, i) => 0);
+  dataEmotionsAngry = Array.from({length: maxFrameChart}, (_, i) => 0);
+  dataEmotionsHappy = Array.from({length: maxFrameChart}, (_, i) => 0);
+  dataEmotionsSad = Array.from({length: maxFrameChart}, (_, i) => 0);
+  dataEmotionsSurprised = Array.from({length: maxFrameChart}, (_, i) => 0);
+  dataEmotionsPositive = Array.from({length: maxFrameChart}, (_, i) => 0);
+  dataEmotionsActive = Array.from({length: maxFrameChart}, (_, i) => 0);
+  dataEmotionsVibe = Array.from({length: maxFrameChart}, (_, i) => 0);
   const ctxChart = document.getElementById('myChart').getContext('2d');
   myChart = new Chart(ctxChart, {
         backgroundColor: 'white',
@@ -679,6 +695,10 @@ const setupMyChartEmotions = async () => {
             ],
         },
         options: {
+            animations: {
+              duration: 1400,
+              easing: 'linear',
+            },
             scales: {
               yAxes: [{
                 ticks: {
