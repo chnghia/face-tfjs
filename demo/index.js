@@ -70,32 +70,34 @@ let myChart;
 let beginTime = Date.now(), prevTime = beginTime;
 const maxFrameChart = 50;
 const timeFrameCapture = 400;
+const tensionValue = 0.4;
 
 const colorAngry = 'rgba(255, 77, 79, 1)';
 const colorNeutral = 'rgba(186, 231, 255, 1)';
+
 const datasetAngry = {
   label: 'ANGRY',
-  data: [],
+  data: dataEmotionsAngry,
   fill: false,
-  tension: 0.6,
+  tension: tensionValue,
   backgroundColor: [colorAngry],
   borderColor: [colorAngry],
   borderWidth: 2,
 };
 const datasetNeutral = {
   label: 'NEUTRAL',
-  data: [],
+  data: dataEmotionsNeutral,
   fill: false,
-  tension: 0.6,
+  tension: tensionValue,
   backgroundColor: [colorNeutral],
   borderColor: [colorNeutral],
   borderWidth: 2,
 };
 const datasetHappy = {
   label: 'HAPPY',
-  data: [],
+  data: dataEmotionsHappy,
   fill: false,
-  tension: 0.6,
+  tension: tensionValue,
   backgroundColor: [
     'rgba(24, 144, 255, 1)',
   ],
@@ -106,9 +108,9 @@ const datasetHappy = {
 };
 const datasetSad = {
   label: 'SAD',
-  data: [],
+  data: dataEmotionsSad,
   fill: false,
-  tension: 0.6,
+  tension: tensionValue,
   backgroundColor: [
     'rgba(89, 126, 247, 1)',
   ],
@@ -119,9 +121,9 @@ const datasetSad = {
 };
 const datasetSurprised = {
   label: 'SURPRISE',
-  data: [],
+  data: dataEmotionsSurprised,
   fill: false,
-  tension: 0.6,
+  tension: tensionValue,
   backgroundColor: [
     'rgba(255, 197, 61, 1)',
   ],
@@ -133,9 +135,9 @@ const datasetSurprised = {
 
 const datasetPositive = {
   label: 'POSITIVE',
-  data: [],
+  data: dataEmotionsPositive,
   fill: false,
-  tension: 0.6,
+  tension: tensionValue,
   backgroundColor: [
     'rgba(67, 67, 67, 1)',
   ],
@@ -146,9 +148,9 @@ const datasetPositive = {
 };
 const datasetActive = {
   label: 'ACTIVE',
-  data: [],
+  data: dataEmotionsActive,
   fill: false,
-  tension: 0.6,
+  tension: tensionValue,
   backgroundColor: [
     'rgba(115, 209, 61, 1)',
   ],
@@ -159,9 +161,9 @@ const datasetActive = {
 };
 const datasetVibe = {
   label: 'VIBE',
-  data: [],
+  data: dataEmotionsVibe,
   fill: false,
-  tension: 0.6,
+  tension: tensionValue,
   backgroundColor: [
     'rgba(247, 89, 171, 1)',
   ],
@@ -349,6 +351,7 @@ function pushEmotionsToChart(emotions) {
     numberCells.push(numberCell);
   }
 
+  myChart.update();
   myChart.data.labels = numberCells;
   myChart.data.datasets[0].data = dataEmotionsAngry;
   myChart.data.datasets[1].data = dataEmotionsNeutral;
@@ -359,7 +362,7 @@ function pushEmotionsToChart(emotions) {
   myChart.data.datasets[6].data = dataEmotionsActive;
   myChart.data.datasets[7].data = dataEmotionsVibe;
 
-  if (dataEmotionsAngry.length >= maxFrameChart) {
+  if (dataEmotionsAngry.length >= maxFrameChart+1) {
     dataEmotionsAngry.shift();
     dataEmotionsNeutral.shift();
     dataEmotionsHappy.shift();
@@ -369,8 +372,8 @@ function pushEmotionsToChart(emotions) {
     dataEmotionsActive.shift();
     dataEmotionsVibe.shift();
     numberCells.shift();
+    myChart.update();
   }
-  myChart.update();
 }
 
 function convertRange(value, newMax, oldMax) {
@@ -696,7 +699,7 @@ const setupMyChartEmotions = async () => {
         },
         options: {
             animations: {
-              duration: 1400,
+              duration: timeFrameCapture * 1.5,
               easing: 'linear',
             },
             scales: {
