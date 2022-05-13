@@ -19,13 +19,11 @@
     start from scratch if you know enough to be dangerous. Have fun!
   -->
     <div class="flex items-center justify-between bg-black sticky" style="height:50px;">
-      <a href="/"><h1 class="title-font font-medium text-center" style="margin-left: 28px; color: #1890FF;">MAL FaceEmotion Demo</h1></a>
+      <a href="http://faceemotion.vitalify.asia/"><h1 class="title-font font-medium text-center" style="margin-left: 28px; color: #1890FF;">MAL FaceEmotion Demo</h1></a>
       <div>
-        <a href="http://faceemotion.vitalify.asia/">
-          <button class="rounded-full mr-5">
-            <svg xmlns="http://www.w3.org/2000/svg" height="28.33px" viewBox="0 0 24 24" width="28.33px" fill="#FFFFFF">
-              <path d="M0 0h24v24H0V0z" fill="none"/><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/>
-            </svg>
+        <a href="https://contents.bownow.jp/forms/view/sid_2c2f4efae9529d8b42ee/d329f732-6399-4962-9f2d-bafac727c378?title=MAL%20FaceEmotion&referer=http%3A%2F%2Ffaceemotion.vitalify.asia%2Fen%2Findex.html">
+          <button class="rounded-full mr-5 text-white">
+            Contact
           </button>
         </a>
       </div>
@@ -216,10 +214,8 @@
         </div>
       </div>
     </div>
-    <div class="bg-gray-50 flex items-center justify-center py-4">
-      <a href="privacy.html" class="">
-        <div class="text-gray-400">Privacy</div>
-      </a>
+    <div class="bg-gray-50 text-center py-4">
+        <button id="btn_privacy" class="text-gray-400" data-modal-toggle="privacy">©Vitalify Asia 2022 All rights reserved. Privacy</div>
     </div>
     <div id="authorized_camera" aria-hidden="true" tabindex="-1"  class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full flex-col justify-center">
       <div class="relative p-4 w-full max-w-2xl h-full md:h-auto mx-auto">
@@ -245,6 +241,28 @@
             <!-- Modal footer -->
             <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
                 <button id="remember_no_popup" data-modal-toggle="authorized_camera" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Don't display this again</button>
+            </div>
+        </div> 
+      </div>
+    </div>
+    <div id="privacy" aria-hidden="true" tabindex="-1"  class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full flex-col justify-center">
+      <div class="relative p-4 w-full max-w-2xl h-full md:h-auto mx-auto">
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <div class="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                  Welcome to Face Emotion Demo.
+                </h3>
+                <button id="btn_close_privacy" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="privacy">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>  
+                </button>
+            </div>
+            <div class="p-6 space-y-6">
+              <div>Our Privacy Policy explains how we check your emotion in real time, uploaded videos, pictures from your device and show the result of the emotion value to screen by graph.</div>
+              <br>By using our Service you understand and agree that we are providing a platform for you to check emotion and to check the transition.</br>
+              <br>■ Information you provide us when you use our services:</br>
+              <br>- Face recognition. Our service use face recognition technology to recognize faces in your camera (or video/picture you uploaded). We detect and use face from your picture to predict emotions of face. These information of face emotion is not shared with any third parties and only store in detecting time of each frame within your browser.</br>
+              <br>- Camera. Our service require to collect video from your device’s camera. We’ll access your camera only after you give us your consent.</br>
+              <br>■ All information will be destroyed after you close this demo.</br>
             </div>
         </div> 
       </div>
