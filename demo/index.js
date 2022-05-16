@@ -241,10 +241,15 @@ async function setupImg() {
       };
       reader.readAsDataURL(input.files[0]);
       document.getElementById('dragFile').style.display = 'none';
+      document.getElementById('btn_close_img').style.display = 'block';
     }
   }
 }
-
+async function closeImg() {
+  document.getElementById('img').src = '';
+  document.getElementById('dragFile').style.display = 'block';
+  document.getElementById('btn_close_img').style.display = 'none';
+}
 
 // async function setupVideoClip(input) {
 //   videoClip = document.getElementById('videoClip');
@@ -853,6 +858,7 @@ const setupPage = async () => {
   document.getElementById('btn_emotions').addEventListener('click', hideDataEmotions);
   document.getElementById('btn_positive-active').addEventListener('click', hideDataPositive);
   document.getElementById('btn_vibes').addEventListener('click', hideDataVibe);
+  document.getElementById('btn_close_img').addEventListener('click',closeImg);
   document.getElementById('btn_emotions').click();
 
 };
