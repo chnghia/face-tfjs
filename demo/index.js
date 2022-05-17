@@ -249,7 +249,6 @@ async function closeImg() {
   document.getElementById('img').src = '';
   document.getElementById('imageInput').value = '';
   document.getElementById('dragFile').style.display = 'block';
-  document.getElementById('uploadImg').style.display = 'block';
   document.getElementById('btn_close_img').style.display = 'none';
 }
 
