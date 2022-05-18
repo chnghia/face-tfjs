@@ -247,6 +247,7 @@ async function setupImg() {
 }
 async function closeImg() {
   document.getElementById('img').src = '';
+  document.getElementById('imageInput').value = '';
   document.getElementById('dragFile').style.display = 'block';
   document.getElementById('btn_close_img').style.display = 'none';
 }
@@ -402,41 +403,69 @@ const renderPrediction = async () => {
     let viewer;
     // eslint-disable-next-line one-var
     let oldWidth, oldHeight, newWidth, newHeight;
-
-    if (viewerType == 'img') {
-      viewer = img;
-      canvas.width = img.offsetWidth;
-      canvas.height = img.offsetHeight;
-      oldWidth = img.width;
-      oldHeight = img.height;
-      newWidth = img.offsetWidth;
-      newHeight = img.offsetHeight;
-    } else if (viewerType == 'video') {
-      oldWidth = videoClip.videoWidth;
-      oldHeight = videoClip.videoHeight;
-      newWidth = videoClip.offsetWidth;
-      newHeight = videoClip.offsetHeight;
-
-      canvas.width = videoClip.offsetWidth;
-      canvas.height = videoClip.offsetHeight;
-      // scale the canvas accordingly
-      canvasV.width = videoClip.videoWidth;
-      canvasV.height = videoClip.videoHeight;
-      // draw the video at that frame
-      canvasV.getContext('2d')
-        .drawImage(videoClip, 0, 0, canvasV.width, canvasV.height);
-
-      viewer = canvasV;
-    } else {
-      viewer = webcam;
-      oldWidth = webcam.videoWidth;
-      oldHeight = webcam.videoHeight;
-      newWidth = webcam.offsetWidth;
-      newHeight = webcam.offsetHeight;
-      canvas.width = viewer.offsetWidth;
-      canvas.height = viewer.offsetHeight;
+    const checkImgEmpty = document.getElementById('img');
+    const src = checkImgEmpty.getAttribute('src');
+    if(src == ''){
+      if (viewerType == 'video') {
+        oldWidth = videoClip.videoWidth;
+        oldHeight = videoClip.videoHeight;
+        newWidth = videoClip.offsetWidth;
+        newHeight = videoClip.offsetHeight;
+  
+        canvas.width = videoClip.offsetWidth;
+        canvas.height = videoClip.offsetHeight;
+        // scale the canvas accordingly
+        canvasV.width = videoClip.videoWidth;
+        canvasV.height = videoClip.videoHeight;
+        // draw the video at that frame
+        canvasV.getContext('2d')
+          .drawImage(videoClip, 0, 0, canvasV.width, canvasV.height);
+  
+        viewer = canvasV;
+      } else {
+        viewer = webcam;
+        oldWidth = webcam.videoWidth;
+        oldHeight = webcam.videoHeight;
+        newWidth = webcam.offsetWidth;
+        newHeight = webcam.offsetHeight;
+        canvas.width = viewer.offsetWidth;
+        canvas.height = viewer.offsetHeight;
+      }
+    }else{
+      if (viewerType == 'img') {
+        viewer = img;
+        canvas.width = img.offsetWidth;
+        canvas.height = img.offsetHeight;
+        oldWidth = img.width;
+        oldHeight = img.height;
+        newWidth = img.offsetWidth;
+        newHeight = img.offsetHeight;
+      } else if (viewerType == 'video') {
+        oldWidth = videoClip.videoWidth;
+        oldHeight = videoClip.videoHeight;
+        newWidth = videoClip.offsetWidth;
+        newHeight = videoClip.offsetHeight;
+  
+        canvas.width = videoClip.offsetWidth;
+        canvas.height = videoClip.offsetHeight;
+        // scale the canvas accordingly
+        canvasV.width = videoClip.videoWidth;
+        canvasV.height = videoClip.videoHeight;
+        // draw the video at that frame
+        canvasV.getContext('2d')
+          .drawImage(videoClip, 0, 0, canvasV.width, canvasV.height);
+  
+        viewer = canvasV;
+      } else {
+        viewer = webcam;
+        oldWidth = webcam.videoWidth;
+        oldHeight = webcam.videoHeight;
+        newWidth = webcam.offsetWidth;
+        newHeight = webcam.offsetHeight;
+        canvas.width = viewer.offsetWidth;
+        canvas.height = viewer.offsetHeight;
+      }
     }
-
     const predictions = await pipeline.estimateEmotion(viewer);
     ctxOutput.clearRect(0, 0, canvas.width, canvas.height);
     // console.log('predictions: ' + predictions.length);
