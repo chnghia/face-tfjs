@@ -403,83 +403,58 @@ const renderPrediction = async () => {
     let viewer;
     // eslint-disable-next-line one-var
     let oldWidth, oldHeight, newWidth, newHeight;
-    const checkImgEmpty = document.getElementById('img');
-    const src = checkImgEmpty.getAttribute('src');
-    if(src == ''){
-      if (viewerType == 'video') {
-        oldWidth = videoClip.videoWidth;
-        oldHeight = videoClip.videoHeight;
-        newWidth = videoClip.offsetWidth;
-        newHeight = videoClip.offsetHeight;
-  
-        canvas.width = videoClip.offsetWidth;
-        canvas.height = videoClip.offsetHeight;
-        // scale the canvas accordingly
-        canvasV.width = videoClip.videoWidth;
-        canvasV.height = videoClip.videoHeight;
-        // draw the video at that frame
-        canvasV.getContext('2d')
-          .drawImage(videoClip, 0, 0, canvasV.width, canvasV.height);
-  
-        viewer = canvasV;
-      } else {
-        viewer = webcam;
-        oldWidth = webcam.videoWidth;
-        oldHeight = webcam.videoHeight;
-        newWidth = webcam.offsetWidth;
-        newHeight = webcam.offsetHeight;
-        canvas.width = viewer.offsetWidth;
-        canvas.height = viewer.offsetHeight;
-      }
-    }else{
-      if (viewerType == 'img') {
-        viewer = img;
-        canvas.width = img.offsetWidth;
-        canvas.height = img.offsetHeight;
-        oldWidth = img.width;
-        oldHeight = img.height;
-        newWidth = img.offsetWidth;
-        newHeight = img.offsetHeight;
-      } else if (viewerType == 'video') {
-        oldWidth = videoClip.videoWidth;
-        oldHeight = videoClip.videoHeight;
-        newWidth = videoClip.offsetWidth;
-        newHeight = videoClip.offsetHeight;
-  
-        canvas.width = videoClip.offsetWidth;
-        canvas.height = videoClip.offsetHeight;
-        // scale the canvas accordingly
-        canvasV.width = videoClip.videoWidth;
-        canvasV.height = videoClip.videoHeight;
-        // draw the video at that frame
-        canvasV.getContext('2d')
-          .drawImage(videoClip, 0, 0, canvasV.width, canvasV.height);
-  
-        viewer = canvasV;
-      } else {
-        viewer = webcam;
-        oldWidth = webcam.videoWidth;
-        oldHeight = webcam.videoHeight;
-        newWidth = webcam.offsetWidth;
-        newHeight = webcam.offsetHeight;
-        canvas.width = viewer.offsetWidth;
-        canvas.height = viewer.offsetHeight;
-      }
+    // const checkImgEmpty = document.getElementById('img');
+    // const src = checkImgEmpty.getAttribute('src');
+    if (viewerType == 'img') {
+      viewer = img;
+      canvas.width = img.offsetWidth;
+      canvas.height = img.offsetHeight;
+      oldWidth = img.width;
+      oldHeight = img.height;
+      newWidth = img.offsetWidth;
+      newHeight = img.offsetHeight;
+    } else if (viewerType == 'video') {
+      oldWidth = videoClip.videoWidth;
+      oldHeight = videoClip.videoHeight;
+      newWidth = videoClip.offsetWidth;
+      newHeight = videoClip.offsetHeight;
+      canvas.width = videoClip.offsetWidth;
+      canvas.height = videoClip.offsetHeight;
+      // scale the canvas accordingly
+      canvasV.width = videoClip.videoWidth;
+      canvasV.height = videoClip.videoHeight;
+      // draw the video at that frame
+      canvasV.getContext('2d')
+        .drawImage(videoClip, 0, 0, canvasV.width, canvasV.height);
+      viewer = canvasV;
+    } else {
+      viewer = webcam;
+      oldWidth = webcam.videoWidth;
+      oldHeight = webcam.videoHeight;
+      newWidth = webcam.offsetWidth;
+      newHeight = webcam.offsetHeight;
+      canvas.width = viewer.offsetWidth;
+      canvas.height = viewer.offsetHeight;
     }
-    const predictions = await pipeline.estimateEmotion(viewer);
-    ctxOutput.clearRect(0, 0, canvas.width, canvas.height);
-    // console.log('predictions: ' + predictions.length);
 
-    if (predictions.length > 0) {
-      // console.log(predictions);
-      for (let i = 0; i < predictions.length; i++) {
-        let face = predictions[0].face;
-        let emotions = predictions[0].emotions;
-        // console.log(emotions);
+    if (oldWidth > 0 && oldHeight > 0) {
+      const predictions = await pipeline.estimateEmotion(viewer);
+      ctxOutput.clearRect(0, 0, canvas.width, canvas.height);
+      // console.log('predictions: ' + predictions.length);
 
-        pushEmotionsToChart(emotions);
-        displayBoundingBox(face, newWidth, newHeight, oldWidth, oldHeight);
-        displayEmotionValues(emotions);
+      if (predictions.length > 0) {
+        // console.log(predictions);
+        for (let i = 0; i < predictions.length; i++) {
+          let face = predictions[0].face;
+          let emotions = predictions[0].emotions;
+
+          // console.log(face);
+          if (face.probability >= 0.5) {
+            pushEmotionsToChart(emotions);
+            displayBoundingBox(face, newWidth, newHeight, oldWidth, oldHeight);
+            displayEmotionValues(emotions);
+          }
+        }
       }
     }
   }
