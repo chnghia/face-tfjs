@@ -112,10 +112,10 @@ const datasetSad = {
   fill: false,
   tension: tensionValue,
   backgroundColor: [
-    'rgba(89, 126, 247, 1)',
+    '#10239E',
   ],
   borderColor: [
-    'rgba(89, 126, 247, 1)',
+    '#10239E',
   ],
   borderWidth: 2,
 };
@@ -328,28 +328,28 @@ function displayBoundingBox(face, newWidth, newHeight, oldWidth, oldHeight, retu
 }
 
 function pushEmotionsToChart(emotions) {
-  const emotionsNeutral = [emotionValue(emotions[0], 3)];
+  const emotionsNeutral = [emotionValue(emotions[0] * 100, 3)];
   dataEmotionsNeutral.push(emotionsNeutral);
 
-  const emotionsHappy = [emotionValue(emotions[1], 3)];
+  const emotionsHappy = [emotionValue(emotions[1] * 100, 3)];
   dataEmotionsHappy.push(emotionsHappy);
 
-  const emotionsSad = [emotionValue(emotions[2], 3)];
+  const emotionsSad = [emotionValue(emotions[2] * 100, 3)];
   dataEmotionsSad.push(emotionsSad);
 
-  const emotionsAngry = [emotionValue(emotions[3], 3)];
+  const emotionsAngry = [emotionValue(emotions[3] * 100, 3)];
   dataEmotionsAngry.push(emotionsAngry);
 
-  const emotionsSurprise = [emotionValue(emotions[4], 3)];
+  const emotionsSurprise = [emotionValue(emotions[4] * 100, 3)];
   dataEmotionsSurprised.push(emotionsSurprise);
 
-  const emotionPositive = [emotionValue(pipeline.estimatePositive(emotions), 3)];
+  const emotionPositive = [emotionValue(pipeline.estimatePositive(emotions) * 100, 3)];
   dataEmotionsPositive.push(emotionPositive);
 
-  const emotionActive = [emotionValue(pipeline.estimateActive(emotions), 3)];
+  const emotionActive = [emotionValue(pipeline.estimateActive(emotions) * 100, 3)];
   dataEmotionsActive.push(emotionActive);
 
-  const emotionVibe = [emotionValue(pipeline.estimateVibe(emotions), 3)];
+  const emotionVibe = [emotionValue(pipeline.estimateVibe(emotions) * 100, 3)];
   dataEmotionsVibe.push(emotionVibe);
 
   if (dataEmotionsAngry.length >= maxFrameChart) {
@@ -716,7 +716,7 @@ const setupMyChartEmotions = async () => {
                 ticks: {
                   beginAtZero: true,
                   min: 0,
-                  max: 1,
+                  max: 100,
                   },
                 }],
                 xAxes: [{
