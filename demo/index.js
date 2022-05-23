@@ -850,7 +850,9 @@ const setupPage = async () => {
   setupEmotionElements();
   setupMyChartEmotions();
   renderPrediction();
-
+  document.getElementById('load_indicator').style.display = 'none';
+  document.getElementById('webcam').style.display = 'flex';
+  document.getElementById('block_chart').style.display = 'block';
   document.getElementById('btnPicture').addEventListener('click', showImg);
   document.getElementById('btnWebcam').addEventListener('click', showWebcam);
   document.getElementById('btnVideoClip').addEventListener('click', showVideoClip);
