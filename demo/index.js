@@ -353,8 +353,10 @@ function pushEmotionsToChart(emotions) {
   dataEmotionsVibe.push(emotionVibe);
 
   if (dataEmotionsAngry.length >= maxFrameChart) {
-    numberCell += 1;
+    numberCell ++;
+    //console.log(numberCell ++);
     numberCells.push(numberCell);
+    //console.log('numberCells:',numberCells.push(numberCell));
   }
 
   myChart.update();
@@ -726,7 +728,7 @@ const setupMyChartEmotions = async () => {
                   position: 'bottom',
                   ticks: {
                     beginAtZero: true,
-                    display: false,
+                    //display: false,
                   },
                 }],
             },
