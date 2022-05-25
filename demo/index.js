@@ -69,7 +69,7 @@ let myChart;
 // eslint-disable-next-line one-var
 let beginTime = Date.now(), prevTime = beginTime;
 const maxFrameChart = 50;
-const timeFrameCapture = 400;
+const timeFrameCapture = 350;
 const tensionValue = 0.4;
 
 const colorAngry = 'rgba(255, 77, 79, 1)';
@@ -353,14 +353,12 @@ function pushEmotionsToChart(emotions) {
   dataEmotionsVibe.push(emotionVibe);
 
   if (dataEmotionsAngry.length >= maxFrameChart) {
-    numberCell ++;
-    //console.log(numberCell ++);
+    numberCell +=1;
     numberCells.push(numberCell);
-    //console.log('numberCells:',numberCells.push(numberCell));
   }
 
   myChart.update();
-  myChart.data.labels = numberCells;
+  console.log(myChart.data.labels = numberCells);
   myChart.data.datasets[0].data = dataEmotionsAngry;
   myChart.data.datasets[1].data = dataEmotionsNeutral;
   myChart.data.datasets[2].data = dataEmotionsHappy;
@@ -370,7 +368,16 @@ function pushEmotionsToChart(emotions) {
   myChart.data.datasets[6].data = dataEmotionsActive;
   myChart.data.datasets[7].data = dataEmotionsVibe;
 
-  if (dataEmotionsAngry.length >= maxFrameChart+1) {
+  if (dataEmotionsAngry.length >= maxFrameChart) {
+    dataEmotionsAngry.pop();
+    dataEmotionsNeutral.pop();
+    dataEmotionsHappy.pop();
+    dataEmotionsSad.pop();
+    dataEmotionsSurprised.pop();
+    dataEmotionsPositive.pop();
+    dataEmotionsActive.pop();
+    dataEmotionsVibe.pop();
+
     dataEmotionsAngry.shift();
     dataEmotionsNeutral.shift();
     dataEmotionsHappy.shift();
@@ -728,7 +735,7 @@ const setupMyChartEmotions = async () => {
                   position: 'bottom',
                   ticks: {
                     beginAtZero: true,
-                    //display: false,
+                    display: false,
                   },
                 }],
             },
