@@ -69,7 +69,7 @@ let myChart;
 // eslint-disable-next-line one-var
 let beginTime = Date.now(), prevTime = beginTime;
 const maxFrameChart = 50;
-const timeFrameCapture = 350;
+const timeFrameCapture = 300;
 const tensionValue = 0.4;
 
 const colorAngry = 'rgba(255, 77, 79, 1)';
@@ -368,16 +368,7 @@ function pushEmotionsToChart(emotions) {
   myChart.data.datasets[6].data = dataEmotionsActive;
   myChart.data.datasets[7].data = dataEmotionsVibe;
 
-  if (dataEmotionsAngry.length >= maxFrameChart) {
-    dataEmotionsAngry.pop();
-    dataEmotionsNeutral.pop();
-    dataEmotionsHappy.pop();
-    dataEmotionsSad.pop();
-    dataEmotionsSurprised.pop();
-    dataEmotionsPositive.pop();
-    dataEmotionsActive.pop();
-    dataEmotionsVibe.pop();
-
+  if (dataEmotionsAngry.length >= maxFrameChart+1) {
     dataEmotionsAngry.shift();
     dataEmotionsNeutral.shift();
     dataEmotionsHappy.shift();
