@@ -358,7 +358,7 @@ function pushEmotionsToChart(emotions) {
   }
 
   myChart.update();
-  console.log(myChart.data.labels = numberCells);
+  myChart.data.labels = numberCells;
   myChart.data.datasets[0].data = dataEmotionsAngry;
   myChart.data.datasets[1].data = dataEmotionsNeutral;
   myChart.data.datasets[2].data = dataEmotionsHappy;
