@@ -21,6 +21,7 @@ import * as tf from '@tensorflow/tfjs-core';
 import * as tfjsWasm from '@tensorflow/tfjs-backend-wasm';
 import '@tensorflow/tfjs-backend-webgl';
 import '@tensorflow/tfjs-backend-cpu';
+import { FlipLeftRight } from '@tensorflow/tfjs-core';
 // import { math } from '@tensorflow/tfjs-core';
 
 tfjsWasm.setWasmPaths(
@@ -53,6 +54,7 @@ let img;
 let videoClip;
 // let imgVideo;
 let canvasV;
+let sum;
 
 let dataEmotionsNeutral = [];
 let dataEmotionsAngry = [];
@@ -442,7 +444,7 @@ const renderPrediction = async () => {
       ctxOutput.clearRect(0, 0, canvas.width, canvas.height);
       // console.log('predictions: ' + predictions.length);
 
-      if (predictions.length > 0) {
+      if (predictions.length == 1) {
         // console.log(predictions);
         for (let i = 0; i < predictions.length; i++) {
           let face = predictions[0].face;
@@ -453,6 +455,27 @@ const renderPrediction = async () => {
             pushEmotionsToChart(emotions);
             displayBoundingBox(face, newWidth, newHeight, oldWidth, oldHeight);
             displayEmotionValues(emotions);
+            }
+          //}
+        }
+      }
+      
+      if(predictions.length >= 2 || predictions.length >=5){
+        for(let i = 0; i < predictions.length; i++){
+          let face = predictions[i].face;
+          let emotions = predictions[i].emotions;
+          for(let j = i+1; j < predictions.length; j++) {
+            faces = predictions[j].face;
+            emotions_emotions = predictions[j].emotions;
+            let totalPredictions = predictions.length;
+            let sum = emotions.map((value, index) => value + emotions_emotions[index]);
+            let avg = sum.map((value) => value / totalPredictions);
+            if(face.probability >= 0.5){
+              pushEmotionsToChart(avg);
+              displayBoundingBox(face, newWidth, newHeight, oldWidth, oldHeight);
+              displayBoundingBox(faces, newWidth, newHeight, oldWidth, oldHeight);
+              displayEmotionValues(avg);
+            }
           }
         }
       }
