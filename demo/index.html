@@ -190,10 +190,10 @@
                 </div>
               </div>
             </div>
-            <div class="w-[280px] md:w-[520px] sm:w-[590px] mt-2 overflow-hidden">
-                <div class="md:w-[550px] w-[290px] sm:w-[600px]">
-                  <canvas id="myChart"></canvas>
-                </div>
+            <div class="w-[320px] md:w-[520px] sm:w-[590px] mt-2 overflow-hidden xs:w-[490px] xss:w-[460px] xsss:w-[300px]">
+              <div class="md:w-[550px] sm:w-[600px] xs:w-[500px] xss:w-[480px] w-[340px] xsss:w-[310px]">
+                <canvas id="myChart"></canvas>
+              </div>
             </div>
             <div class="flex-col relative hidden" id="block_chart">
               <div class="flex flex-wraps inline-flex py-2 pl-[2.25rem]">
@@ -306,6 +306,22 @@
       gtag('js', new Date());
 
       gtag('config', 'G-WRVF9TJXJ8');
+    </script>
+    <script>
+      tailwind.config = {
+        theme: {
+          screens: {
+            'xsss':{'max': '385px'},
+            'xss': '485px',
+            'xs': '545px',
+            'sm': '640px',
+            'md': '768px',
+            'lg': '1024px',
+            'xl': '1280px',
+            '2xl': '1536px',
+          },
+        }
+      }
     </script>
   </body>
 </html>
