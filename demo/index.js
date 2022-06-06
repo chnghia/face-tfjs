@@ -21,7 +21,6 @@ import * as tf from '@tensorflow/tfjs-core';
 import * as tfjsWasm from '@tensorflow/tfjs-backend-wasm';
 import '@tensorflow/tfjs-backend-webgl';
 import '@tensorflow/tfjs-backend-cpu';
-import { FlipLeftRight } from '@tensorflow/tfjs-core';
 // import { math } from '@tensorflow/tfjs-core';
 
 tfjsWasm.setWasmPaths(
@@ -460,7 +459,7 @@ const renderPrediction = async () => {
         }
       }
       
-      if(predictions.length >= 2 || predictions.length >=5){
+      if(predictions.length >= 2){
         for(let i = 0; i < predictions.length; i++){
           let face = predictions[i].face;
           let emotions = predictions[i].emotions;
