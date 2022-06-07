@@ -404,6 +404,7 @@ const renderPrediction = async () => {
     let viewer;
     // eslint-disable-next-line one-var
     let oldWidth, oldHeight, newWidth, newHeight;
+    let totalPredictions = 0;
     let emotionsNeutral = [];
     let emotionsHappy = [];
     let emotionsSad = [];
@@ -448,36 +449,31 @@ const renderPrediction = async () => {
     if (oldWidth > 0 && oldHeight > 0) {
       const predictions = await pipeline.estimateEmotion(viewer);
       ctxOutput.clearRect(0, 0, canvas.width, canvas.height);
-      // console.log('predictions: ' + predictions.length);
-      if (predictions.length >= 0) {
-        // console.log(predictions);
-        totalPredictions = predictions.length;
+      if (predictions.length > 0) {
         for (let i = 0; i < predictions.length; i++) {
           face = predictions[i].face;
           emotions = predictions[i].emotions;
-
-          emotionsNeutral.push(emotions[0]);
-          emotionsHappy.push(emotions[1]);
-          emotionsSad.push(emotions[2]);
-          emotionsAngry.push(emotions[3]);
-          emotionsSurprise.push(emotions[4]);
-          displayBoundingBox(face, newWidth, newHeight, oldWidth, oldHeight);
-
-          if (face.probability >= 0.5 && predictions.length <= 1) {
-            pushEmotionsToChart(emotions);
-            displayEmotionValues(emotions);
+          if (face.probability >= 0.5) {
+            totalPredictions += 1;
+            emotionsNeutral.push(emotions[0]);
+            emotionsHappy.push(emotions[1]);
+            emotionsSad.push(emotions[2]);
+            emotionsAngry.push(emotions[3]);
+            emotionsSurprise.push(emotions[4]);
+            displayBoundingBox(face, newWidth, newHeight, oldWidth, oldHeight);
           }
         }
-        if(predictions.length >= 2 && face.probability >= 0.5 ){
-          const avgNeutral = emotionsNeutral.reduce((a,b) => a + b, 0) / totalPredictions;
-          const avgHappy = emotionsHappy.reduce((a,b) => a + b, 0) / totalPredictions;
-          const avgSad = emotionsSad.reduce((a,b) => a + b, 0) / totalPredictions;
-          const avgAngry = emotionsAngry.reduce((a,b) => a + b, 0) / totalPredictions;
-          const avgSurprise = emotionsSurprise.reduce((a,b) => a + b, 0) / totalPredictions;
 
-          data_emotions = [avgNeutral, avgHappy, avgSad, avgAngry, avgSurprise];
-          pushEmotionsToChart(data_emotions);
-          displayEmotionValues(data_emotions);
+        if (totalPredictions > 0) {
+          const avgNeutral = emotionsNeutral.reduce((a, b) => a + b, 0) / totalPredictions;
+          const avgHappy = emotionsHappy.reduce((a, b) => a + b, 0) / totalPredictions;
+          const avgSad = emotionsSad.reduce((a, b) => a + b, 0) / totalPredictions;
+          const avgAngry = emotionsAngry.reduce((a, b) => a + b, 0) / totalPredictions;
+          const avgSurprise = emotionsSurprise.reduce((a, b) => a + b, 0) / totalPredictions;
+
+          avgEmotions = [avgNeutral, avgHappy, avgSad, avgAngry, avgSurprise];
+          pushEmotionsToChart(avgEmotions);
+          displayEmotionValues(avgEmotions);
         }
       }
     }
