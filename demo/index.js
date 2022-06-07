@@ -243,11 +243,13 @@ async function setupImg() {
       reader.readAsDataURL(input.files[0]);
       document.getElementById('dragFile').style.display = 'none';
       document.getElementById('btn_close_img').style.display = 'block';
+      document.getElementById('img').style.display = 'block';
     }
   }
 }
 async function closeImg() {
   document.getElementById('img').src = '';
+  document.getElementById('img').style.display = 'none';
   document.getElementById('imageInput').value = '';
   document.getElementById('dragFile').style.display = 'block';
   document.getElementById('btn_close_img').style.display = 'none';
