@@ -53,6 +53,7 @@ let img;
 let videoClip;
 // let imgVideo;
 let canvasV;
+let sum;
 
 let dataEmotionsNeutral = [];
 let dataEmotionsAngry = [];
@@ -403,6 +404,13 @@ const renderPrediction = async () => {
     let viewer;
     // eslint-disable-next-line one-var
     let oldWidth, oldHeight, newWidth, newHeight;
+    let emotionsNeutral = [];
+    let emotionsHappy = [];
+    let emotionsSad = [];
+    let emotionsAngry = [];
+    let emotionsSurprise = [];
+    let face;
+    let emotions;
     // const checkImgEmpty = document.getElementById('img');
     // const src = checkImgEmpty.getAttribute('src');
     if (viewerType == 'img') {
@@ -441,19 +449,35 @@ const renderPrediction = async () => {
       const predictions = await pipeline.estimateEmotion(viewer);
       ctxOutput.clearRect(0, 0, canvas.width, canvas.height);
       // console.log('predictions: ' + predictions.length);
-
-      if (predictions.length > 0) {
+      if (predictions.length >= 0) {
         // console.log(predictions);
+        totalPredictions = predictions.length;
         for (let i = 0; i < predictions.length; i++) {
-          let face = predictions[0].face;
-          let emotions = predictions[0].emotions;
+          face = predictions[i].face;
+          emotions = predictions[i].emotions;
 
-          // console.log(face);
-          if (face.probability >= 0.5) {
+          emotionsNeutral.push(emotions[0]);
+          emotionsHappy.push(emotions[1]);
+          emotionsSad.push(emotions[2]);
+          emotionsAngry.push(emotions[3]);
+          emotionsSurprise.push(emotions[4]);
+          displayBoundingBox(face, newWidth, newHeight, oldWidth, oldHeight);
+
+          if (face.probability >= 0.5 && predictions.length <= 1) {
             pushEmotionsToChart(emotions);
-            displayBoundingBox(face, newWidth, newHeight, oldWidth, oldHeight);
             displayEmotionValues(emotions);
           }
+        }
+        if(predictions.length >= 2 && face.probability >= 0.5 ){
+          const avgNeutral = emotionsNeutral.reduce((a,b) => a + b, 0) / totalPredictions;
+          const avgHappy = emotionsHappy.reduce((a,b) => a + b, 0) / totalPredictions;
+          const avgSad = emotionsSad.reduce((a,b) => a + b, 0) / totalPredictions;
+          const avgAngry = emotionsAngry.reduce((a,b) => a + b, 0) / totalPredictions;
+          const avgSurprise = emotionsSurprise.reduce((a,b) => a + b, 0) / totalPredictions;
+
+          data_emotions = [avgNeutral, avgHappy, avgSad, avgAngry, avgSurprise];
+          pushEmotionsToChart(data_emotions);
+          displayEmotionValues(data_emotions);
         }
       }
     }

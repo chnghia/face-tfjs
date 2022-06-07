@@ -28,6 +28,17 @@
         </a>
       </div>
     </div>
+    <div class="bg-white px-5 py-2">
+      <div>This is a demo site for our MAL Face Emotion SDK.</div>
+      <div>For more details, please visit
+        <span>
+          <a href="https://faceemotion.vitalify.asia/">
+            <span class="cursor-pointer underline" style="color: #0086F0;">https://faceemotion.vitalify.asia/ </div>
+          </a>
+        </span>
+      </div>
+      </div>
+    </div>
     <div class="bg-gray-50 py-7 px-4 flex flex-col justify-center relative overflow-hidden sm:py-6 pb-3">
       <div class="relative px-6 pt-8 pb-8 bg-white shadow-xl ring-1 ring-gray-900/5 sm:w-auto sm:mx-auto sm:rounded-lg sm:px-10">
         <div class="w-auto mx-auto">
@@ -175,13 +186,14 @@
                       <div id="value_vibe" class="h-2.5 rounded-full" style="background-color: #F759AB;width: 0%; transition: width 1s;"></div>
                     </div>
                   </div>
+                  <div class="md:w-[268px]">※ If multiple faces, the average value is used for above values.</div>
                 </div>
               </div>
             </div>
-            <div class="w-[280px] md:w-[520px] sm:w-[590px] mt-2 overflow-hidden">
-                <div class="md:w-[550px] w-[290px] sm:w-[600px]">
-                  <canvas id="myChart"></canvas>
-                </div>
+            <div class="md:w-[520px] sm:w-[600px] mt-2 overflow-hidden xs1:w-[590px] xs2:w-[550px] xs3:w-[520px] xs4:w-[490px] xs5:w-[450px] xs6:w-[430px] xs7:[410px] xs8:w-[400px] xs9:w-[370px] mobilex1:w-[345px] mobilex2:w-[320px] mobilex3:w-[300px] mobilex4:w-[290px] mobilex5:w-[290px]">
+              <div class="md:w-[550px] sm:w-[610px] xs1:w-[600px] xs2:w-[560px] xs3:w-[530px] xs4:w-[500px] xs5:w-[460px] xs6:w-[440px] xs7:w-[420px] xs8:w-[390px] xs9:w-[380px] mobilex1:w-[350px] mobilex2:w-[330px] mobilex3:w-[310px] mobilex4:w-[300px] mobilex5:w-[300px]">
+                <canvas id="myChart"></canvas>
+              </div>
             </div>
             <div class="flex-col relative hidden" id="block_chart">
               <div class="flex flex-wraps inline-flex py-2 pl-[2.25rem]">
@@ -286,5 +298,43 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
     <script src="https://unpkg.com/@themesberg/flowbite@latest/dist/flowbite.bundle.js"></script>
     <script src="index.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WRVF9TJXJ8"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-WRVF9TJXJ8');
+    </script>
+    <script>
+      tailwind.config = {
+        theme: {
+          screens: {
+            // 'xsss':{'max': '385px'},
+            // 'xss': {'min': '597x'},
+            'mobilex5': {'min':'355px','max':'377px'},
+            'mobilex4': {'min':'376px','max':'396px'},
+            'mobilex3': {'min':'397px','max':'399px'},
+            'mobilex2': {'min':'400px','max':'421px'},
+            'mobilex1': {'min':'422px','max':'448px'},
+            'xs9':'448px',
+            'xs8':'468px',
+            'xs7': '485px',
+            'xs6': '508px',
+            'xs5': '530px',
+            'xs4': '570px',
+            'xs3': '598px',
+            'xs2': '629px',
+            'xs1': '656px',
+            'sm': '685px',
+            'md': '768px',
+            'lg': '1024px',
+            'xl': '1280px',
+            '2xl': '1536px',
+          },
+        }
+      }
+    </script>
   </body>
 </html>
