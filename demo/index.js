@@ -253,6 +253,7 @@ async function closeImg() {
   document.getElementById('imageInput').value = '';
   document.getElementById('dragFile').style.display = 'block';
   document.getElementById('btn_close_img').style.display = 'none';
+  resetChart();
 }
 
 // async function setupVideoClip(input) {
@@ -385,6 +386,16 @@ function pushEmotionsToChart(emotions) {
   }
 }
 
+function resetChart(){
+  for(let i = 0; i < numberCell; i++){
+    myChart.data.labels.splice(-1,1);
+    myChart.data.datasets.forEach(function(dataset){
+    dataset.data.pop();
+  });
+  }
+  setupMyChartEmotions();
+}
+
 function convertRange(value, newMax, oldMax) {
   // const oldMax = oldRange;
   const oldMin = 0;
@@ -503,6 +514,7 @@ async function showImg() {
 
   viewerType = 'img';
   // renderPredictionImg();
+  resetChart();
 }
 
 function setupOutputValue() {
@@ -540,6 +552,7 @@ async function showVideoClip() {
 
   videoClip = document.getElementById('videoClip');
   videoClip.play();
+  resetChart();
 }
 
 async function showWebcam() {
@@ -556,6 +569,7 @@ async function showWebcam() {
   webcam.play();
 
   viewerType = 'webcam';
+  resetChart();
 }
 
 async function showEmotions() {
