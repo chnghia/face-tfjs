@@ -394,6 +394,7 @@ function resetChart(){
   });
   }
   setupMyChartEmotions();
+  document.getElementById('btn_emotions').click();
 }
 
 function convertRange(value, newMax, oldMax) {
