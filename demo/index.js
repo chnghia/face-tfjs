@@ -547,6 +547,7 @@ async function showVideoClip() {
   document.getElementById('movie').style.display = 'block';
   document.getElementById('webcam').style.display = 'none';
   document.getElementById('uploadImg').style.display = 'none';
+  document.getElementById('stats').style.display = 'block';
 
   await setupVideoClip();
   stopCamera();
@@ -565,6 +566,7 @@ async function showWebcam() {
   document.getElementById('uploadImg').style.display = 'none';
   document.getElementById('movie').style.display = 'none';
   document.getElementById('output').style.display = 'block';
+  document.getElementById('stats').style.display = 'block'
   setupOutputValue();
   await setupCamera();
   webcam.play();
