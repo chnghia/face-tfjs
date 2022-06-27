@@ -33,6 +33,7 @@ document.getElementById('stats').appendChild(stats.domElement);
 
 let modelFace;
 let modelEmotion;
+let modelMask;
 let ctxOutput;
 // let webcamWidth;
 // let webcamHeight;
@@ -426,6 +427,7 @@ const renderPrediction = async () => {
     let emotionsSurprise = [];
     let face;
     let emotions;
+    let mask;
     // const checkImgEmpty = document.getElementById('img');
     // const src = checkImgEmpty.getAttribute('src');
     if (viewerType == 'img') {
@@ -462,19 +464,28 @@ const renderPrediction = async () => {
 
     if (oldWidth > 0 && oldHeight > 0) {
       const predictions = await pipeline.estimateEmotion(viewer);
+      const predictionsMask = await pipeline.estimateMask(viewer);
+      //console.log(predictionsMask);
       ctxOutput.clearRect(0, 0, canvas.width, canvas.height);
       if (predictions.length > 0) {
         for (let i = 0; i < predictions.length; i++) {
           face = predictions[i].face;
           emotions = predictions[i].emotions;
+          mask = predictionsMask[i].mask;
           if (face.probability >= 0.5) {
-            totalPredictions += 1;
-            emotionsNeutral.push(emotions[0]);
-            emotionsHappy.push(emotions[1]);
-            emotionsSad.push(emotions[2]);
-            emotionsAngry.push(emotions[3]);
-            emotionsSurprise.push(emotions[4]);
-            displayBoundingBox(face, newWidth, newHeight, oldWidth, oldHeight);
+            if(mask[0] > mask[1]) {
+              document.getElementById("wear_mask").style.display = 'block';
+            }
+            else{
+              document.getElementById("wear_mask").style.display = 'none';
+              totalPredictions += 1;
+              emotionsNeutral.push(emotions[0]);
+              emotionsHappy.push(emotions[1]);
+              emotionsSad.push(emotions[2]);
+              emotionsAngry.push(emotions[3]);
+              emotionsSurprise.push(emotions[4]);
+              displayBoundingBox(face, newWidth, newHeight, oldWidth, oldHeight);
+            }
           }
         }
 
@@ -827,7 +838,8 @@ function hideDataVibe() {
 const setupModel = async () => {
   modelFace = await facetfjs.loadBlazeFace();
   modelEmotion = await facetfjs.loadFaceEmotions();
-  pipeline = new facetfjs.EmotionPipeline(modelFace, modelEmotion);
+  modelMask = await facetfjs.loadMask();
+  pipeline = new facetfjs.Pipeline(modelFace, modelEmotion, modelMask);
 };
 
 function setupEmotionElements() {
