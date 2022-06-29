@@ -4,6 +4,7 @@ import * as tf from '@tensorflow/tfjs-core';
 // import { Tensor3D } from '@tensorflow/tfjs-core';
 import { BlazeFaceModel } from './blazeface/index';
 import { FaceEmotionModel } from './faceemotion/index';
+import { FaceMaskModel } from './mask/mask';
 // import * as tfjsWasm from '@tensorflow/tfjs-backend-wasm';
 // import '@tensorflow/tfjs-backend-webgl';
 // import '@tensorflow/tfjs-backend-cpu';
@@ -27,6 +28,11 @@ const NOR_POINTS = [
   [0.8369565217391305, 0.5942028985507246], // angry
   [-0.057971014492753624, 0.9710144927536232] // surprised
 ];
+
+const NOR_POINTS_MASK= [
+  [0.8659420289855072, -0.36231884057971014],
+  [0.8369565217391305, 0.5942028985507246]
+]
 
 const OLD_MAX = 1;
 const OLD_MIN = -1;
@@ -54,14 +60,15 @@ function dotProduct(v1: number[], v2: number[]): number {
   return v1[0]*v2[0] + v1[1]*v2[1];
 }
 
-export class EmotionPipeline {
+export class Pipeline {
   // private readonly maxFacesNumber: number;
   // private normalizationConstant: number;
   // private inputMin: number;
 
   constructor(
     private readonly faceDetector: BlazeFaceModel,
-    private readonly emotionDetector: FaceEmotionModel
+    private readonly emotionDetector: FaceEmotionModel,
+    private readonly maskDetector: FaceMaskModel
   ) {
     // this.maxFacesNumber = 1;
     // this.normalizationConstant = 0.449;
@@ -165,5 +172,83 @@ export class EmotionPipeline {
     } else {
       return normRange(res);
     }
+  }
+
+  async estimateMask(
+    input: tf.Tensor3D | ImageData | HTMLVideoElement | HTMLImageElement | HTMLCanvasElement
+  ): Promise<Prediction> {
+
+    const [, width] = getInputTensorDimensions(input);
+    const image = tf.tidy(() => {
+      if (!(input instanceof tf.Tensor)) {
+        input = tf.browser.fromPixels(input);
+      }
+      return tf.expandDims(tf.cast((input as tf.Tensor), 'float32'), 0);
+    });
+    
+    const returnTensors = false;
+    const flipHorizontal = true;
+    const annotateBoxes = true;
+
+    const predictions = await this.faceDetector.infer(image as tf.Tensor4D, width, returnTensors, flipHorizontal, annotateBoxes);
+    //console.log(predictions.length);
+    let results = [];
+
+    if (predictions.length > 0) {
+      for (let i = 0; i < predictions.length; i++) {
+        const start = predictions[i].topLeft as [number, number];
+        const end = predictions[i].bottomRight as [number, number];
+        const h = image.shape[1];
+        const w = image.shape[2];
+
+        const boxes = [[
+          start[1] / h, start[0] / w, end[1] / h, end[0] / w
+        ]];
+
+        let faceImage = tf.image.cropAndResize(image as tf.Tensor4D, boxes, [0], [224, 224]);
+
+        // Normalize the image from [0, 255] to [inputMin, inputMax].
+        // const normalized = tf.div(
+        //   tf.sub(
+        //     tf.div(
+        //       tf.cast(faceImage, 'float32'),
+        //       255),
+        //     this.normalizationConstant),
+        //   this.inputMin);
+
+        const logits = await this.maskDetector.predict(faceImage as tf.Tensor4D);
+        
+        
+        // const softmax = tf.softmax(logits);
+        // const values = await softmax.dataSync();
+        const values = await logits.dataSync();
+        logits.dispose();
+        faceImage.dispose();
+        // softmax.dispose();
+
+        const result: Prediction = {
+          face: predictions[i],
+          mask: values,
+        };
+        results.push(result);
+        // return result;
+      }
+    }
+
+    image.dispose();
+
+    return results;
+  }
+
+  findMaskIndex(mask: number[]): number {
+    const max_value = Math.max(...mask);
+    const max_index = mask.indexOf(max_value);
+    return max_index
+  }
+
+  estimatePointMask(mask: number[]): number[] {
+    const max_index = this.findMaskIndex(mask);
+    const nor_point_mask = NOR_POINTS_MASK[max_index];
+    return [nor_point_mask[0] * mask[max_index], nor_point_mask[1] * mask[max_index]];
   }
 }

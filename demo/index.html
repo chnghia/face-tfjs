@@ -80,6 +80,18 @@
                     style="-webkit-transform: scaleX(-1); transform: scaleX(-1);"
                   ></video>
                 </div>
+                <div id="wear_mask" aria-hidden="true" tabindex="-1"  class="hidden overflow-y-auto overflow-x-hidden absolute bottom-[-1.5px] right-0 left-0 z-50 w-full flex-col justify-center" style="height: fit-content;">
+                  <div class="relative w-full max-w-2xl h-fit-content md:h-auto mx-auto">
+                    <div class="relative bg-white border-l border-r shadow dark:bg-gray-700 md:w-[520px]">
+                        <div class="flex justify-center items-start p-2 rounded-t border-b dark:border-gray-600">
+                            <div class="text-sm md:text-xl text-center font-semibold text-rose-700 dark:text-rose-700">
+                                You're wearing a mask.
+                                <span>Please take it off</span>
+                            </div>
+                        </div>
+                    </div> 
+                  </div>
+                </div>
                 <canvas id="output" class="absolute bottom-0 left-0 "></canvas>
                 <div id="stats" class="absolute top-3 h-3.5 right-56 overflow-hidden left-2"></div>
               </div>
