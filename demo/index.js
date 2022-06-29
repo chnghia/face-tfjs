@@ -467,29 +467,37 @@ const renderPrediction = async () => {
       const predictionsMask = await pipeline.estimateMask(viewer);
       //console.log(predictionsMask);
       ctxOutput.clearRect(0, 0, canvas.width, canvas.height);
+
       if (predictions.length > 0) {
         for (let i = 0; i < predictions.length; i++) {
           face = predictions[i].face;
           emotions = predictions[i].emotions;
-          mask = predictionsMask[i].mask;
           if (face.probability >= 0.5) {
-            if(mask[0] >= 0.8) {
-              document.getElementById("wear_mask").style.display = 'block';
-            }
-            else{
-              document.getElementById("wear_mask").style.display = 'none';
-              totalPredictions += 1;
-              emotionsNeutral.push(emotions[0]);
-              emotionsHappy.push(emotions[1]);
-              emotionsSad.push(emotions[2]);
-              emotionsAngry.push(emotions[3]);
-              emotionsSurprise.push(emotions[4]);
-              displayBoundingBox(face, newWidth, newHeight, oldWidth, oldHeight);
-            }
+            totalPredictions += 1;
+            emotionsNeutral.push(emotions[0]);
+            emotionsHappy.push(emotions[1]);
+            emotionsSad.push(emotions[2]);
+            emotionsAngry.push(emotions[3]);
+            emotionsSurprise.push(emotions[4]);
+            displayBoundingBox(face, newWidth, newHeight, oldWidth, oldHeight);
           }
         }
 
         if (totalPredictions > 0) {
+          let wearMask = false;
+          for (let i = 0; i < predictionsMask.length; i++) {
+            const mask = predictionsMask[i].mask;
+            if (mask != undefined && mask[0] > 0.8) {
+              wearMask = true;
+            }
+          }
+
+          if (wearMask) {
+            document.getElementById("wear_mask").style.display = 'block';
+          } else {
+            document.getElementById("wear_mask").style.display = 'none';
+          }
+
           const avgNeutral = emotionsNeutral.reduce((a, b) => a + b, 0) / totalPredictions;
           const avgHappy = emotionsHappy.reduce((a, b) => a + b, 0) / totalPredictions;
           const avgSad = emotionsSad.reduce((a, b) => a + b, 0) / totalPredictions;
