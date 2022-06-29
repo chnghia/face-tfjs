@@ -2,7 +2,7 @@ import * as tf from '@tensorflow/tfjs-core';
 import * as tfconv from '@tensorflow/tfjs-converter';
 import { FaceMaskModel } from './mask';
 
-const FACEMASK_MODEL_URL = 'https://storage.googleapis.com/mal-public/mask/web_model1/model.json'
+const FACEMASK_MODEL_URL = 'https://storage.googleapis.com/mal-public/mask/web_model2/model.json'
 
 interface FaceMaskConfig {
     modelUrl?: string | tf.io.IOHandler;
