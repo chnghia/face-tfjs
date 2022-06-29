@@ -473,7 +473,7 @@ const renderPrediction = async () => {
           emotions = predictions[i].emotions;
           mask = predictionsMask[i].mask;
           if (face.probability >= 0.5) {
-            if(mask[0] > mask[1]) {
+            if(mask[0] >= 0.8) {
               document.getElementById("wear_mask").style.display = 'block';
             }
             else{
