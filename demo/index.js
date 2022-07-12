@@ -254,6 +254,7 @@ async function closeImg() {
   document.getElementById('imageInput').value = '';
   document.getElementById('dragFile').style.display = 'block';
   document.getElementById('btn_close_img').style.display = 'none';
+  document.getElementById('wear_mask').style.display = 'none';
   resetChart();
 }
 
@@ -524,6 +525,7 @@ async function showImg() {
   document.getElementById('webcam').style.display = 'none';
   document.getElementById('movie').style.display = 'none';
   document.getElementById('stats').style.display = 'none';
+  document.getElementById('wear_mask').style.display = 'none';
 
   setupOutputValue();
   stopCamera();
@@ -567,6 +569,7 @@ async function showVideoClip() {
   document.getElementById('webcam').style.display = 'none';
   document.getElementById('uploadImg').style.display = 'none';
   document.getElementById('stats').style.display = 'block';
+  document.getElementById('wear_mask').style.display = 'none';
 
   await setupVideoClip();
   stopCamera();
@@ -585,7 +588,8 @@ async function showWebcam() {
   document.getElementById('uploadImg').style.display = 'none';
   document.getElementById('movie').style.display = 'none';
   document.getElementById('output').style.display = 'block';
-  document.getElementById('stats').style.display = 'block'
+  document.getElementById('stats').style.display = 'block';
+  document.getElementById('wear_mask').style.display = 'none';
   setupOutputValue();
   await setupCamera();
   webcam.play();
