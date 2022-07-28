@@ -187,7 +187,7 @@ export class Pipeline {
     });
     
     const returnTensors = false;
-    const flipHorizontal = true;
+    const flipHorizontal = false;
     const annotateBoxes = true;
 
     const predictions = await this.faceDetector.infer(image as tf.Tensor4D, width, returnTensors, flipHorizontal, annotateBoxes);
